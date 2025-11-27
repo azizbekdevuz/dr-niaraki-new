@@ -161,19 +161,19 @@ export function detectSectionType(text: string): SectionType {
   const lower = text.toLowerCase();
   
   const mappings: Array<{ keywords: string[]; type: SectionType }> = [
-    { keywords: ['professional summary', 'summary', 'profile', 'overview'], type: 'summary' },
-    { keywords: ['education', 'academic qualification', 'degree'], type: 'education' },
-    { keywords: ['experience', 'appointment', 'position', 'employment', 'work'], type: 'experience' },
-    { keywords: ['publication', 'journal paper', 'article', 'peer-reviewed'], type: 'publications' },
-    { keywords: ['patent'], type: 'patents' },
-    { keywords: ['research interest', 'research project', 'research area'], type: 'research' },
-    { keywords: ['award', 'honor', 'recognition', 'achievement'], type: 'awards' },
-    { keywords: ['skill', 'expertise', 'competenc'], type: 'skills' },
-    { keywords: ['contact', 'email', 'phone', 'address'], type: 'contact' },
+    { keywords: ['professional summary', 'summary', 'profile', 'overview', 'summary of qualifications'], type: 'summary' },
+    { keywords: ['academic qualifications', 'education', 'academic qualification', 'degree', 'ph.d', 'phd', 'm.sc', 'msc', 'b.sc', 'bsc'], type: 'education' },
+    { keywords: ['professional work experiences', 'academic appointments', 'experience', 'appointment', 'position', 'employment', 'work', 'associate professor', 'assistant professor', 'research professor'], type: 'experience' },
+    { keywords: ['journal papers', 'publications', 'publication', 'journal paper', 'article', 'peer-reviewed', 'books and book chapters', 'books', 'book chapters', 'conference papers', 'conferences'], type: 'publications' },
+    { keywords: ['patents', 'patent'], type: 'patents' },
+    { keywords: ['research projects experiences', 'research project', 'research interest', 'research area', 'research grants'], type: 'research' },
+    { keywords: ['awards & honors', 'awards and honors', 'award', 'honor', 'recognition', 'achievement'], type: 'awards' },
+    { keywords: ['skills', 'skill', 'expertise', 'competenc', 'research & academic skills', 'research leadership'], type: 'skills' },
+    { keywords: ['contact', 'email', 'phone', 'address', 'website', 'linkedin'], type: 'contact' },
     { keywords: ['student', 'supervision', 'mentee', 'advisee'], type: 'students' },
-    { keywords: ['grant', 'funding', 'research project'], type: 'grants' },
-    { keywords: ['workshop', 'exhibition', 'presentation'], type: 'workshops' },
-    { keywords: ['service', 'editorial', 'review', 'committee'], type: 'services' },
+    { keywords: ['research grants and achievements', 'grant', 'funding', 'research grant'], type: 'grants' },
+    { keywords: ['workshops and exhibitions', 'workshop', 'exhibition', 'presentation', 'workshop organization'], type: 'workshops' },
+    { keywords: ['teaching experiences', 'teaching', 'editorial', 'review', 'committee', 'service', 'journal and conference reviews'], type: 'services' },
   ];
   
   for (const { keywords, type } of mappings) {
@@ -236,24 +236,84 @@ export function splitIntoSections(text: string): DetectedSection[] {
  */
 export function splitEntries(text: string): string[] {
   // Minimum entry length to filter out noise (but not short valid entries)
-  const MIN_ENTRY_LENGTH = 5;
+  const MIN_ENTRY_LENGTH = 10;
   
-  // Try splitting by numbered entries first
-  const numberedPattern = /(?:^|\n)\s*\d+[\.\)]\s*/;
-  if (numberedPattern.test(text)) {
-    return text
-      .split(numberedPattern)
-      .map(e => e.trim())
-      .filter(e => e.length > MIN_ENTRY_LENGTH);
+  // Try splitting by numbered entries first (more flexible pattern)
+  const numberedPattern = /(?:^|\n)\s*(\d+)[\.\)]\s+/gm;
+  const numberedMatches = [...text.matchAll(numberedPattern)];
+  if (numberedMatches.length >= 2) {
+    const entries: string[] = [];
+    for (let i = 0; i < numberedMatches.length; i++) {
+      const match = numberedMatches[i];
+      if (!match || match.index === undefined) {
+        continue;
+      }
+      const start = match.index + match[0].length;
+      const nextMatch = i < numberedMatches.length - 1 ? numberedMatches[i + 1] : null;
+      const end = nextMatch?.index ?? text.length;
+      const entry = text.slice(start, end).trim();
+      if (entry.length > MIN_ENTRY_LENGTH) {
+        entries.push(entry);
+      }
+    }
+    if (entries.length > 0) {
+      return entries;
+    }
   }
   
   // Try splitting by bullets
-  const bulletPattern = /(?:^|\n)\s*[•·\-\*]\s*/;
-  if (bulletPattern.test(text)) {
-    return text
-      .split(bulletPattern)
-      .map(e => e.trim())
-      .filter(e => e.length > MIN_ENTRY_LENGTH);
+  const bulletPattern = /(?:^|\n)\s*[•·\-\*]\s+/gm;
+  const bulletMatches = [...text.matchAll(bulletPattern)];
+  if (bulletMatches.length >= 2) {
+    const entries: string[] = [];
+    for (let i = 0; i < bulletMatches.length; i++) {
+      const match = bulletMatches[i];
+      if (!match || match.index === undefined) {
+        continue;
+      }
+      const start = match.index + match[0].length;
+      const nextMatch = i < bulletMatches.length - 1 ? bulletMatches[i + 1] : null;
+      const end = nextMatch?.index ?? text.length;
+      const entry = text.slice(start, end).trim();
+      if (entry.length > MIN_ENTRY_LENGTH) {
+        entries.push(entry);
+      }
+    }
+    if (entries.length > 0) {
+      return entries;
+    }
+  }
+  
+  // Try splitting by lines that look like new entries (capitalized, long lines)
+  const lines = text.split('\n').filter(l => l.trim().length > 0);
+  if (lines.length > 3) {
+    const entries: string[] = [];
+    let currentEntry = '';
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]?.trim() ?? '';
+      // Check if this looks like start of new entry
+      const isNewEntry = i > 0 && (
+        /^[A-Z][A-Za-z\s]{20,}/.test(line) && // Starts with capital, long line
+        currentEntry.length > 50 && // Previous entry was substantial
+        !line.match(/^(?:and|the|in|on|at|for|with|by|from|to)\s/i) // Not a continuation word
+      );
+      
+      if (isNewEntry && currentEntry.length > MIN_ENTRY_LENGTH) {
+        entries.push(currentEntry.trim());
+        currentEntry = line;
+      } else {
+        currentEntry += (currentEntry ? '\n' : '') + line;
+      }
+    }
+    
+    if (currentEntry.trim().length > MIN_ENTRY_LENGTH) {
+      entries.push(currentEntry.trim());
+    }
+    
+    if (entries.length > 1) {
+      return entries;
+    }
   }
   
   // Fall back to double newlines

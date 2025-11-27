@@ -23,19 +23,59 @@ export function parsePatents(text: string): ParseResult<Patent[]> {
   const warnings: ParseWarning[] = [];
   const patents: Patent[] = [];
   
-  // Split into individual entries
-  const entries = splitEntries(text);
+  // Remove section headers
+  const cleanedText = text
+    .replace(/^(?:PATENTS|REGISTERED|COMPLETED)[\s:]*\n/gi, '')
+    .replace(/\n(?:PATENTS|REGISTERED|COMPLETED)[\s:]*\n/gi, '\n')
+    .trim();
   
-  if (entries.length === 0) {
+  // Split into individual entries
+  const entries = splitEntries(cleanedText);
+  
+  // If no entries found, try more aggressive splitting
+  let finalEntries = entries;
+  if (entries.length === 0 || entries.length === 1) {
+    // Try splitting by line breaks that look like new entries
+    const lines = cleanedText.split('\n').filter(l => l.trim().length > 15);
+    const potentialEntries: string[] = [];
+    let currentEntry = '';
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]?.trim() ?? '';
+      // Check if this looks like the start of a new entry
+      const prevLine = i > 0 ? lines[i - 1]?.trim() : '';
+      const looksLikeNewEntry = /^\d+[\.\)]\s/.test(line) || 
+                                 /^[•·\-\*]\s/.test(line) ||
+                                 /(?:US|KR|Patent|Application)[\s#:]/i.test(line) ||
+                                 (line.length > 40 && /^[A-Z]/.test(line) && i > 0 && prevLine && prevLine.length > 40);
+      
+      if (looksLikeNewEntry && currentEntry.length > 30) {
+        potentialEntries.push(currentEntry.trim());
+        currentEntry = line;
+      } else {
+        currentEntry += (currentEntry ? '\n' : '') + line;
+      }
+    }
+    
+    if (currentEntry.trim().length > 30) {
+      potentialEntries.push(currentEntry.trim());
+    }
+    
+    if (potentialEntries.length > entries.length) {
+      finalEntries = potentialEntries;
+    }
+  }
+  
+  if (finalEntries.length === 0) {
     warnings.push(createWarning(
       'patents',
       'No patent entries detected in text',
-      'warning'
+      'info'
     ));
     return { data: [], warnings };
   }
   
-  entries.forEach((entry, index) => {
+  finalEntries.forEach((entry, index) => {
     const patent = parsePatentEntry(entry, index, warnings);
     if (patent) {
       patents.push(patent);

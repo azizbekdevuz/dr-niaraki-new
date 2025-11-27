@@ -3,9 +3,9 @@
  * POST: Verify password and create session
  */
 
+import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
 
 import {
   verifyAdminPassword,

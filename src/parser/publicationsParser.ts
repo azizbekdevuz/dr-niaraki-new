@@ -24,19 +24,58 @@ export function parsePublications(text: string): ParseResult<Publication[]> {
   const warnings: ParseWarning[] = [];
   const publications: Publication[] = [];
   
-  // Split into individual entries
-  const entries = splitEntries(text);
+  // Remove subsection headers that might interfere
+  const cleanedText = text
+    .replace(/^(?:JOURNAL PAPERS|BOOKS|BOOK CHAPTERS|CONFERENCE PAPERS|CONFERENCES)[\s:]*\n/gi, '')
+    .replace(/\n(?:JOURNAL PAPERS|BOOKS|BOOK CHAPTERS|CONFERENCE PAPERS|CONFERENCES)[\s:]*\n/gi, '\n')
+    .trim();
   
-  if (entries.length === 0) {
+  // Split into individual entries
+  const entries = splitEntries(cleanedText);
+  
+  // If no entries found, try more aggressive splitting
+  let finalEntries = entries;
+  if (entries.length === 0 || entries.length === 1) {
+    // Try splitting by line breaks that look like new entries
+    const lines = cleanedText.split('\n').filter(l => l.trim().length > 20);
+    const potentialEntries: string[] = [];
+    let currentEntry = '';
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]?.trim() ?? '';
+      // Check if this looks like the start of a new entry
+      const prevLine = i > 0 ? lines[i - 1]?.trim() : '';
+      const looksLikeNewEntry = /^\d+[\.\)]\s/.test(line) || 
+                                 /^[•·\-\*]\s/.test(line) ||
+                                 (line.length > 50 && /^[A-Z]/.test(line) && i > 0 && prevLine && prevLine.length > 50);
+      
+      if (looksLikeNewEntry && currentEntry.length > 50) {
+        potentialEntries.push(currentEntry.trim());
+        currentEntry = line;
+      } else {
+        currentEntry += (currentEntry ? '\n' : '') + line;
+      }
+    }
+    
+    if (currentEntry.trim().length > 50) {
+      potentialEntries.push(currentEntry.trim());
+    }
+    
+    if (potentialEntries.length > entries.length) {
+      finalEntries = potentialEntries;
+    }
+  }
+  
+  if (finalEntries.length === 0) {
     warnings.push(createWarning(
       'publications',
       'No publication entries detected in text',
-      'warning'
+      'info'
     ));
     return { data: [], warnings };
   }
   
-  entries.forEach((entry, index) => {
+  finalEntries.forEach((entry, index) => {
     const publication = parsePublicationEntry(entry, index, warnings);
     if (publication) {
       publications.push(publication);

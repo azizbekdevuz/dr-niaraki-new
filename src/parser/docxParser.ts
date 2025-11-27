@@ -142,6 +142,72 @@ async function parseDocxBuffer(buffer: Buffer): Promise<DocxParseResult> {
 }
 
 /**
+ * Handles unknown sections by trying to extract useful content
+ * Returns extracted data and warnings
+ */
+function handleUnknownSection(
+  section: DetectedSection
+): {
+  publications: Publication[];
+  patents: Patent[];
+  projects: ResearchProject[];
+  warnings: ParseWarning[];
+} {
+  const sectionLower = section.title.toLowerCase();
+  const commonHeaders = ['header', 'footer', 'page', 'table of contents', 'references', 'appendix'];
+  const isCommonHeader = commonHeaders.some(h => sectionLower.includes(h));
+  const result = {
+    publications: [] as Publication[],
+    patents: [] as Patent[],
+    projects: [] as ResearchProject[],
+    warnings: [] as ParseWarning[],
+  };
+  
+  // Check if this unknown section might contain publications
+  const hasPublicationKeywords = sectionLower.includes('journal') || 
+                                 sectionLower.includes('paper') || 
+                                 sectionLower.includes('publication') || 
+                                 sectionLower.includes('book') ||
+                                 sectionLower.includes('conference');
+  
+  if (hasPublicationKeywords && section.content.length > 200) {
+    const pubResult = parsePublications(section.content);
+    result.publications = pubResult.data;
+    result.warnings.push(...pubResult.warnings);
+    return result;
+  }
+  
+  // Check if this unknown section might contain patents
+  if (sectionLower.includes('patent') && section.content.length > 100) {
+    const patResult = parsePatents(section.content);
+    result.patents = patResult.data;
+    result.warnings.push(...patResult.warnings);
+    return result;
+  }
+  
+  // Check if this might be a research project or grant
+  const hasResearchKeywords = sectionLower.includes('research project') || 
+                              sectionLower.includes('grant') ||
+                              sectionLower.includes('funding');
+  
+  if (hasResearchKeywords && section.content.length > 100) {
+    result.projects = parseResearchSection(section.content);
+    return result;
+  }
+  
+  // Only warn if it has substantial content and isn't a common header
+  if (section.content.length > 100 && !isCommonHeader) {
+    result.warnings.push(createWarning(
+      'unknown_section',
+      `Unrecognized section: "${section.title.slice(0, 50)}" - please review`,
+      'info'
+    ));
+  }
+  
+  return result;
+}
+
+/**
  * Parses detected sections into structured data
  */
 async function parseSections(
@@ -209,7 +275,10 @@ async function parseSections(
           
         case 'publications': {
           const pubResult = parsePublications(section.content);
-          publications = pubResult.data;
+          // Merge with existing publications instead of replacing
+          if (pubResult.data.length > 0) {
+            publications = [...publications, ...pubResult.data];
+          }
           warnings.push(...pubResult.warnings);
           break;
         }
@@ -248,17 +317,12 @@ async function parseSections(
         }
           
         default: {
-          // Unknown section - only warn if it has substantial content and isn't a common header
-          const commonHeaders = ['header', 'footer', 'page', 'table of contents', 'references', 'appendix'];
-          const isCommonHeader = commonHeaders.some(h => section.title.toLowerCase().includes(h));
-          
-          if (section.content.length > 100 && !isCommonHeader) {
-            warnings.push(createWarning(
-              'unknown_section',
-              `Unrecognized section: "${section.title.slice(0, 50)}" - please review`,
-              'info'
-            ));
-          }
+          // Unknown section - try to extract useful content
+          const unknownResult = handleUnknownSection(section);
+          publications.push(...unknownResult.publications);
+          patents.push(...unknownResult.patents);
+          projects.push(...unknownResult.projects);
+          warnings.push(...unknownResult.warnings);
         }
       }
     } catch (error) {
@@ -277,25 +341,54 @@ async function parseSections(
     warnings.push(...headerContactResult.warnings);
   }
   
-  // If no publications section found, try to find them in full text
+  // If no publications section found, try to find them in full text with multiple patterns
   if (publications.length === 0) {
-    const pubMatch = fullText.match(/JOURNAL PAPERS[\s\S]*?(?=\n[A-Z]{2,}|\n{3}|$)/i);
-    if (pubMatch) {
-      const pubResult = parsePublications(pubMatch[0]);
-      publications = pubResult.data;
-      warnings.push(...pubResult.warnings);
-    } else {
-      warnings.push(createWarning('publications', 'No publications section found', 'warning'));
+    const pubPatterns = [
+      /JOURNAL PAPERS[\s\S]*?(?=\n(?:CONFERENCE|PATENTS|BOOKS|AWARDS|SKILLS|TEACHING|WORKSHOP|SERVICE)[\s\S]*?$)/i,
+      /JOURNAL PAPERS[\s\S]*?(?=\n{3,}[A-Z]{3,})/i,
+      /JOURNAL PAPERS[\s\S]*?(?=\n[A-Z]{2,}[\s]*\n)/i,
+      /JOURNAL PAPERS[\s\S]*?$/i,
+      /PUBLICATIONS[\s\S]*?(?=\n(?:PATENTS|AWARDS|SKILLS|TEACHING)[\s\S]*?$)/i,
+      /PUBLICATIONS[\s\S]*?$/i,
+    ];
+    
+    for (const pattern of pubPatterns) {
+      const pubMatch = fullText.match(pattern);
+      if (pubMatch && pubMatch[0].length > 100) {
+        const pubResult = parsePublications(pubMatch[0]);
+        if (pubResult.data.length > 0) {
+          publications = pubResult.data;
+          warnings.push(...pubResult.warnings);
+          break;
+        }
+      }
+    }
+    
+    if (publications.length === 0) {
+      warnings.push(createWarning('publications', 'No publications section found', 'info'));
     }
   }
   
-  // If no patents section found, try to find them
+  // If no patents section found, try to find them with multiple patterns
   if (patents.length === 0) {
-    const patMatch = fullText.match(/Patents[\s\S]*?(?=\n[A-Z]{2,}[\s]*\n|\n{3}|$)/i);
-    if (patMatch) {
-      const patResult = parsePatents(patMatch[0]);
-      patents = patResult.data;
-      warnings.push(...patResult.warnings);
+    const patPatterns = [
+      /PATENTS[\s\S]*?(?=\n(?:PUBLICATIONS|AWARDS|SKILLS|TEACHING|WORKSHOP)[\s\S]*?$)/i,
+      /PATENTS[\s\S]*?(?=\n{3,}[A-Z]{3,})/i,
+      /PATENTS[\s\S]*?(?=\n[A-Z]{2,}[\s]*\n)/i,
+      /PATENTS[\s\S]*?$/i,
+      /(?:REGISTERED|COMPLETED)[\s]*PATENTS?[\s\S]*?(?=\n(?:PUBLICATIONS|AWARDS)[\s\S]*?$)/i,
+    ];
+    
+    for (const pattern of patPatterns) {
+      const patMatch = fullText.match(pattern);
+      if (patMatch && patMatch[0].length > 50) {
+        const patResult = parsePatents(patMatch[0]);
+        if (patResult.data.length > 0) {
+          patents = patResult.data;
+          warnings.push(...patResult.warnings);
+          break;
+        }
+      }
     }
   }
   
