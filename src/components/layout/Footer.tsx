@@ -16,12 +16,12 @@ const quickLinks = [
 
 const socialLinks = [
   { 
-    href: 'https://scholar.google.com/citations?user=YOUR_ID', 
+    href: 'https://scholar.google.com/citations?user=-V8_A5YAAAAJ&hl=en', 
     label: 'Google Scholar',
     icon: '🎓'
   },
   { 
-    href: 'https://www.linkedin.com/in/YOUR_PROFILE', 
+    href: 'https://www.linkedin.com/in/abolghasemsadeghi-n/', 
     label: 'LinkedIn',
     icon: '💼'
   },
