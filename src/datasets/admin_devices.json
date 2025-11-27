@@ -8,7 +8,16 @@
       "registeredAt": "2025-11-27T16:21:24.654Z",
       "lastUsedAt": "2025-11-27T16:21:27.076Z",
       "expiresAt": "2026-11-27T16:21:24.654Z"
+    },
+    {
+      "id": "8c50b944-43b1-4fe1-b920-15d06d28e5cb",
+      "label": "Test Deployment",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+      "ipHash": "4f6cd9246b351048d75b27c278574255fe94dd22ca91f13382445f74c91be371",
+      "registeredAt": "2025-11-27T16:30:15.615Z",
+      "lastUsedAt": "2025-11-27T16:30:15.615Z",
+      "expiresAt": "2026-11-27T16:30:15.615Z"
     }
   ],
-  "lastModified": "2025-11-27T16:21:24.659Z"
+  "lastModified": "2025-11-27T16:30:15.736Z"
 }
