@@ -1,16 +1,19 @@
 /**
  * File storage helpers for upload management
  * Handles saving files to /public/uploads and computing hashes
+ * Uses GitHub API on Vercel, filesystem for local dev
  */
 
 import crypto from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
 
+import { commitFile, getFileContent, isGitHubConfigured } from '@/lib/github';
 import type { UploadMetaFile, UploadHistoryItem } from '@/types/admin';
 
 const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
 const UPLOADS_META_FILE = path.join(UPLOADS_DIR, 'uploads_meta.json');
+const UPLOADS_META_GITHUB_PATH = 'public/uploads/uploads_meta.json';
 
 /**
  * Ensures the uploads directory exists
@@ -46,6 +49,8 @@ export function computeSha256(buffer: Buffer): string {
 
 /**
  * Saves an uploaded file to the uploads directory
+ * On Vercel, skips file storage (read-only filesystem) but saves metadata
+ * On local dev, saves both file and metadata
  */
 export async function saveUploadedFile(
   buffer: Buffer,
@@ -57,17 +62,26 @@ export async function saveUploadedFile(
   sha256: string;
   fileSizeBytes: number;
 }> {
-  await ensureUploadsDir();
-  
   const filename = generateUploadFilename(originalName);
   const filepath = path.join(UPLOADS_DIR, filename);
-  
-  await fs.writeFile(filepath, buffer);
-  
   const sha256 = computeSha256(buffer);
   const fileSizeBytes = buffer.length;
   
-  // Update metadata
+  // On Vercel, we can't write to /public/uploads (read-only filesystem)
+  // So we skip file storage but still save metadata
+  // On local dev, save the file
+  if (!isGitHubConfigured()) {
+    // Local development - save file to filesystem
+    try {
+      await ensureUploadsDir();
+      await fs.writeFile(filepath, buffer);
+    } catch (error) {
+      console.warn('Failed to save uploaded file to filesystem (may be expected on Vercel):', error);
+    }
+  }
+  // On Vercel (GitHub configured), skip file storage - files are read-only anyway
+  
+  // Update metadata (this will use GitHub API on Vercel)
   await addUploadMetadata({
     filename,
     originalName,
@@ -89,12 +103,27 @@ export async function saveUploadedFile(
 
 /**
  * Gets upload metadata
+ * Tries GitHub first (for Vercel), falls back to filesystem (for local dev)
  */
 export async function getUploadsMeta(): Promise<UploadMetaFile> {
+  // Try GitHub first (works on Vercel)
+  if (isGitHubConfigured()) {
+    try {
+      const content = await getFileContent(UPLOADS_META_GITHUB_PATH);
+      if (content) {
+        return JSON.parse(content);
+      }
+    } catch (error) {
+      console.warn('Failed to read upload metadata from GitHub, trying filesystem:', error);
+    }
+  }
+  
+  // Fallback to filesystem (for local development)
   try {
     const content = await fs.readFile(UPLOADS_META_FILE, 'utf-8');
     return JSON.parse(content);
   } catch {
+    // File doesn't exist - return empty data
     return {
       uploads: [],
       lastModified: new Date().toISOString(),
@@ -104,10 +133,30 @@ export async function getUploadsMeta(): Promise<UploadMetaFile> {
 
 /**
  * Saves upload metadata
+ * Uses GitHub API on Vercel, filesystem for local dev
  */
 async function saveUploadsMeta(meta: UploadMetaFile): Promise<void> {
-  await ensureUploadsDir();
-  await fs.writeFile(UPLOADS_META_FILE, JSON.stringify(meta, null, 2));
+  // Try GitHub first (works on Vercel)
+  if (isGitHubConfigured()) {
+    try {
+      const content = JSON.stringify(meta, null, 2);
+      const message = `admin: update upload metadata — ${new Date().toISOString()}`;
+      await commitFile(UPLOADS_META_GITHUB_PATH, content, message);
+      return; // Success - exit early
+    } catch (error) {
+      console.error('Failed to save upload metadata to GitHub:', error);
+      // Fall through to filesystem fallback for local dev
+    }
+  }
+  
+  // Fallback to filesystem (for local development)
+  try {
+    await ensureUploadsDir();
+    await fs.writeFile(UPLOADS_META_FILE, JSON.stringify(meta, null, 2));
+  } catch (error) {
+    console.error('Failed to save upload metadata to filesystem:', error);
+    throw new Error('Failed to save upload metadata - both GitHub and filesystem failed');
+  }
 }
 
 /**
@@ -122,6 +171,7 @@ export async function addUploadMetadata(upload: UploadHistoryItem): Promise<void
 
 /**
  * Removes an upload from metadata and deletes the file
+ * On Vercel, only removes from metadata (can't delete files from read-only filesystem)
  */
 export async function deleteUpload(filename: string): Promise<boolean> {
   const meta = await getUploadsMeta();
@@ -136,11 +186,13 @@ export async function deleteUpload(filename: string): Promise<boolean> {
   (meta as unknown as { lastModified: string }).lastModified = new Date().toISOString();
   await saveUploadsMeta(meta);
   
-  // Delete file
-  try {
-    await fs.unlink(path.join(UPLOADS_DIR, filename));
-  } catch {
-    // File may not exist
+  // Delete file (only works on local dev, Vercel filesystem is read-only)
+  if (!isGitHubConfigured()) {
+    try {
+      await fs.unlink(path.join(UPLOADS_DIR, filename));
+    } catch {
+      // File may not exist or we're on Vercel
+    }
   }
   
   return true;
@@ -156,21 +208,39 @@ export async function getUploadHistory(): Promise<UploadHistoryItem[]> {
 
 /**
  * Saves details.json preview for fallback scenario
+ * On Vercel, uses GitHub API; on local dev, uses filesystem
  */
 export async function saveDetailsPreview(data: object): Promise<string> {
-  await ensureUploadsDir();
-  
   const timestamp = new Date().toISOString()
     .replace(/T/, '_')
     .replace(/:/g, '-')
     .slice(0, 16);
   
   const filename = `details_preview_${timestamp}.json`;
-  const filepath = path.join(UPLOADS_DIR, filename);
+  const content = JSON.stringify(data, null, 2);
   
-  await fs.writeFile(filepath, JSON.stringify(data, null, 2));
+  // Try GitHub first (works on Vercel)
+  if (isGitHubConfigured()) {
+    try {
+      const githubPath = `public/uploads/${filename}`;
+      const message = `admin: save details preview — ${timestamp}`;
+      await commitFile(githubPath, content, message);
+      return `/uploads/${filename}`;
+    } catch (error) {
+      console.warn('Failed to save preview to GitHub, trying filesystem:', error);
+    }
+  }
   
-  return `/uploads/${filename}`;
+  // Fallback to filesystem (for local development)
+  try {
+    await ensureUploadsDir();
+    const filepath = path.join(UPLOADS_DIR, filename);
+    await fs.writeFile(filepath, content);
+    return `/uploads/${filename}`;
+  } catch (error) {
+    console.error('Failed to save preview to filesystem:', error);
+    throw new Error('Failed to save preview - both GitHub and filesystem failed');
+  }
 }
 
 /**
