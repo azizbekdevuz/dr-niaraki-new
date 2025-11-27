@@ -41,7 +41,9 @@ export default function AdminDevicesPage() {
     async function loadData() {
       try {
         // Check auth status
-        const statusRes = await fetch('/api/admin/status');
+        const statusRes = await fetch('/api/admin/status', {
+          credentials: 'include', // Add this
+        });
         const statusData = await statusRes.json();
         
         if (!statusData.isLoggedIn) {
@@ -81,6 +83,7 @@ export default function AdminDevicesPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ label: newDeviceLabel }),
+        credentials: 'include', // Ensure cookies are sent and received
       });
 
       const data = await res.json();
@@ -112,6 +115,7 @@ export default function AdminDevicesPage() {
     try {
       const res = await fetch(`/api/admin/devices?id=${deviceId}`, {
         method: 'DELETE',
+        credentials: 'include', // Ensure cookies are sent and received
       });
 
       const data = await res.json();
@@ -128,7 +132,7 @@ export default function AdminDevicesPage() {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/admin/logout', { method: 'POST' });
+      await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' });
       router.push('/admin');
     } catch {
       setError('Failed to logout');
@@ -137,14 +141,14 @@ export default function AdminDevicesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-accent-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="py-8">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

@@ -1,5 +1,14 @@
 {
-  "devices": [],
-  "lastModified": "2024-11-27T00:00:00.000Z"
+  "devices": [
+    {
+      "id": "1b803df0-c99a-42b7-a600-7f1d5fe22a14",
+      "label": "Testing device",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+      "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3",
+      "registeredAt": "2025-11-27T15:45:31.393Z",
+      "lastUsedAt": "2025-11-27T15:58:10.994Z",
+      "expiresAt": "2026-11-27T15:45:31.393Z"
+    }
+  ],
+  "lastModified": "2025-11-27T15:45:31.397Z"
 }
-

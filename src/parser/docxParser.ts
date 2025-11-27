@@ -50,9 +50,19 @@ export async function parseDocxToDetails(
   // Parse DOCX using mammoth
   const docxResult = await parseDocxBuffer(buffer);
   
-  // Add mammoth warnings
+  // Filter and add mammoth warnings (ignore harmless style warnings)
+  const harmlessStylePatterns = [
+    /unrecognised (paragraph|run) style/i,
+    /style id: (whitespace|emphasis|normal)/i,
+    /style id: '[^']*'/i, // Generic style ID warnings
+  ];
+  
   docxResult.messages.forEach((msg) => {
-    warnings.push(createWarning('docx', msg.message, msg.type));
+    // Only add warnings that aren't harmless style warnings
+    const isHarmless = harmlessStylePatterns.some(pattern => pattern.test(msg.message));
+    if (!isHarmless) {
+      warnings.push(createWarning('docx', msg.message, msg.type));
+    }
   });
   
   // Normalize text
@@ -238,8 +248,11 @@ async function parseSections(
         }
           
         default: {
-          // Unknown section - log for review
-          if (section.content.length > 100) {
+          // Unknown section - only warn if it has substantial content and isn't a common header
+          const commonHeaders = ['header', 'footer', 'page', 'table of contents', 'references', 'appendix'];
+          const isCommonHeader = commonHeaders.some(h => section.title.toLowerCase().includes(h));
+          
+          if (section.content.length > 100 && !isCommonHeader) {
             warnings.push(createWarning(
               'unknown_section',
               `Unrecognized section: "${section.title.slice(0, 50)}" - please review`,

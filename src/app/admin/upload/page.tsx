@@ -48,7 +48,9 @@ export default function AdminUploadPage() {
   useEffect(() => {
     async function checkStatus() {
       try {
-        const res = await fetch('/api/admin/status');
+        const res = await fetch('/api/admin/status', {
+          credentials: 'include',
+        });
         const data = await res.json();
         
         if (!data.isLoggedIn) {
@@ -170,14 +172,14 @@ export default function AdminUploadPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-accent-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

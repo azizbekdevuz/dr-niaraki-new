@@ -191,7 +191,7 @@ export async function setDeviceTokenCookie(token: string): Promise<void> {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: DEVICE_TOKEN_EXPIRY_DAYS * 24 * 60 * 60,
-    path: '/admin',
+    path: '/', // Change from '/admin' to '/'
   });
 }
 
@@ -232,7 +232,7 @@ export async function setAdminSessionCookie(): Promise<void> {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: 24 * 60 * 60, // 24 hours
-    path: '/admin',
+    path: '/', // Change from '/admin' to '/' so it's available for all routes
   });
 }
 

@@ -49,11 +49,15 @@ export default function AdminLoginPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
+        credentials: 'include', // Ensure cookies are sent and received
       });
 
       const data = await res.json();
 
       if (data.success) {
+        // Wait a moment for cookie to be set, then redirect
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         if (data.isDeviceRegistered) {
           router.push('/admin/upload');
         } else {
@@ -71,14 +75,14 @@ export default function AdminLoginPage() {
 
   if (checkingStatus) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-accent-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Card */}
         <div className="card p-8">

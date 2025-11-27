@@ -4,7 +4,7 @@
  * Research page - Research interests, projects, and grants
  */
 
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   Microscope,
   Lightbulb,
@@ -222,14 +222,20 @@ export default function ResearchPage() {
               </motion.div>
             </div>
 
-            <div className="space-y-6">
-              {filteredProjects.map((project) => (
-                <motion.div
-                  key={project.id}
-                  variants={itemVariants}
-                  layout
-                  className="card p-6"
-                >
+            <AnimatePresence>
+              <motion.div
+                key={statusFilter}
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+                className="space-y-6"
+              >
+                {filteredProjects.map((project) => (
+                  <motion.div
+                    key={project.id}
+                    variants={itemVariants}
+                    className="card p-6"
+                  >
                   <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -265,8 +271,9 @@ export default function ResearchPage() {
                     </div>
                   </div>
                 </motion.div>
-              ))}
-            </div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         </div>
       </section>

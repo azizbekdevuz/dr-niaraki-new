@@ -95,7 +95,7 @@ export default function AdminHistoryPage() {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="py-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

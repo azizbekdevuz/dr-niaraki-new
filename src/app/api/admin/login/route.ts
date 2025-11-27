@@ -5,13 +5,15 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
 
 import {
   verifyAdminPassword,
-  setAdminSessionCookie,
   getDeviceTokenFromCookie,
   isDeviceRegistered,
 } from '@/lib/admin-auth';
+
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'default-secret-change-in-production';
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,10 +34,10 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create session
-    await setAdminSessionCookie();
+    // Create session token
+    const token = jwt.sign({ admin: true }, ADMIN_SECRET, { expiresIn: '24h' });
     
-    // Check if device is already registered
+    // Check if device is already registered (before creating response)
     const deviceToken = await getDeviceTokenFromCookie();
     let isDeviceRegisteredFlag = false;
     
@@ -44,12 +46,24 @@ export async function POST(request: NextRequest) {
       isDeviceRegisteredFlag = deviceStatus.valid;
     }
     
-    return NextResponse.json({
+    // Create response
+    const response = NextResponse.json({
       success: true,
       message: 'Login successful',
       isDeviceRegistered: isDeviceRegisteredFlag,
       requiresDeviceRegistration: !isDeviceRegisteredFlag,
     });
+    
+    // Set cookie directly on the response
+    response.cookies.set('admin_session', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60, // 24 hours
+      path: '/', // Change from '/admin' to '/' so it's available to both /admin and /api/admin routes
+    });
+    
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
