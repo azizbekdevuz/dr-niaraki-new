@@ -3,13 +3,15 @@
  * POST: Upload and parse DOCX file, or confirm commit
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { parseDocxToDetails } from '@/parser/docxParser';
-import { validateDetails } from '@/validators/detailsSchema';
-import { saveUploadedFile, saveDetailsPreview } from '@/lib/storage';
-import { commitDetailsJson, isGitHubConfigured } from '@/lib/github';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
 import { hasValidAdminAccess } from '@/lib/admin-auth';
+import { commitDetailsJson, isGitHubConfigured } from '@/lib/github';
+import { saveUploadedFile, saveDetailsPreview } from '@/lib/storage';
+import { parseDocxToDetails } from '@/parser/docxParser';
 import type { Details } from '@/types/details';
+import { validateDetails } from '@/validators/detailsSchema';
 
 /**
  * POST: Handle DOCX upload
@@ -194,4 +196,3 @@ async function handleConfirmCommit(
     instructions: 'Please manually copy the preview file to src/datasets/details.json and deploy.',
   });
 }
-

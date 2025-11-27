@@ -34,7 +34,9 @@ function getOctokit(): Octokit | null {
  */
 export async function getFileSha(path: string): Promise<string | null> {
   const octokit = getOctokit();
-  if (!octokit) return null;
+  if (!octokit) {
+    return null;
+  }
   
   const config = getConfig();
   
@@ -166,4 +168,3 @@ git push origin ${config.branch} --force
 **Note**: Reset is destructive and should only be used if you're sure about discarding changes.
 `;
 }
-

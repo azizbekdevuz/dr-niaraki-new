@@ -5,6 +5,7 @@
 
 import type { Education, Position, Award, MutableEducation, MutablePosition, MutableAward } from '@/types/details';
 import type { ParseWarning, ParseResult } from '@/types/parser';
+
 import {
   generateStableId,
   extractYear,
@@ -77,14 +78,18 @@ function parseEducationEntry(
   if (!edu.degree) {
     // Use first line as degree description
     const firstLine = trimmed.split('\n')[0];
-    edu.degree = firstLine?.length && firstLine.length > 100 ? firstLine.slice(0, 100) : firstLine ?? '';
+    if (firstLine && firstLine.length > 100) {
+      edu.degree = firstLine.slice(0, 100);
+    } else {
+      edu.degree = firstLine ?? '';
+    }
     warnings.push(createWarning('education', `Education ${index + 1}: degree type unclear`, 'info', index));
   }
   
   // Extract field of study
   const fieldMatch = trimmed.match(/(?:in|of)\s+([A-Za-z\-]+(?:\s+[A-Za-z\-]+){0,3}\s+(?:Engineering|Science|Studies|Technology))/i);
   if (fieldMatch) {
-    edu.degree = edu.degree + ' in ' + fieldMatch[1];
+    edu.degree = `${edu.degree} in ${fieldMatch[1]}`;
   }
   
   // Extract institution
@@ -295,7 +300,7 @@ export function parseAwards(text: string): ParseResult<Award[]> {
   const entries = splitEntries(text);
   
   entries.forEach((entry, index) => {
-    const award = parseAwardEntry(entry, index, warnings);
+    const award = parseAwardEntry(entry, index);
     if (award) {
       awards.push(award);
     }
@@ -309,8 +314,7 @@ export function parseAwards(text: string): ParseResult<Award[]> {
  */
 function parseAwardEntry(
   text: string,
-  index: number,
-  _warnings: ParseWarning[]
+  index: number
 ): Award | null {
   const trimmed = text.trim();
   
@@ -377,4 +381,3 @@ function parseAwardEntry(
   
   return award as Award;
 }
-

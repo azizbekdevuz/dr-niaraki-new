@@ -6,6 +6,7 @@
 import crypto from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
+
 import type { UploadMetaFile, UploadHistoryItem } from '@/types/admin';
 
 const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
@@ -17,7 +18,7 @@ const UPLOADS_META_FILE = path.join(UPLOADS_DIR, 'uploads_meta.json');
 export async function ensureUploadsDir(): Promise<void> {
   try {
     await fs.mkdir(UPLOADS_DIR, { recursive: true });
-  } catch (error) {
+  } catch {
     // Directory may already exist
   }
 }
@@ -195,4 +196,3 @@ export async function uploadExists(filename: string): Promise<boolean> {
     return false;
   }
 }
-

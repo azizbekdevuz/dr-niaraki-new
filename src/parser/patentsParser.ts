@@ -5,6 +5,7 @@
 
 import type { Patent, MutablePatent } from '@/types/details';
 import type { ParseWarning, ParseResult } from '@/types/parser';
+
 import {
   generateStableId,
   extractYear,
@@ -134,7 +135,7 @@ function parsePatentEntry(
   // Fallback title extraction
   if (!patent.title) {
     // Remove patent number and status info, use remaining as title
-    let title = trimmed
+    const title = trimmed
       .replace(/(?:US\s*)?(?:Patent\s*(?:No\.?)?\s*)?\d{1,3}[,.]?\d{3}[,.]?\d{3}(?:[A-Z]\d)?/gi, '')
       .replace(/10-\d{7}/g, '')
       .replace(/(?:Registered|Pending|Completed|Application)[^,]*/gi, '')
@@ -186,4 +187,3 @@ export function categorizePatents(patents: Patent[]): {
     other: patents.filter(p => p.status !== 'registered' && p.status !== 'pending' && p.status !== 'completed'),
   };
 }
-

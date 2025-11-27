@@ -4,8 +4,6 @@
  * Admin uploads history page
  */
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   History,
   Loader2,
@@ -17,6 +15,9 @@ import {
   LogOut,
   ArrowLeft,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+
 import type { UploadHistoryItem } from '@/types/admin';
 
 export default function AdminHistoryPage() {
@@ -55,7 +56,9 @@ export default function AdminHistoryPage() {
   }, [router]);
 
   const handleDelete = async (filename: string) => {
-    if (!confirm('Are you sure you want to delete this file?')) return;
+    if (!confirm('Are you sure you want to delete this file?')) {
+      return;
+    }
 
     try {
       const res = await fetch(`/api/admin/uploads?filename=${encodeURIComponent(filename)}`, {
@@ -209,4 +212,3 @@ export default function AdminHistoryPage() {
     </div>
   );
 }
-

@@ -4,6 +4,7 @@
  */
 
 import crypto from 'crypto';
+
 import type { ParseWarning, SectionType, DetectedSection } from '@/types/parser';
 
 /**
@@ -370,4 +371,3 @@ export function determinePatentType(text: string): 'international' | 'korean' | 
   
   return 'other';
 }
-

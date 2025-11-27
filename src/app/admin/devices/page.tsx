@@ -4,8 +4,6 @@
  * Admin device management page
  */
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   Smartphone,
   Loader2,
@@ -16,6 +14,9 @@ import {
   Shield,
   LogOut,
 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
 interface Device {
   id: string;
@@ -68,7 +69,9 @@ export default function AdminDevicesPage() {
 
   const handleRegisterDevice = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newDeviceLabel.trim()) return;
+    if (!newDeviceLabel.trim()) {
+      return;
+    }
 
     setRegistering(true);
     setError(null);
@@ -102,7 +105,9 @@ export default function AdminDevicesPage() {
   };
 
   const handleRevokeDevice = async (deviceId: string) => {
-    if (!confirm('Are you sure you want to revoke this device?')) return;
+    if (!confirm('Are you sure you want to revoke this device?')) {
+      return;
+    }
 
     try {
       const res = await fetch(`/api/admin/devices?id=${deviceId}`, {
@@ -255,17 +260,16 @@ export default function AdminDevicesPage() {
         {/* Navigation */}
         {hasValidDevice && (
           <div className="mt-8 flex justify-center gap-4">
-            <a
+            <Link
               href="/admin/upload"
               className="btn-primary px-6 py-3 flex items-center gap-2"
             >
               <CheckCircle className="w-4 h-4" />
               <span>Continue to Upload</span>
-            </a>
+            </Link>
           </div>
         )}
       </div>
     </div>
   );
 }
-

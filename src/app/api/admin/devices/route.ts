@@ -5,8 +5,10 @@
  * DELETE: Revoke device
  */
 
-import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
 import {
   getDevices,
   registerDevice,
@@ -34,7 +36,7 @@ export async function GET() {
     const maskedDevices = devicesData.devices.map(device => ({
       id: device.id,
       label: device.label,
-      userAgent: device.userAgent.slice(0, 50) + '...',
+      userAgent: `${device.userAgent.slice(0, 50)}...`,
       registeredAt: device.registeredAt,
       lastUsedAt: device.lastUsedAt,
       expiresAt: device.expiresAt,
@@ -152,4 +154,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

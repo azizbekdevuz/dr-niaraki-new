@@ -4,8 +4,6 @@
  * Admin upload page - handles DOCX upload, preview, and commit
  */
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   Upload,
   Loader2,
@@ -18,6 +16,9 @@ import {
   History,
   Settings,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+
 import type { Details } from '@/types/details';
 
 type TabType = 'profile' | 'about' | 'publications' | 'patents' | 'contact';
@@ -87,7 +88,9 @@ export default function AdminUploadPage() {
   };
 
   const handleUpload = async () => {
-    if (!file) return;
+    if (!file) {
+      return;
+    }
     
     setUploading(true);
     setError(null);
@@ -118,7 +121,9 @@ export default function AdminUploadPage() {
   };
 
   const handleCommit = async () => {
-    if (!parsedData) return;
+    if (!parsedData) {
+      return;
+    }
     
     setCommitting(true);
     setError(null);
@@ -498,4 +503,3 @@ function PreviewContent({ data, tab }: { data: Details; tab: TabType }) {
       return null;
   }
 }
-

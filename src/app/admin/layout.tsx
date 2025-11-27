@@ -2,7 +2,7 @@
  * Admin layout - wraps all admin pages
  */
 
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Admin | Dr. Sadeghi-Niaraki',
@@ -21,4 +21,3 @@ export default function AdminLayout({
     </div>
   );
 }
-

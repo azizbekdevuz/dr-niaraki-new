@@ -5,6 +5,7 @@
 
 import type { Publication, MutablePublication } from '@/types/details';
 import type { ParseWarning, ParseResult } from '@/types/parser';
+
 import {
   generateStableId,
   extractYear,
@@ -124,7 +125,11 @@ function parsePublicationEntry(
     } else {
       // Fallback: use first line or first 200 chars
       const firstLine = trimmed.split('\n')[0];
-      pub.title = firstLine?.length && firstLine.length > 200 ? firstLine.slice(0, 200) + '...' : firstLine ?? '';
+      if (firstLine && firstLine.length > 200) {
+        pub.title = `${firstLine.slice(0, 200)}...`;
+      } else {
+        pub.title = firstLine ?? '';
+      }
     }
   }
   
@@ -183,7 +188,9 @@ export function parseBooks(text: string): ParseResult<Publication[]> {
   
   entries.forEach((entry, index) => {
     const trimmed = entry.trim();
-    if (trimmed.length < 30) return;
+    if (trimmed.length < 30) {
+      return;
+    }
     
     const book: MutablePublication = {
       id: generateStableId(trimmed, index),
@@ -236,4 +243,3 @@ export function parseBooks(text: string): ParseResult<Publication[]> {
   
   return { data: books, warnings };
 }
-

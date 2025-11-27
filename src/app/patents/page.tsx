@@ -132,8 +132,12 @@ export default function PatentsPage() {
   // Filter patents
   const filteredPatents = useMemo(() => {
     return patents.filter((patent) => {
-      if (filter === 'all') return true;
-      if (filter === 'pending') return patent.status === 'pending';
+      if (filter === 'all') {
+        return true;
+      }
+      if (filter === 'pending') {
+        return patent.status === 'pending';
+      }
       return patent.type === filter;
     });
   }, [filter]);

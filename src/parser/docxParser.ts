@@ -4,18 +4,20 @@
  */
 
 import mammoth from 'mammoth';
+
 import type { Details, Education, Position, Award, Publication, Patent, ResearchInterest, ResearchProject, Grant, Contact, SocialLinks } from '@/types/details';
 import type { ParseWarning, DocxParseResult, DetectedSection } from '@/types/parser';
+
+import { parseContact } from './contactParser';
+import { parseEducation, parseExperience, parseAwards } from './educationParser';
 import {
   normalizeWhitespace,
   splitIntoSections,
   generateStableId,
   createWarning,
 } from './parserUtils';
-import { parsePublications } from './publicationsParser';
 import { parsePatents } from './patentsParser';
-import { parseContact } from './contactParser';
-import { parseEducation, parseExperience, parseAwards } from './educationParser';
+import { parsePublications } from './publicationsParser';
 
 // Parser version - update when making significant changes
 export const PARSER_VERSION = 'v1.0.0';
@@ -175,58 +177,67 @@ async function parseSections(
     try {
       switch (section.type) {
         case 'summary':
-        case 'profile':
+        case 'profile': {
           summary = section.content.slice(0, 500);
           fullSummary = section.content;
           break;
+        }
           
-        case 'education':
+        case 'education': {
           const eduResult = parseEducation(section.content);
           education.push(...eduResult.data);
           warnings.push(...eduResult.warnings);
           break;
+        }
           
-        case 'experience':
+        case 'experience': {
           const expResult = parseExperience(section.content);
           positions.push(...expResult.data);
           warnings.push(...expResult.warnings);
           break;
+        }
           
-        case 'publications':
+        case 'publications': {
           const pubResult = parsePublications(section.content);
           publications = pubResult.data;
           warnings.push(...pubResult.warnings);
           break;
+        }
           
-        case 'patents':
+        case 'patents': {
           const patResult = parsePatents(section.content);
           patents = patResult.data;
           warnings.push(...patResult.warnings);
           break;
+        }
           
-        case 'awards':
+        case 'awards': {
           const awardResult = parseAwards(section.content);
           awards.push(...awardResult.data);
           warnings.push(...awardResult.warnings);
           break;
+        }
           
-        case 'grants':
+        case 'grants': {
           const grantProjects = parseGrantsSection(section.content);
           grants.push(...grantProjects);
           break;
+        }
           
-        case 'research':
+        case 'research': {
           const researchProjects = parseResearchSection(section.content);
           projects.push(...researchProjects);
           break;
+        }
           
-        case 'contact':
+        case 'contact': {
           const contactResult = parseContact(section.content);
           contact = contactResult.data as MutableContact;
           warnings.push(...contactResult.warnings);
           break;
+        }
           
-        default:
+        default: {
           // Unknown section - log for review
           if (section.content.length > 100) {
             warnings.push(createWarning(
@@ -235,6 +246,7 @@ async function parseSections(
               'info'
             ));
           }
+        }
       }
     } catch (error) {
       warnings.push(createWarning(
@@ -295,7 +307,7 @@ function extractProfileName(text: string): string | null {
   // Look for "Dr." prefix followed by name
   const drMatch = text.match(/Dr\.?\s*(?:Eng\.?)?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})/);
   if (drMatch) {
-    return 'Dr. ' + drMatch[1];
+    return `Dr. ${drMatch[1]}`;
   }
   
   // Look for name pattern at start
@@ -363,7 +375,7 @@ function extractResearchInterests(text: string): ResearchInterest[] {
  * Parses grants section
  */
 function parseGrantsSection(text: string): Grant[] {
-  const grants: Grant[] = [];
+  const grantsResult: Grant[] = [];
   
   // Split by project entries
   const entries = text.split(/(?=Project title:|Funding:)/i).filter(e => e.trim().length > 50);
@@ -376,7 +388,7 @@ function parseGrantsSection(text: string): Grant[] {
     const agencyMatch = entry.match(/Funding Agency:\s*([^\n]+)/i);
     
     if (titleMatch && titleMatch[1]) {
-      grants.push({
+      grantsResult.push({
         id: generateStableId(titleMatch[1], index),
         title: titleMatch[1].trim(),
         fundingAgency: agencyMatch?.[1]?.trim() ?? null,
@@ -388,21 +400,23 @@ function parseGrantsSection(text: string): Grant[] {
     }
   });
   
-  return grants;
+  return grantsResult;
 }
 
 /**
  * Parses research projects section
  */
 function parseResearchSection(text: string): ResearchProject[] {
-  const projects: ResearchProject[] = [];
+  const projectsResult: ResearchProject[] = [];
   
   // Split by project entries
   const entries = text.split(/\n(?=[A-Z][^\n]*\s*\|)/);
   
   entries.forEach((entry, index) => {
     const trimmed = entry.trim();
-    if (trimmed.length < 30) return;
+    if (trimmed.length < 30) {
+      return;
+    }
     
     const lines = trimmed.split('\n');
     const title = lines[0]?.split('|')[0]?.trim() || '';
@@ -411,7 +425,7 @@ function parseResearchSection(text: string): ResearchProject[] {
     const fundingMatch = trimmed.match(/\$[\d,]+|\d+,?\d*\s*USD/i);
     
     if (title) {
-      projects.push({
+      projectsResult.push({
         id: generateStableId(title, index),
         title,
         description: lines.slice(1).join('\n').trim() || null,
@@ -425,7 +439,7 @@ function parseResearchSection(text: string): ResearchProject[] {
     }
   });
   
-  return projects;
+  return projectsResult;
 }
 
 /**

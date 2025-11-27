@@ -4,9 +4,11 @@
  * DELETE: Delete an uploaded file
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { getUploadHistory, deleteUpload } from '@/lib/storage';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
 import { getAdminSessionFromCookie } from '@/lib/admin-auth';
+import { getUploadHistory, deleteUpload } from '@/lib/storage';
 
 /**
  * GET: List all uploaded files
@@ -80,4 +82,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

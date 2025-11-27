@@ -125,6 +125,26 @@ const publicationStats = {
   citations: 2500,
 };
 
+function getTypeStyle(type: string): string {
+  if (type === 'journal') {
+    return 'bg-accent-primary/10 text-accent-primary';
+  }
+  if (type === 'book') {
+    return 'bg-accent-secondary/10 text-accent-secondary';
+  }
+  return 'bg-accent-tertiary/10 text-accent-tertiary';
+}
+
+function getTypeLabel(type: string): string {
+  if (type === 'journal') {
+    return 'Journal';
+  }
+  if (type === 'book') {
+    return 'Book';
+  }
+  return 'Conference';
+}
+
 export default function PublicationsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<PublicationType>('all');
@@ -233,7 +253,7 @@ export default function PublicationsPage() {
                       : 'bg-surface-secondary text-muted hover:text-foreground'
                   }`}
                 >
-                  {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1) + 's'}
+                  {type === 'all' ? 'All' : `${type.charAt(0).toUpperCase()}${type.slice(1)}s`}
                 </button>
               ))}
             </div>
@@ -271,14 +291,8 @@ export default function PublicationsPage() {
                   <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className={`px-2 py-0.5 rounded text-xs ${
-                          pub.type === 'journal'
-                            ? 'bg-accent-primary/10 text-accent-primary'
-                            : pub.type === 'book'
-                            ? 'bg-accent-secondary/10 text-accent-secondary'
-                            : 'bg-accent-tertiary/10 text-accent-tertiary'
-                        }`}>
-                          {pub.type === 'journal' ? 'Journal' : pub.type === 'book' ? 'Book' : 'Conference'}
+                        <span className={`px-2 py-0.5 rounded text-xs ${getTypeStyle(pub.type)}`}>
+                          {getTypeLabel(pub.type)}
                         </span>
                         <span className="text-muted text-sm">{pub.year}</span>
                         {pub.quartile && (

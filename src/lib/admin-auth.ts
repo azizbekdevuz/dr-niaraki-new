@@ -4,10 +4,12 @@
  */
 
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import fs from 'fs/promises';
 import path from 'path';
+
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+
 import type { DeviceRecord, DeviceTokenPayload, AdminDevicesData } from '@/types/admin';
 
 // Environment configuration
@@ -207,7 +209,9 @@ export async function clearDeviceTokenCookie(): Promise<void> {
 export async function getAdminSessionFromCookie(): Promise<boolean> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('admin_session');
-  if (!sessionCookie?.value) return false;
+  if (!sessionCookie?.value) {
+    return false;
+  }
   
   try {
     const payload = jwt.verify(sessionCookie.value, ADMIN_SECRET);
@@ -265,4 +269,3 @@ export async function hasValidAdminAccess(): Promise<{
     device: deviceStatus.device,
   };
 }
-

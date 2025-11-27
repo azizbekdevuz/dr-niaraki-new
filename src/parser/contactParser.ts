@@ -4,6 +4,7 @@
 
 import type { Contact } from '@/types/details';
 import type { ParseWarning, ParseResult } from '@/types/parser';
+
 import {
   extractEmails,
   extractPhoneNumbers,
@@ -84,17 +85,23 @@ export function parseContact(text: string): ParseResult<Contact> {
     
     if (telMatch) {
       const telPhone = extractPhoneNumbers(telMatch[1] ?? '')[0];
-      if (telPhone) contact.phone = telPhone;
+      if (telPhone) {
+        contact.phone = telPhone;
+      }
     }
     
     if (faxMatch) {
       const faxPhone = extractPhoneNumbers(faxMatch[1] ?? '')[0];
-      if (faxPhone) contact.fax = faxPhone;
+      if (faxPhone) {
+        contact.fax = faxPhone;
+      }
     }
     
     if (cellMatch) {
-      const cellPhone = extractPhoneNumbers(cellMatch[1] ?? '')[0];
-      if (cellPhone) contact.cellPhone = cellPhone;
+      const cellPhoneNum = extractPhoneNumbers(cellMatch[1] ?? '')[0];
+      if (cellPhoneNum) {
+        contact.cellPhone = cellPhoneNum;
+      }
     }
     
     // Fallback to first phone if no specific match
@@ -138,7 +145,7 @@ export function parseContact(text: string): ParseResult<Contact> {
     if (websiteMatch && websiteMatch[1]) {
       let website = websiteMatch[1];
       if (!website.startsWith('http')) {
-        website = 'https://' + website;
+        website = `https://${website}`;
       }
       contact.website = website;
     }
@@ -150,7 +157,7 @@ export function parseContact(text: string): ParseResult<Contact> {
     if (linkedinMatch && linkedinMatch[1]) {
       let linkedin = linkedinMatch[1];
       if (!linkedin.startsWith('http')) {
-        linkedin = 'https://linkedin.com/in/' + linkedin;
+        linkedin = `https://linkedin.com/in/${linkedin}`;
       }
       contact.social.linkedin = linkedin;
     }

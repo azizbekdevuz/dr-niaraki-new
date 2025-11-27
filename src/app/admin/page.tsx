@@ -4,9 +4,10 @@
  * Admin login page
  */
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Lock, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -147,15 +148,14 @@ export default function AdminLoginPage() {
 
         {/* Back to site link */}
         <div className="mt-6 text-center">
-          <a
+          <Link
             href="/"
             className="text-muted text-sm hover:text-foreground transition-colors"
           >
             ← Back to website
-          </a>
+          </Link>
         </div>
       </div>
     </div>
   );
 }
-

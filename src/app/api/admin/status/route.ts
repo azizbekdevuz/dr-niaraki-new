@@ -4,6 +4,7 @@
  */
 
 import { NextResponse } from 'next/server';
+
 import { hasValidAdminAccess } from '@/lib/admin-auth';
 import { isGitHubConfigured } from '@/lib/github';
 
@@ -30,4 +31,3 @@ export async function GET() {
     );
   }
 }
-
