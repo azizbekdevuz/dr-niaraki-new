@@ -1,0 +1,468 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Performance: CSS Custom Properties for theme system */
+@layer base {
+  :root {
+    /* Base colors - Dark Theme (Default) */
+    --background: #0a0e27;
+    --foreground: #ffffff;
+    
+    /* Surface colors - Dark Theme */
+    --surface-primary: rgba(17, 24, 39, 0.6);
+    --surface-secondary: rgba(17, 24, 39, 0.4);
+    --surface-tertiary: rgba(17, 24, 39, 0.2);
+    --surface-hover: rgba(31, 41, 55, 0.7);
+    
+    /* Border colors - Dark Theme */
+    --border-primary: rgba(255, 255, 255, 0.1);
+    --border-secondary: rgba(255, 255, 255, 0.05);
+    --border-accent: rgba(6, 182, 212, 0.3);
+    --border-accent-hover: rgba(6, 182, 212, 0.5);
+    
+    /* Text colors - Dark Theme */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(243, 244, 246, 1);
+    --text-tertiary: rgba(209, 213, 219, 1);
+    --text-muted: rgba(156, 163, 175, 1);
+    --text-accent: rgba(6, 182, 212, 1);
+    
+    /* Accent colors - Dark Theme */
+    --accent-primary: rgba(6, 182, 212, 1);
+    --accent-secondary: rgba(59, 130, 246, 1);
+    --accent-tertiary: rgba(139, 92, 246, 1);
+    
+    /* Button states - Dark Theme */
+    --button-primary: rgba(6, 182, 212, 1);
+    --button-primary-hover: rgba(8, 145, 178, 1);
+    --button-secondary: rgba(255, 255, 255, 0.1);
+    --button-secondary-hover: rgba(255, 255, 255, 0.15);
+    
+    /* Alpha colors for glass morphism - Dark Theme */
+    --alpha-100: rgba(255, 255, 255, 0.05);
+    --alpha-200: rgba(255, 255, 255, 0.1);
+    --alpha-300: rgba(255, 255, 255, 0.15);
+    --alpha-400: rgba(255, 255, 255, 0.2);
+    
+    /* Brand colors - Dark Theme */
+    --primary-50: rgba(99, 179, 237, 0.05);
+    --primary-100: rgba(99, 179, 237, 0.1);
+    --primary-300: rgba(99, 179, 237, 0.3);
+    --primary-400: rgba(6, 182, 212, 1);
+    --primary-500: rgba(99, 179, 237, 0.5);
+    --primary-600: rgba(99, 179, 237, 0.6);
+    
+    /* Semantic colors */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --warning-500: #f59e0b;
+    --error: #ef4444;
+    
+    /* Utility colors */
+    --white: #ffffff;
+    
+    /* Shadow colors - Dark Theme */
+    --shadow-primary: rgba(6, 182, 212, 0.25);
+    --shadow-secondary: rgba(6, 182, 212, 0.1);
+    --shadow-glow: rgba(6, 182, 212, 0.5);
+  }
+
+  /* Light theme support */
+  [data-theme="light"] {
+    --background: #ffffff;
+    --foreground: #1a1a1a;
+    
+    /* Surface colors - Light Theme */
+    --surface-primary: rgba(249, 250, 251, 0.8);
+    --surface-secondary: rgba(243, 244, 246, 0.6);
+    --surface-tertiary: rgba(229, 231, 235, 0.4);
+    --surface-hover: rgba(243, 244, 246, 0.9);
+    
+    /* Border colors - Light Theme */
+    --border-primary: rgba(0, 0, 0, 0.1);
+    --border-secondary: rgba(0, 0, 0, 0.05);
+    --border-accent: rgba(37, 99, 235, 0.3);
+    --border-accent-hover: rgba(37, 99, 235, 0.5);
+    
+    /* Text colors - Light Theme */
+    --text-primary: #1a1a1a;
+    --text-secondary: rgba(31, 41, 55, 1);
+    --text-tertiary: rgba(55, 65, 81, 1);
+    --text-muted: rgba(107, 114, 128, 1);
+    --text-accent: rgba(37, 99, 235, 1);
+    
+    /* Accent colors - Light Theme */
+    --accent-primary: rgba(37, 99, 235, 1);
+    --accent-secondary: rgba(59, 130, 246, 1);
+    --accent-tertiary: rgba(139, 92, 246, 1);
+    
+    /* Button states - Light Theme */
+    --button-primary: rgba(37, 99, 235, 1);
+    --button-primary-hover: rgba(29, 78, 216, 1);
+    --button-secondary: rgba(0, 0, 0, 0.05);
+    --button-secondary-hover: rgba(0, 0, 0, 0.1);
+    
+    /* Alpha colors for glass morphism - Light Theme */
+    --alpha-100: rgba(0, 0, 0, 0.05);
+    --alpha-200: rgba(0, 0, 0, 0.1);
+    --alpha-300: rgba(0, 0, 0, 0.15);
+    --alpha-400: rgba(0, 0, 0, 0.2);
+    
+    /* Brand colors - Light Theme */
+    --primary-50: rgba(37, 99, 235, 0.05);
+    --primary-100: rgba(37, 99, 235, 0.1);
+    --primary-300: rgba(37, 99, 235, 0.3);
+    --primary-400: rgba(37, 99, 235, 1);
+    --primary-500: rgba(37, 99, 235, 0.5);
+    --primary-600: rgba(37, 99, 235, 0.6);
+    
+    /* Semantic colors - Light Theme */
+    --warning-500: #f59e0b;
+    
+    /* Shadow colors - Light Theme */
+    --shadow-primary: rgba(37, 99, 235, 0.15);
+    --shadow-secondary: rgba(37, 99, 235, 0.08);
+    --shadow-glow: rgba(37, 99, 235, 0.3);
+  }
+}
+
+/* Performance optimizations */
+@layer base {
+  /* Optimize font loading */
+  html {
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Performance: Better text rendering during animations - excluding canvas elements */
+  *:not(canvas) {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent text blur during transforms - CRITICAL for fixing blurry hover */
+  .transform-gpu,
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform;
+  }
+
+  /* Reduce reflows and repaints */
+  body {
+    @apply min-h-screen;
+    overscroll-behavior: none;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  /* GPU acceleration for animations */
+  *, *::before, *::after {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Optimize scrolling performance */
+  main {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  /* Animation delays */
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  /* Performance-optimized transitions - NO BLUR ON HOVER */
+  .transition-gpu {
+    @apply transition-all duration-300;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Glass morphism effect - NO BLUR ON HOVER */
+  .glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: var(--alpha-200);
+    border: 1px solid var(--border-primary);
+  }
+
+  /* Glass effect without blur for hover states */
+  .glass-static {
+    background-color: var(--alpha-200);
+    border: 1px solid var(--border-primary);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Glow effect */
+  .glow {
+    filter: drop-shadow(0 0 20px var(--shadow-glow));
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Scrollbar styling for dark/light themes */
+  .scrollbar-dark::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-track {
+    background: var(--surface-primary);
+    border-radius: 3px;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-thumb {
+    background: var(--border-primary);
+    border-radius: 3px;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-thumb:hover {
+    background: var(--border-accent);
+  }
+
+  .scrollbar-light::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-light::-webkit-scrollbar-track {
+    background: var(--surface-secondary);
+    border-radius: 3px;
+  }
+
+  .scrollbar-light::-webkit-scrollbar-thumb {
+    background: var(--border-primary);
+    border-radius: 3px;
+  }
+
+  .scrollbar-light::-webkit-scrollbar-thumb:hover {
+    background: var(--border-accent);
+  }
+
+  /* Line clamp utilities for text truncation */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Surface utilities */
+  .surface-primary {
+    background-color: var(--surface-primary);
+  }
+
+  .surface-secondary {
+    background-color: var(--surface-secondary);
+  }
+
+  .surface-tertiary {
+    background-color: var(--surface-tertiary);
+  }
+
+  /* Text utilities */
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-tertiary {
+    color: var(--text-tertiary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .text-accent {
+    color: var(--text-accent);
+  }
+
+  /* Border utilities */
+  .border-primary {
+    border-color: var(--border-primary);
+  }
+
+  .border-secondary {
+    border-color: var(--border-secondary);
+  }
+
+  .border-accent {
+    border-color: var(--border-accent);
+  }
+}
+
+/* Loading optimizations */
+@layer components {
+  .skeleton {
+    @apply animate-pulse;
+    background-color: var(--surface-secondary);
+    border-radius: 0.5rem;
+  }
+
+  /* Button base styles */
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-fast transform active:scale-95 gpu-accelerated;
+  }
+
+  .btn-primary {
+    @apply btn text-white shadow-lg;
+    background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(to right, var(--button-primary-hover), var(--accent-secondary));
+    box-shadow: 0 10px 25px var(--shadow-primary);
+  }
+
+  .btn-secondary {
+    @apply btn glass-static;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--button-secondary-hover);
+  }
+
+  /* Card styles - NO BLUR ON HOVER */
+  .card {
+    @apply rounded-xl p-6 transition-all duration-300 gpu-accelerated;
+    background-color: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+  }
+
+  .card:hover {
+    background-color: var(--surface-hover);
+    border-color: var(--border-accent);
+    box-shadow: 0 10px 25px var(--shadow-secondary);
+    /* NO backdrop-blur on hover to prevent blurriness */
+  }
+
+  /* Glass card - static blur, no hover blur */
+  .card-glass {
+    @apply glass rounded-xl p-6 transition-all duration-300 gpu-accelerated;
+  }
+
+  .card-glass:hover {
+    background-color: var(--surface-hover);
+    border-color: var(--border-accent);
+    box-shadow: 0 10px 25px var(--shadow-secondary);
+    /* NO backdrop-blur change on hover */
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-12 md:py-16 lg:py-24 px-4 md:px-6 lg:px-8;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient {
+  background: linear-gradient(-45deg, #0a004d, #240b63, #0d0541, #3a1c71);
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Disable hover effects on mobile */
+  @media (hover: none) {
+    .card:hover,
+    .card-glass:hover {
+      background-color: var(--surface-primary);
+      border-color: var(--border-primary);
+    }
+  }
+
+  /* Optimize touch targets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better mobile text handling */
+  .btn {
+    @apply px-4 py-2.5 text-sm;
+  }
+
+  /* Improved mobile spacing */
+  .section {
+    @apply py-8 md:py-16 lg:py-24 px-3 md:px-6 lg:px-8;
+  }
+
+  /* Better mobile container padding */
+  .container-custom {
+    @apply px-4 sm:px-6;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    @apply bg-white text-black;
+  }
+}

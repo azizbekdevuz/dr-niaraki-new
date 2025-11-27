@@ -1,0 +1,136 @@
+/* Only hide cursor on desktop devices - ensure proper specificity */
+@media (hover: hover) and (pointer: fine) {
+  html, body,
+  *:not(.atom-cursor):not(.atom-cursor *) {
+    cursor: none !important;
+  }
+  
+  /* Ensure interactive elements still get cursor behavior for accessibility */
+  input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus {
+    cursor: text !important;
+  }
+}
+
+.atom-cursor-container {
+  /* Performance optimization */
+  contain: layout style;
+  /* Use Tailwind z-index system */
+  z-index: 9999;
+}
+
+.atom-cursor {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.nucleus {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--white);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px var(--shadow-glow);
+  will-change: background, box-shadow;
+}
+
+.orbit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+  border: 1px solid var(--primary-300);
+  will-change: transform;
+  /* Use GPU acceleration */
+  transform: translateZ(0);
+}
+
+.orbit-1 {
+  animation: rotate3d 4s linear infinite;
+}
+
+.orbit-2 {
+  animation: rotate3d 6s linear infinite reverse;
+}
+
+.orbit-3 {
+  animation: rotate3d 8s linear infinite;
+}
+
+.glow {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  bottom: -5px;
+  left: -5px;
+  background: radial-gradient(
+    circle,
+    var(--primary-400),
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: opacity;
+}
+
+/* Optimized 3D rotation */
+@keyframes rotate3d {
+  0% {
+    transform: rotateZ(0deg) rotateY(60deg) translateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg) rotateY(60deg) translateZ(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Hover state */
+.atom-cursor.pointing {
+  transform: scale(1.2);
+}
+
+.atom-cursor.pointing .nucleus {
+  background: var(--warning);
+  box-shadow: 0 0 40px var(--shadow-glow);
+}
+
+.atom-cursor.pointing .orbit {
+  border-color: var(--warning-500);
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  .orbit {
+    animation: none;
+  }
+  
+  .glow {
+    animation: none;
+  }
+  
+  .atom-cursor {
+    transition: none;
+  }
+}
+
+/* Fallback for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .atom-cursor-container {
+    display: none !important;
+  }
+}

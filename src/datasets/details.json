@@ -1,0 +1,60 @@
+{
+  "profile": {
+    "name": "Dr. Abolghasem Sadeghi-Niaraki",
+    "title": "Associate Professor, Dept. of Computer Science & Engineering",
+    "photoUrl": "/images/profpic.jpg",
+    "summary": "A distinguished researcher and educator at Sejong University, pioneering the integration of Extended Reality (XR) and Artificial Intelligence with Geographic Information Systems. Recognized among the Top 2% Scientists worldwide in the Stanford-Elsevier 2024 dataset."
+  },
+  "about": {
+    "brief": "Dr. Abolghasem Sadeghi-Niaraki is an Associate Professor in the Department of Computer Science and Engineering at the XR Metaverse Research Center, Sejong University.",
+    "full": "Dr. Abolghasem Sadeghi-Niaraki is an Associate Professor in the Department of Computer Science and Engineering at the XR (eXtended Reality) Metaverse Research Center, Sejong University, Republic of Korea, where he has been a faculty member since 2017. From 2009 to 2017, he served as an Assistant Professor in the Department of Geo-Informatics Engineering at INHA University.",
+    "education": [],
+    "positions": [],
+    "awards": [],
+    "languages": []
+  },
+  "research": {
+    "interests": [],
+    "projects": [],
+    "grants": []
+  },
+  "publications": [],
+  "patents": [],
+  "contact": {
+    "email": "a.sadeghi@sejong.ac.kr",
+    "personalEmail": "a.sadeqi313@gmail.com",
+    "phone": "+82 2-3408-2981",
+    "fax": "+82 2-3408-4321",
+    "cellPhone": "+82 10 4253-5-313",
+    "address": "209- Gwangjin-gu, Gunja-dong, Neungdong-ro, Seoul, Republic of Korea",
+    "department": "Dept. of Computer Science & Engineering",
+    "university": "Sejong University",
+    "website": "https://www.abolghasemsadeghi-n.com",
+    "cvUrl": null,
+    "social": {
+      "googleScholar": "https://scholar.google.com/citations?user=-V8_A5YAAAAJ&hl=en",
+      "linkedin": "https://kr.linkedin.com/in/abolghasem-sadeghi-niaraki-62669b14",
+      "researchGate": null,
+      "orcid": null,
+      "twitter": null,
+      "github": null
+    }
+  },
+  "rawHtml": null,
+  "counts": {
+    "publications": 200,
+    "patents": 42,
+    "projects": 10,
+    "awards": 10,
+    "students": 46
+  },
+  "meta": {
+    "sourceFileName": "initial",
+    "parsedAt": "2024-11-27T00:00:00.000Z",
+    "parserVersion": "v1.0.0",
+    "commitSha": null,
+    "uploader": null,
+    "warnings": []
+  }
+}
+
