@@ -10,6 +10,7 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
+import { commitFile, getFileContent, isGitHubConfigured } from '@/lib/github';
 import type { DeviceRecord, DeviceTokenPayload, AdminDevicesData } from '@/types/admin';
 
 // Environment configuration
@@ -18,6 +19,7 @@ const ADMIN_SECRET = process.env.ADMIN_SECRET || 'default-secret-change-in-produ
 const DEVICE_TOKEN_EXPIRY_DAYS = 365;
 
 const DEVICES_FILE = path.join(process.cwd(), 'src', 'datasets', 'admin_devices.json');
+const DEVICES_GITHUB_PATH = 'src/datasets/admin_devices.json';
 
 /**
  * Hashes a string using SHA-256
@@ -39,12 +41,27 @@ export function verifyAdminPassword(password: string): boolean {
 
 /**
  * Gets all registered devices
+ * Tries GitHub first (for Vercel), falls back to filesystem (for local dev)
  */
 export async function getDevices(): Promise<AdminDevicesData> {
+  // Try GitHub first (works on Vercel)
+  if (isGitHubConfigured()) {
+    try {
+      const content = await getFileContent(DEVICES_GITHUB_PATH);
+      if (content) {
+        return JSON.parse(content);
+      }
+    } catch (error) {
+      console.warn('Failed to read devices from GitHub, trying filesystem:', error);
+    }
+  }
+  
+  // Fallback to filesystem (for local development)
   try {
     const content = await fs.readFile(DEVICES_FILE, 'utf-8');
     return JSON.parse(content);
   } catch {
+    // File doesn't exist - return empty data
     return {
       devices: [],
       lastModified: new Date().toISOString(),
@@ -54,16 +71,31 @@ export async function getDevices(): Promise<AdminDevicesData> {
 
 /**
  * Saves devices data
+ * Uses GitHub API on Vercel, filesystem for local dev
  */
 async function saveDevices(data: AdminDevicesData): Promise<void> {
-  // Ensure directory exists
-  const dir = path.dirname(DEVICES_FILE);
-  try {
-    await fs.mkdir(dir, { recursive: true });
-  } catch {
-    // Directory may already exist
+  // Try GitHub first (works on Vercel)
+  if (isGitHubConfigured()) {
+    try {
+      const content = JSON.stringify(data, null, 2);
+      const message = `admin: update registered devices — ${new Date().toISOString()}`;
+      await commitFile(DEVICES_GITHUB_PATH, content, message);
+      return; // Success - exit early
+    } catch (error) {
+      console.error('Failed to save devices to GitHub:', error);
+      // Fall through to filesystem fallback for local dev
+    }
   }
-  await fs.writeFile(DEVICES_FILE, JSON.stringify(data, null, 2));
+  
+  // Fallback to filesystem (for local development)
+  try {
+    const dir = path.dirname(DEVICES_FILE);
+    await fs.mkdir(dir, { recursive: true });
+    await fs.writeFile(DEVICES_FILE, JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.error('Failed to save devices to filesystem:', error);
+    throw new Error('Failed to save devices - both GitHub and filesystem failed');
+  }
 }
 
 /**

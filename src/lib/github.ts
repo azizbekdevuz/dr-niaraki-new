@@ -62,6 +62,38 @@ export async function getFileSha(path: string): Promise<string | null> {
 }
 
 /**
+ * Gets file content from the repository
+ */
+export async function getFileContent(path: string): Promise<string | null> {
+  const octokit = getOctokit();
+  if (!octokit) {
+    return null;
+  }
+  
+  const config = getConfig();
+  
+  try {
+    const response = await octokit.repos.getContent({
+      owner: config.owner,
+      repo: config.repo,
+      path,
+      ref: config.branch,
+    });
+    
+    if ('content' in response.data && typeof response.data.content === 'string') {
+      return Buffer.from(response.data.content, 'base64').toString('utf-8');
+    }
+    return null;
+  } catch (error) {
+    // File doesn't exist yet
+    if ((error as { status?: number }).status === 404) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+/**
  * Commits a file to the repository
  */
 export async function commitFile(

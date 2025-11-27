@@ -1,14 +1,14 @@
 {
   "devices": [
     {
-      "id": "1b803df0-c99a-42b7-a600-7f1d5fe22a14",
-      "label": "Testing device",
+      "id": "b6f00345-28e0-4410-84a6-04560b283741",
+      "label": "Test Local",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
       "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3",
-      "registeredAt": "2025-11-27T15:45:31.393Z",
-      "lastUsedAt": "2025-11-27T15:58:10.994Z",
-      "expiresAt": "2026-11-27T15:45:31.393Z"
+      "registeredAt": "2025-11-27T16:21:24.654Z",
+      "lastUsedAt": "2025-11-27T16:21:27.076Z",
+      "expiresAt": "2026-11-27T16:21:24.654Z"
     }
   ],
-  "lastModified": "2025-11-27T15:45:31.397Z"
+  "lastModified": "2025-11-27T16:21:24.659Z"
 }
