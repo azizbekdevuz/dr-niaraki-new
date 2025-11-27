@@ -235,13 +235,16 @@ export function splitIntoSections(text: string): DetectedSection[] {
  * Splits publication/patent entries by bullet or double newline
  */
 export function splitEntries(text: string): string[] {
+  // Minimum entry length to filter out noise (but not short valid entries)
+  const MIN_ENTRY_LENGTH = 5;
+  
   // Try splitting by numbered entries first
   const numberedPattern = /(?:^|\n)\s*\d+[\.\)]\s*/;
   if (numberedPattern.test(text)) {
     return text
       .split(numberedPattern)
       .map(e => e.trim())
-      .filter(e => e.length > 20);
+      .filter(e => e.length > MIN_ENTRY_LENGTH);
   }
   
   // Try splitting by bullets
@@ -250,14 +253,14 @@ export function splitEntries(text: string): string[] {
     return text
       .split(bulletPattern)
       .map(e => e.trim())
-      .filter(e => e.length > 20);
+      .filter(e => e.length > MIN_ENTRY_LENGTH);
   }
   
   // Fall back to double newlines
   return text
     .split(/\n\n+/)
     .map(e => e.trim())
-    .filter(e => e.length > 20);
+    .filter(e => e.length > MIN_ENTRY_LENGTH);
 }
 
 /**
