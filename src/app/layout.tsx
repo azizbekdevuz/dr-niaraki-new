@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -13,7 +14,7 @@ import { generateMetadata } from './metadata';
 import './globals.css';
 import "../styles/atomcursor.css";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   preload: true,
@@ -44,7 +45,7 @@ export default async function RootLayout({
 }) {
   // Get initial device info server-side
   const deviceInfo = await getDeviceInfo();
-  
+
   return (
     <html lang="en" className={inter.variable}>
       <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
@@ -60,6 +61,7 @@ export default async function RootLayout({
             </AppStateProvider>
           </DeviceProvider>
         </LoadingProvider>
+        <Analytics />
       </body>
     </html>
   );
