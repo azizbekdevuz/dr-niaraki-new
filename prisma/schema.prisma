@@ -1,0 +1,146 @@
+// Prisma schema — persistence scaffolding for future versioned content / admin workflow.
+// Public pages still read from `src/content` until a later phase wires publish/read paths.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContentVersionStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ImportStatus {
+  UPLOADED
+  PARSED
+  NEEDS_REVIEW
+  MERGED
+  REJECTED
+  FAILED
+}
+
+enum UploadSourceFormat {
+  DOCX
+  PDF
+}
+
+enum ContentEventType {
+  IMPORT_CREATED
+  PARSE_COMPLETED
+  VERSION_CREATED
+  VERSION_PUBLISHED
+  VERSION_ARCHIVED
+  UPLOAD_STORED
+  SYSTEM_NOTE
+  WORKING_DRAFT_CREATED
+  WORKING_DRAFT_UPDATED
+  CONTENT_PUBLISHED
+  CONTENT_RESTORED_TO_DRAFT
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+}
+
+model Session {
+  id          String    @id @default(cuid())
+  adminUserId String
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  @@index([adminUserId])
+}
+
+/// Secondary admin device registrations (browser gate). Prefer Postgres when `DATABASE_URL` is set to avoid GitHub JSON write races.
+model AdminRegisteredDevice {
+  id           String   @id
+  label        String
+  userAgent    String
+  ipHash       String
+  registeredAt DateTime @default(now())
+  lastUsedAt   DateTime @default(now())
+  expiresAt    DateTime
+
+  @@index([expiresAt])
+  @@index([ipHash])
+}
+
+model UploadedFile {
+  id           String             @id @default(cuid())
+  originalName String
+  storedPath   String
+  mimeType     String
+  sizeBytes    Int
+  sha256       String
+  sourceFormat UploadSourceFormat
+  uploadedAt   DateTime           @default(now())
+  imports      ContentImport[]
+}
+
+model ContentImport {
+  id             String         @id @default(cuid())
+  uploadedFileId String
+  uploadedFile   UploadedFile   @relation(fields: [uploadedFileId], references: [id], onDelete: Cascade)
+  status         ImportStatus   @default(UPLOADED)
+  parserVersion  String?
+  warnings       Json?
+  rawPreviewPath String?
+  /// Structured parser output before normalization (optional; not live site content).
+  rawExtract       Json?
+  /// Parsed candidate payload for review — never the published/draft SiteContent until merged in a later phase.
+  candidatePayload Json?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  versions       ContentVersion[]
+}
+
+model ContentVersion {
+  id            String               @id @default(cuid())
+  importId      String?
+  contentImport ContentImport?       @relation(fields: [importId], references: [id], onDelete: SetNull)
+  status        ContentVersionStatus @default(DRAFT)
+  label         String?
+  /// Snapshot of canonical site content (or partial) as JSON until normalized tables exist.
+  payload       Json
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  publishedAt   DateTime?
+  /// Human note for this revision (admin UI later).
+  changeSummary String?
+  /// Future: admin user id or email when auth is wired.
+  createdBy     String?
+  /// Exactly one working draft: `draftSlot = "main"`. Null for published/archived rows.
+  draftSlot     String?              @unique
+  /// Monotonic publish ordering for published rows only.
+  publishSequence Int?
+  events        ContentEvent[]
+
+  @@index([status])
+  @@index([importId])
+  @@index([publishSequence])
+}
+
+model ContentEvent {
+  id        String            @id @default(cuid())
+  versionId String?
+  version   ContentVersion?   @relation(fields: [versionId], references: [id], onDelete: SetNull)
+  eventType ContentEventType
+  payload   Json?
+  createdAt DateTime          @default(now())
+
+  @@index([versionId])
+  @@index([eventType])
+}
