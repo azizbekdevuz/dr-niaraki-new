@@ -1,131 +1,94 @@
 /**
- * Admin authentication and device management
- * Handles password verification and device token issuance
+ * Admin authentication: DB-backed session (opaque cookie + Prisma `Session`),
+ * scrypt password verification on `AdminUser`, and device registration (secondary gate).
+ *
+ * Legacy JWT `admin_session` cookies: accepted only when `legacyJwtAdminSessionCookieAllowed()`
+ * (off in production unless `ALLOW_LEGACY_ADMIN_JWT=1`; non-production on unless `ALLOW_LEGACY_ADMIN_JWT=0`).
+ * New logins always issue opaque DB-backed session tokens.
  */
 
+import 'server-only';
+
 import crypto from 'crypto';
-import fs from 'fs/promises';
-import path from 'path';
 
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-import { commitFile, getFileContent, isGitHubConfigured } from '@/lib/github';
-import type { DeviceRecord, DeviceTokenPayload, AdminDevicesData } from '@/types/admin';
+import { authenticateAdminPassword as authenticateAdminPasswordDb } from '@/server/admin/adminBootstrap';
+import {
+  adminFindDeviceById,
+  adminRegisterDevice,
+  adminRevokeDevice,
+  adminTouchDeviceLastUsedThrottled,
+  loadAdminDevicesData,
+} from '@/server/admin/adminDevicesStore';
+import {
+  getAdminSecretForCrypto,
+  isProductionAdminAuthHaltedDueToSecret,
+} from '@/server/admin/adminSecurityConfig';
+import {
+  adminSessionCookieMaxAgeSec,
+  createDbSessionForAdminUser,
+  hasValidOpaqueDbSession,
+  isOpaqueSessionCookieValue,
+  looksLikeLegacyJwtSessionCookie,
+  revokeDbSessionByOpaqueCookie,
+  revokeOtherSessionsForUser,
+  verifyLegacyAdminSessionJwt,
+} from '@/server/admin/adminSession';
+import type { AdminDevicesData, DeviceRecord, DeviceTokenPayload } from '@/types/admin';
 
-// Environment configuration
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'default-secret-change-in-production';
 const DEVICE_TOKEN_EXPIRY_DAYS = 365;
 
-const DEVICES_FILE = path.join(process.cwd(), 'src', 'datasets', 'admin_devices.json');
-const DEVICES_GITHUB_PATH = 'src/datasets/admin_devices.json';
-
-/**
- * Hashes a string using SHA-256
- */
 export function hashString(input: string): string {
   return crypto.createHash('sha256').update(input).digest('hex');
 }
 
 /**
- * Verifies the admin password
+ * @deprecated Prefer `authenticateAdminPassword` which returns the admin user id.
+ * Verifies password against the primary `AdminUser` (DB scrypt hash, bootstrapped from env once).
  */
-export function verifyAdminPassword(password: string): boolean {
-  if (!ADMIN_PASSWORD) {
-    console.warn('ADMIN_PASSWORD not configured');
-    return false;
-  }
-  return password === ADMIN_PASSWORD;
+export async function verifyAdminPassword(password: string): Promise<boolean> {
+  const r = await authenticateAdminPasswordDb(password);
+  return r.ok;
 }
 
-/**
- * Gets all registered devices
- * Tries GitHub first (for Vercel), falls back to filesystem (for local dev)
- */
+export { authenticateAdminPasswordDb as authenticateAdminPassword };
+
+export async function issueAdminSessionAfterLogin(adminUserId: string): Promise<{
+  opaqueCookieValue: string;
+  expiresAt: Date;
+}> {
+  await revokeOtherSessionsForUser(adminUserId);
+  return createDbSessionForAdminUser(adminUserId);
+}
+
 export async function getDevices(): Promise<AdminDevicesData> {
-  // Try GitHub first (works on Vercel)
-  if (isGitHubConfigured()) {
-    try {
-      const content = await getFileContent(DEVICES_GITHUB_PATH);
-      if (content) {
-        return JSON.parse(content);
-      }
-    } catch (error) {
-      console.warn('Failed to read devices from GitHub, trying filesystem:', error);
-    }
-  }
-  
-  // Fallback to filesystem (for local development)
-  try {
-    const content = await fs.readFile(DEVICES_FILE, 'utf-8');
-    return JSON.parse(content);
-  } catch {
-    // File doesn't exist - return empty data
-    return {
-      devices: [],
-      lastModified: new Date().toISOString(),
-    };
-  }
+  return loadAdminDevicesData();
 }
 
-/**
- * Saves devices data
- * Uses GitHub API on Vercel, filesystem for local dev
- */
-async function saveDevices(data: AdminDevicesData): Promise<void> {
-  // Try GitHub first (works on Vercel)
-  if (isGitHubConfigured()) {
-    try {
-      const content = JSON.stringify(data, null, 2);
-      const message = `admin: update registered devices — ${new Date().toISOString()}`;
-      await commitFile(DEVICES_GITHUB_PATH, content, message);
-      return; // Success - exit early
-    } catch (error) {
-      console.error('Failed to save devices to GitHub:', error);
-      // Fall through to filesystem fallback for local dev
-    }
-  }
-  
-  // Fallback to filesystem (for local development)
-  try {
-    const dir = path.dirname(DEVICES_FILE);
-    await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(DEVICES_FILE, JSON.stringify(data, null, 2));
-  } catch (error) {
-    console.error('Failed to save devices to filesystem:', error);
-    throw new Error('Failed to save devices - both GitHub and filesystem failed');
-  }
-}
-
-/**
- * Generates a device token
- */
 export function generateDeviceToken(deviceId: string, ipHash: string): string {
   const payload: DeviceTokenPayload = {
     deviceId,
     ipHash,
     iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + (DEVICE_TOKEN_EXPIRY_DAYS * 24 * 60 * 60),
+    exp: Math.floor(Date.now() / 1000) + DEVICE_TOKEN_EXPIRY_DAYS * 24 * 60 * 60,
   };
-  
-  return jwt.sign(payload, ADMIN_SECRET, { algorithm: 'HS256' });
+
+  return jwt.sign(payload, getAdminSecretForCrypto(), { algorithm: 'HS256' });
 }
 
-/**
- * Verifies a device token
- */
 export function verifyDeviceToken(token: string): DeviceTokenPayload | null {
+  if (isProductionAdminAuthHaltedDueToSecret()) {
+    return null;
+  }
   try {
-    return jwt.verify(token, ADMIN_SECRET, { algorithms: ['HS256'] }) as DeviceTokenPayload;
+    return jwt.verify(token, getAdminSecretForCrypto(), { algorithms: ['HS256'] }) as DeviceTokenPayload;
   } catch {
     return null;
   }
 }
 
-/**
- * Registers a new device
- */
 export async function registerDevice(
   label: string,
   userAgent: string,
@@ -133,10 +96,10 @@ export async function registerDevice(
 ): Promise<{ device: DeviceRecord; token: string }> {
   const deviceId = crypto.randomUUID();
   const ipHash = hashString(ipAddress);
-  
+
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + DEVICE_TOKEN_EXPIRY_DAYS);
-  
+
   const device: DeviceRecord = {
     id: deviceId,
     label,
@@ -146,76 +109,45 @@ export async function registerDevice(
     lastUsedAt: new Date().toISOString(),
     expiresAt: expiresAt.toISOString(),
   };
-  
+
   const token = generateDeviceToken(deviceId, ipHash);
-  
-  // Save device
-  const devicesData = await getDevices();
-  devicesData.devices.push(device);
-  (devicesData as unknown as { lastModified: string }).lastModified = new Date().toISOString();
-  await saveDevices(devicesData);
-  
+
+  await adminRegisterDevice(device);
+
   return { device, token };
 }
 
-/**
- * Revokes a device by ID
- */
 export async function revokeDevice(deviceId: string): Promise<boolean> {
-  const devicesData = await getDevices();
-  const initialLength = devicesData.devices.length;
-  
-  (devicesData as unknown as { devices: DeviceRecord[] }).devices = devicesData.devices.filter(d => d.id !== deviceId);
-  
-  if (devicesData.devices.length < initialLength) {
-    (devicesData as unknown as { lastModified: string }).lastModified = new Date().toISOString();
-    await saveDevices(devicesData);
-    return true;
-  }
-  
-  return false;
+  return adminRevokeDevice(deviceId);
 }
 
-/**
- * Checks if a device is registered and valid
- */
 export async function isDeviceRegistered(token: string): Promise<{ valid: boolean; device?: DeviceRecord }> {
   const payload = verifyDeviceToken(token);
   if (!payload) {
     return { valid: false };
   }
-  
-  const devicesData = await getDevices();
-  const device = devicesData.devices.find(d => d.id === payload.deviceId);
-  
+
+  const device = await adminFindDeviceById(payload.deviceId);
+
   if (!device) {
     return { valid: false };
   }
-  
-  // Check if expired
+
   if (new Date(device.expiresAt) < new Date()) {
     return { valid: false };
   }
-  
-  // Update last used time
-  (device as unknown as { lastUsedAt: string }).lastUsedAt = new Date().toISOString();
-  await saveDevices(devicesData);
-  
+
+  await adminTouchDeviceLastUsedThrottled(device.id);
+
   return { valid: true, device };
 }
 
-/**
- * Gets device token from cookies
- */
 export async function getDeviceTokenFromCookie(): Promise<string | null> {
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get('device_token');
   return tokenCookie?.value || null;
 }
 
-/**
- * Sets device token cookie
- */
 export async function setDeviceTokenCookie(token: string): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set('device_token', token, {
@@ -223,62 +155,47 @@ export async function setDeviceTokenCookie(token: string): Promise<void> {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: DEVICE_TOKEN_EXPIRY_DAYS * 24 * 60 * 60,
-    path: '/', // Change from '/admin' to '/'
+    path: '/',
   });
 }
 
-/**
- * Clears device token cookie
- */
 export async function clearDeviceTokenCookie(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete('device_token');
 }
 
-/**
- * Gets admin session token from cookies
- */
 export async function getAdminSessionFromCookie(): Promise<boolean> {
+  if (isProductionAdminAuthHaltedDueToSecret()) {
+    return false;
+  }
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('admin_session');
   if (!sessionCookie?.value) {
     return false;
   }
-  
-  try {
-    const payload = jwt.verify(sessionCookie.value, ADMIN_SECRET);
-    return Boolean(payload);
-  } catch {
+  const value = sessionCookie.value;
+
+  if (looksLikeLegacyJwtSessionCookie(value)) {
+    return verifyLegacyAdminSessionJwt(value);
+  }
+
+  if (!isOpaqueSessionCookieValue(value)) {
     return false;
   }
+
+  return hasValidOpaqueDbSession(value);
 }
 
-/**
- * Sets admin session cookie
- */
-export async function setAdminSessionCookie(): Promise<void> {
-  const cookieStore = await cookies();
-  const token = jwt.sign({ admin: true }, ADMIN_SECRET, { expiresIn: '24h' });
-  cookieStore.set('admin_session', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 24 * 60 * 60, // 24 hours
-    path: '/', // Change from '/admin' to '/' so it's available for all routes
-  });
-}
-
-/**
- * Clears admin session cookie
- */
 export async function clearAdminSessionCookie(): Promise<void> {
   const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get('admin_session');
+  const value = sessionCookie?.value;
+  if (value && isOpaqueSessionCookieValue(value)) {
+    await revokeDbSessionByOpaqueCookie(value);
+  }
   cookieStore.delete('admin_session');
 }
 
-/**
- * Checks if current request has valid admin access
- */
 export async function hasValidAdminAccess(): Promise<{
   isLoggedIn: boolean;
   hasValidDevice: boolean;
@@ -288,12 +205,12 @@ export async function hasValidAdminAccess(): Promise<{
   if (!isLoggedIn) {
     return { isLoggedIn: false, hasValidDevice: false };
   }
-  
+
   const token = await getDeviceTokenFromCookie();
   if (!token) {
     return { isLoggedIn: true, hasValidDevice: false };
   }
-  
+
   const deviceStatus = await isDeviceRegistered(token);
   return {
     isLoggedIn: true,
@@ -301,3 +218,5 @@ export async function hasValidAdminAccess(): Promise<{
     device: deviceStatus.device,
   };
 }
+
+export { adminSessionCookieMaxAgeSec };

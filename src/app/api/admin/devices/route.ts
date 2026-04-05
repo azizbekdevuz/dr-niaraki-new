@@ -9,25 +9,17 @@ import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-import {
-  getDevices,
-  registerDevice,
-  revokeDevice,
-  setDeviceTokenCookie,
-  getAdminSessionFromCookie,
-} from '@/lib/admin-auth';
+import { getDevices, registerDevice, revokeDevice, setDeviceTokenCookie } from '@/lib/admin-auth';
+import { unauthorizedUnlessAdminSession } from '@/server/admin/adminGuards';
 
 /**
  * GET: List all registered devices
  */
 export async function GET() {
   try {
-    const isLoggedIn = await getAdminSessionFromCookie();
-    if (!isLoggedIn) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
+    const denied = await unauthorizedUnlessAdminSession();
+    if (denied) {
+      return denied;
     }
     
     const devicesData = await getDevices();
@@ -61,12 +53,9 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
-    const isLoggedIn = await getAdminSessionFromCookie();
-    if (!isLoggedIn) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
+    const denied = await unauthorizedUnlessAdminSession();
+    if (denied) {
+      return denied;
     }
     
     const body = await request.json();
@@ -115,12 +104,9 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const isLoggedIn = await getAdminSessionFromCookie();
-    if (!isLoggedIn) {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
+    const denied = await unauthorizedUnlessAdminSession();
+    if (denied) {
+      return denied;
     }
     
     const { searchParams } = new URL(request.url);

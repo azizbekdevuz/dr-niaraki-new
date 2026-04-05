@@ -59,6 +59,8 @@ export interface UploadResponse {
   readonly uploadFilename?: string;
 }
 
+export type UploadHistoryRecordSource = 'prisma' | 'legacy_manifest_only';
+
 export interface UploadHistoryItem {
   readonly filename: string;
   readonly originalName: string;
@@ -68,6 +70,13 @@ export interface UploadHistoryItem {
   readonly sha256: string;
   readonly warnings: string[];
   readonly downloadUrl: string;
+  /** When the same upload row exists in Prisma (DOCX import pipeline). */
+  readonly prismaUploadedFileId?: string;
+  readonly contentImportId?: string;
+  /** Whether this row came from Prisma or legacy manifest merge. */
+  readonly recordSource?: UploadHistoryRecordSource;
+  /** Latest import workflow status when `recordSource` is `prisma`. */
+  readonly importStatus?: string;
 }
 
 export interface UploadMetaFile {

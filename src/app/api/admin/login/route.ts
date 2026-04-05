@@ -1,68 +1,73 @@
 /**
  * Admin login API route
- * POST: Verify password and create session
+ * POST: Verify password and create DB-backed session
  */
 
-import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 import {
-  verifyAdminPassword,
+  authenticateAdminPassword,
   getDeviceTokenFromCookie,
   isDeviceRegistered,
+  issueAdminSessionAfterLogin,
+  adminSessionCookieMaxAgeSec,
 } from '@/lib/admin-auth';
-
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'default-secret-change-in-production';
+import { getLoginDisabledReasonForWeakSecret } from '@/server/admin/adminSecurityConfig';
 
 export async function POST(request: NextRequest) {
   try {
+    const loginDisabled = getLoginDisabledReasonForWeakSecret();
+    if (loginDisabled) {
+      return NextResponse.json(
+        { success: false, message: loginDisabled, code: 'ADMIN_SECRET_REQUIRED' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
     const { password } = body;
-    
+
     if (!password || typeof password !== 'string') {
       return NextResponse.json(
         { success: false, message: 'Password is required' },
         { status: 400 }
       );
     }
-    
-    if (!verifyAdminPassword(password)) {
+
+    const auth = await authenticateAdminPassword(password);
+    if (!auth.ok) {
       return NextResponse.json(
         { success: false, message: 'Invalid password' },
         { status: 401 }
       );
     }
-    
-    // Create session token
-    const token = jwt.sign({ admin: true }, ADMIN_SECRET, { expiresIn: '24h' });
-    
-    // Check if device is already registered (before creating response)
+
+    const { opaqueCookieValue } = await issueAdminSessionAfterLogin(auth.adminUserId);
+
     const deviceToken = await getDeviceTokenFromCookie();
     let isDeviceRegisteredFlag = false;
-    
+
     if (deviceToken) {
       const deviceStatus = await isDeviceRegistered(deviceToken);
       isDeviceRegisteredFlag = deviceStatus.valid;
     }
-    
-    // Create response
+
     const response = NextResponse.json({
       success: true,
       message: 'Login successful',
       isDeviceRegistered: isDeviceRegisteredFlag,
       requiresDeviceRegistration: !isDeviceRegisteredFlag,
     });
-    
-    // Set cookie directly on the response
-    response.cookies.set('admin_session', token, {
+
+    response.cookies.set('admin_session', opaqueCookieValue, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60, // 24 hours
-      path: '/', // Change from '/admin' to '/' so it's available to both /admin and /api/admin routes
+      maxAge: adminSessionCookieMaxAgeSec(),
+      path: '/',
     });
-    
+
     return response;
   } catch (error) {
     console.error('Login error:', error);
