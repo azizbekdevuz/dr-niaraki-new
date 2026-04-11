@@ -1,7 +1,13 @@
+import 'server-only';
+
 /**
- * File storage helpers for upload management
- * Handles saving files to /public/uploads and computing hashes
- * Uses GitHub API on Vercel, filesystem for local dev
+ * File storage helpers for upload management.
+ * Handles saving files to /public/uploads and computing hashes.
+ * Uses GitHub API on Vercel, filesystem for local dev.
+ *
+ * Legacy: `uploads_meta.json` is still updated for non–Prisma-primary flows (e.g. legacy JSON commit file save).
+ * The modern DOCX → Prisma import path skips manifest writes (`saveUploadedFile` option) and falls back to manifest only if DB persistence fails.
+ * Admin upload history is Prisma-primary (`uploadHistoryAdmin`); manifest supplies orphan rows and legacy flows only.
  */
 
 import crypto from 'crypto';
@@ -9,11 +15,22 @@ import fs from 'fs/promises';
 import path from 'path';
 
 import { commitFile, getFileContent, isGitHubConfigured } from '@/lib/github';
+import { VERCEL_BLOB_STORED_PREFIX } from '@/lib/storagePathMarkers';
+import {
+  readResumeBlobToBuffer,
+  resumeBlobPathnameForFilename,
+  shouldStoreResumeInVercelBlob,
+  uploadResumeBufferToBlob,
+} from '@/server/storage/resumeBlobStorage';
 import type { UploadMetaFile, UploadHistoryItem } from '@/types/admin';
 
 const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
 const UPLOADS_META_FILE = path.join(UPLOADS_DIR, 'uploads_meta.json');
 const UPLOADS_META_GITHUB_PATH = 'public/uploads/uploads_meta.json';
+
+/** Shown in admin APIs that read the legacy manifest so operators know Prisma is authoritative for imports. */
+export const LEGACY_UPLOADS_META_AUTHORITY_NOTE =
+  'This listing is backed by legacy `uploads_meta.json` (local file or GitHub mirror) for download/history UX only. Prisma `UploadedFile` / `ContentImport` are authoritative for imports, review, and merge-to-draft.';
 
 /**
  * Ensures the uploads directory exists
@@ -47,18 +64,29 @@ export function computeSha256(buffer: Buffer): string {
   return crypto.createHash('sha256').update(buffer).digest('hex');
 }
 
+export type SaveUploadedFileOptions = {
+  /**
+   * When false, skips `uploads_meta.json` / GitHub manifest append (Prisma-primary DOCX flow).
+   * Default true for legacy callers (e.g. JSON commit path) that still rely on the manifest.
+   */
+  persistToLegacyUploadsMeta?: boolean;
+};
+
 /**
  * Saves an uploaded file to the uploads directory
- * On Vercel, skips file storage (read-only filesystem) but saves metadata
- * On local dev, saves both file and metadata
+ * On Vercel, skips file storage (read-only filesystem) but may save metadata
+ * On local dev, saves both file and metadata when enabled
  */
 export async function saveUploadedFile(
   buffer: Buffer,
   originalName: string,
-  uploader?: string
+  uploader?: string,
+  options?: SaveUploadedFileOptions
 ): Promise<{
   filename: string;
   filepath: string;
+  /** Public `/uploads/...` path or `vercel-blob-path:…` when stored in private Blob. */
+  storedPath: string;
   sha256: string;
   fileSizeBytes: number;
 }> {
@@ -66,12 +94,29 @@ export async function saveUploadedFile(
   const filepath = path.join(UPLOADS_DIR, filename);
   const sha256 = computeSha256(buffer);
   const fileSizeBytes = buffer.length;
-  
-  // On Vercel, we can't write to /public/uploads (read-only filesystem)
-  // So we skip file storage but still save metadata
-  // On local dev, save the file
-  if (!isGitHubConfigured()) {
-    // Local development - save file to filesystem
+  const persistMeta = options?.persistToLegacyUploadsMeta !== false;
+
+  let storedPath = `/uploads/${filename}`;
+
+  if (shouldStoreResumeInVercelBlob()) {
+    try {
+      const blobPathname = resumeBlobPathnameForFilename(filename);
+      const mime =
+        path.extname(originalName).toLowerCase() === '.docx'
+          ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+          : 'application/octet-stream';
+      const { storedPath: blobStored } = await uploadResumeBufferToBlob({
+        pathname: blobPathname,
+        buffer,
+        contentType: mime,
+      });
+      storedPath = blobStored;
+    } catch (error) {
+      console.error('[storage] Vercel Blob upload failed; falling back to local/GitHub-only behavior.', error);
+    }
+  }
+
+  if (!storedPath.startsWith(VERCEL_BLOB_STORED_PREFIX) && !isGitHubConfigured()) {
     try {
       await ensureUploadsDir();
       await fs.writeFile(filepath, buffer);
@@ -79,31 +124,32 @@ export async function saveUploadedFile(
       console.warn('Failed to save uploaded file to filesystem (may be expected on Vercel):', error);
     }
   }
-  // On Vercel (GitHub configured), skip file storage - files are read-only anyway
-  
-  // Update metadata (this will use GitHub API on Vercel)
-  await addUploadMetadata({
-    filename,
-    originalName,
-    uploadedAt: new Date().toISOString(),
-    uploader: uploader ?? undefined,
-    fileSizeBytes,
-    sha256,
-    warnings: [],
-    downloadUrl: `/uploads/${filename}`,
-  });
-  
+
+  if (persistMeta) {
+    await addUploadMetadata({
+      filename,
+      originalName,
+      uploadedAt: new Date().toISOString(),
+      uploader: uploader ?? undefined,
+      fileSizeBytes,
+      sha256,
+      warnings: [],
+      downloadUrl: storedPath.startsWith(VERCEL_BLOB_STORED_PREFIX) ? storedPath : `/uploads/${filename}`,
+    });
+  }
+
   return {
     filename,
     filepath,
+    storedPath,
     sha256,
     fileSizeBytes,
   };
 }
 
 /**
- * Gets upload metadata
- * Tries GitHub first (for Vercel), falls back to filesystem (for local dev)
+ * Gets upload metadata from the legacy manifest (`uploads_meta.json`).
+ * @see LEGACY_UPLOADS_META_AUTHORITY_NOTE
  */
 export async function getUploadsMeta(): Promise<UploadMetaFile> {
   // Try GitHub first (works on Vercel)
@@ -135,7 +181,7 @@ export async function getUploadsMeta(): Promise<UploadMetaFile> {
  * Saves upload metadata
  * Uses GitHub API on Vercel, filesystem for local dev
  */
-async function saveUploadsMeta(meta: UploadMetaFile): Promise<void> {
+export async function saveUploadsMeta(meta: UploadMetaFile): Promise<void> {
   // Try GitHub first (works on Vercel)
   if (isGitHubConfigured()) {
     try {
@@ -170,6 +216,31 @@ export async function addUploadMetadata(upload: UploadHistoryItem): Promise<void
 }
 
 /**
+ * Links a legacy `uploads_meta.json` row (matched by generated `filename`) to Prisma import IDs.
+ * The modern DOCX → Prisma path skips manifest writes, so this is unused there; kept for tooling or older flows.
+ */
+export async function linkLatestUploadToPrismaIds(input: {
+  filename: string;
+  prismaUploadedFileId: string;
+  contentImportId: string;
+}): Promise<void> {
+  const meta = await getUploadsMeta();
+  const idx = meta.uploads.findIndex((u) => u.filename === input.filename);
+  if (idx === -1) {
+    return;
+  }
+  const row = meta.uploads[idx]!;
+  const next: UploadHistoryItem = {
+    ...row,
+    prismaUploadedFileId: input.prismaUploadedFileId,
+    contentImportId: input.contentImportId,
+  };
+  meta.uploads.splice(idx, 1, next);
+  (meta as unknown as { lastModified: string }).lastModified = new Date().toISOString();
+  await saveUploadsMeta(meta);
+}
+
+/**
  * Removes an upload from metadata and deletes the file
  * On Vercel, only removes from metadata (can't delete files from read-only filesystem)
  */
@@ -199,7 +270,8 @@ export async function deleteUpload(filename: string): Promise<boolean> {
 }
 
 /**
- * Gets list of uploaded files
+ * Legacy manifest listing only. Admin `/api/admin/uploads` uses Prisma-primary merge via `uploadHistoryAdmin`;
+ * this remains for `uploads_meta.json` reads and merge fallbacks.
  */
 export async function getUploadHistory(): Promise<UploadHistoryItem[]> {
   const meta = await getUploadsMeta();
@@ -244,7 +316,7 @@ export async function saveDetailsPreview(data: object): Promise<string> {
 }
 
 /**
- * Reads an uploaded file as buffer
+ * Reads an uploaded file as buffer (local `public/uploads` only).
  */
 export async function readUploadedFile(filename: string): Promise<Buffer | null> {
   try {
@@ -253,6 +325,22 @@ export async function readUploadedFile(filename: string): Promise<Buffer | null>
   } catch {
     return null;
   }
+}
+
+/**
+ * Reads upload bytes using `storedPath` from Prisma (`/uploads/…` or `vercel-blob-path:…`).
+ */
+export async function readUploadBufferByStoredPath(storedPath: string): Promise<Buffer | null> {
+  const fromBlob = await readResumeBlobToBuffer(storedPath);
+  if (fromBlob) {
+    return fromBlob;
+  }
+  if (storedPath.startsWith('/uploads/')) {
+    const name = path.basename(storedPath);
+    return readUploadedFile(name);
+  }
+  const name = path.basename(storedPath);
+  return readUploadedFile(name);
 }
 
 /**

@@ -9,7 +9,7 @@ import type { NextRequest } from 'next/server';
 import { hasValidAdminAccess } from '@/lib/admin-auth';
 import { commitDetailsJson, isGitHubConfigured } from '@/lib/github';
 import { saveUploadedFile, saveDetailsPreview } from '@/lib/storage';
-import { parseDocxToDetails } from '@/parser/docxParser';
+import { DocxImportParseError, processDocxUploadWithImportPersistence } from '@/server/imports/processDocxUploadImport';
 import type { Details } from '@/types/details';
 import { validateDetails } from '@/validators/detailsSchema';
 
@@ -88,29 +88,50 @@ async function handleFileUpload(
     );
   }
   
-  // Convert to buffer
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  
-  // Parse DOCX
-  const uploader = 'admin'; // Could be enhanced with actual username
-  const { data, warnings } = await parseDocxToDetails(buffer, file.name, uploader);
-  
-  // Validate parsed data
-  const validation = validateDetails(data);
-  
-  return NextResponse.json({
-    success: true,
-    message: 'File parsed successfully',
-    data,
-    warnings: warnings.map(w => `${w.field}: ${w.message}`),
-    validation: {
-      valid: validation.success,
-      errors: validation.errors?.map(e => `${e.path.join('.')}: ${e.message}`) || [],
-    },
-    canCommit: accessStatus.hasValidDevice,
-    deviceRequired: !accessStatus.hasValidDevice,
-  });
+  const uploader = 'admin';
+  const mimeType =
+    file.type || 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+  try {
+    const outcome = await processDocxUploadWithImportPersistence({
+      buffer,
+      originalName: file.name,
+      mimeType,
+      uploaderLabel: uploader,
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: outcome.import.persisted
+        ? 'File parsed successfully; import record saved.'
+        : 'File parsed successfully; import could not be saved (database unavailable).',
+      data: outcome.data,
+      warnings: outcome.parseWarnings.map((w) => `${w.field}: ${w.message}`),
+      validation: {
+        valid: outcome.validation.valid,
+        errors: outcome.validation.errors,
+      },
+      canCommit: accessStatus.hasValidDevice,
+      deviceRequired: !accessStatus.hasValidDevice,
+      import: outcome.import,
+      legacyUploadMetaNote:
+        'Filesystem `public/uploads/uploads_meta.json` (and optional GitHub mirror) is for filenames and download history only. Prisma `UploadedFile` / `ContentImport` are authoritative for imports and review.',
+    });
+  } catch (e) {
+    if (e instanceof DocxImportParseError) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: e.message,
+          import: e.importSummary,
+        },
+        { status: 500 },
+      );
+    }
+    throw e;
+  }
 }
 
 /**
@@ -178,6 +199,11 @@ async function handleConfirmCommit(
           message: 'Data committed successfully',
           commitSha: result.sha,
           commitUrl: result.url,
+          editorialPath: 'legacy_github_details_json',
+          legacyDetailsJsonCommit: true,
+          notPrismaWorkflow: true,
+          importDomainNote:
+            'Legacy path: writes details.json via GitHub only. It does not create or update Prisma ContentImport rows.',
         });
       }
     } catch (error) {
@@ -194,5 +220,10 @@ async function handleConfirmCommit(
     message: 'GitHub commit not available. Preview saved locally.',
     previewUrl,
     instructions: 'Please manually copy the preview file to src/datasets/details.json and deploy.',
+    editorialPath: 'legacy_github_details_json_preview',
+    legacyDetailsJsonCommit: true,
+    notPrismaWorkflow: true,
+    importDomainNote:
+      'Legacy path: preview JSON only. It does not create or update Prisma ContentImport rows.',
   });
 }

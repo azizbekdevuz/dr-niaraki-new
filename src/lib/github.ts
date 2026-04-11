@@ -93,40 +93,63 @@ export async function getFileContent(path: string): Promise<string | null> {
   }
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function isGitHubConflictError(error: unknown): boolean {
+  return typeof error === 'object' && error !== null && (error as { status?: number }).status === 409;
+}
+
 /**
- * Commits a file to the repository
+ * Commits a file to the repository.
+ * Retries on HTTP 409 (stale `sha`) so concurrent serverless updates do not spam failures.
  */
 export async function commitFile(
   path: string,
   content: string,
-  message: string
+  message: string,
+  maxAttempts = 6,
 ): Promise<{ sha: string; url: string } | null> {
   const octokit = getOctokit();
   if (!octokit) {
     console.warn('GitHub token not available - cannot commit');
     return null;
   }
-  
+
   const config = getConfig();
-  
-  // Get existing file SHA if it exists
-  const existingSha = await getFileSha(path);
-  
-  // Create or update file
-  const response = await octokit.repos.createOrUpdateFileContents({
-    owner: config.owner,
-    repo: config.repo,
-    path,
-    message,
-    content: Buffer.from(content).toString('base64'),
-    branch: config.branch,
-    ...(existingSha && { sha: existingSha }),
-  });
-  
-  return {
-    sha: response.data.commit.sha ?? '',
-    url: response.data.commit.html_url ?? '',
-  };
+  const encoded = Buffer.from(content).toString('base64');
+
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const existingSha = await getFileSha(path);
+    try {
+      const response = await octokit.repos.createOrUpdateFileContents({
+        owner: config.owner,
+        repo: config.repo,
+        path,
+        message,
+        content: encoded,
+        branch: config.branch,
+        ...(existingSha && { sha: existingSha }),
+      });
+
+      return {
+        sha: response.data.commit.sha ?? '',
+        url: response.data.commit.html_url ?? '',
+      };
+    } catch (error) {
+      if (isGitHubConflictError(error) && attempt < maxAttempts - 1) {
+        const backoff = 180 + Math.floor(Math.random() * 420);
+        await sleep(backoff);
+        continue;
+      }
+      throw error;
+    }
+  }
+
+  throw new Error('[github] commitFile: exhausted attempts');
 }
 
 /**

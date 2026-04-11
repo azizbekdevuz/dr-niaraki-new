@@ -25,13 +25,18 @@ export default function AdminHistoryPage() {
   const [uploads, setUploads] = useState<UploadHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [listingNote, setListingNote] = useState<string | null>(null);
+  const [listingCounts, setListingCounts] = useState<{ prisma?: number; legacy?: number } | null>(null);
+  const [takeLimit, setTakeLimit] = useState<{ current?: number; max?: number } | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   // Load uploads history
   useEffect(() => {
     async function loadData() {
       try {
+        setNotice(null);
         // Check auth status
-        const statusRes = await fetch('/api/admin/status');
+        const statusRes = await fetch('/api/admin/status', { credentials: 'include' });
         const statusData = await statusRes.json();
         
         if (!statusData.isLoggedIn) {
@@ -40,11 +45,32 @@ export default function AdminHistoryPage() {
         }
 
         // Load uploads
-        const uploadsRes = await fetch('/api/admin/uploads');
+        const uploadsRes = await fetch('/api/admin/uploads', { credentials: 'include' });
         const uploadsData = await uploadsRes.json();
-        
+
         if (uploadsData.success) {
           setUploads(uploadsData.uploads);
+          if (typeof uploadsData.authorityNote === 'string') {
+            setListingNote(uploadsData.authorityNote);
+          }
+          if (
+            typeof uploadsData.prismaBackedCount === 'number' ||
+            typeof uploadsData.legacyManifestOnlyCount === 'number'
+          ) {
+            setListingCounts({
+              prisma: uploadsData.prismaBackedCount,
+              legacy: uploadsData.legacyManifestOnlyCount,
+            });
+          }
+          if (
+            typeof uploadsData.historyPrismaTakeLimit === 'number' &&
+            typeof uploadsData.historyPrismaTakeMax === 'number'
+          ) {
+            setTakeLimit({
+              current: uploadsData.historyPrismaTakeLimit,
+              max: uploadsData.historyPrismaTakeMax,
+            });
+          }
         }
       } catch {
         setError('Failed to load history');
@@ -63,12 +89,18 @@ export default function AdminHistoryPage() {
     try {
       const res = await fetch(`/api/admin/uploads?filename=${encodeURIComponent(filename)}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
 
       const data = await res.json();
 
       if (data.success) {
         setUploads(uploads.filter((u) => u.filename !== filename));
+        if (typeof data.message === 'string' && data.prismaDeletion === 'skipped') {
+          setNotice(data.message);
+        } else {
+          setNotice(null);
+        }
       } else {
         setError(data.message || 'Failed to delete file');
       }
@@ -79,7 +111,7 @@ export default function AdminHistoryPage() {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/admin/logout', { method: 'POST' });
+      await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' });
       router.push('/admin');
     } catch {
       setError('Failed to logout');
@@ -112,6 +144,20 @@ export default function AdminHistoryPage() {
             <div>
               <h1 className="text-2xl font-bold text-foreground">Upload History</h1>
               <p className="text-muted text-sm">View and manage previously uploaded files</p>
+              {listingCounts && (
+                <p className="text-muted text-xs mt-1">
+                  Prisma-backed: {listingCounts.prisma ?? 0} · Legacy-manifest-only: {listingCounts.legacy ?? 0}
+                </p>
+              )}
+              {typeof takeLimit?.current === 'number' && typeof takeLimit?.max === 'number' && (
+                <p className="text-muted/80 text-xs mt-1">
+                  Prisma history cap: {takeLimit.current} (max {takeLimit.max}; set{' '}
+                  <code className="text-[11px]">ADMIN_UPLOAD_HISTORY_PRISMA_TAKE</code> to adjust)
+                </p>
+              )}
+              {listingNote && (
+                <p className="text-muted/80 text-xs mt-2 max-w-xl leading-relaxed">{listingNote}</p>
+              )}
             </div>
           </div>
           <button
@@ -131,6 +177,13 @@ export default function AdminHistoryPage() {
           </div>
         )}
 
+        {notice && (
+          <div className="flex items-center gap-2 text-amber-800 text-sm bg-amber-500/15 px-4 py-3 rounded-lg mb-6">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{notice}</span>
+          </div>
+        )}
+
         {/* Uploads List */}
         <div className="card p-6">
           {uploads.length === 0 ? (
@@ -146,7 +199,7 @@ export default function AdminHistoryPage() {
             <div className="space-y-4">
               {uploads.map((upload) => (
                 <div
-                  key={upload.filename}
+                  key={`${upload.recordSource ?? 'row'}-${upload.filename}`}
                   className="flex items-center justify-between p-4 bg-surface-secondary rounded-lg"
                 >
                   <div className="flex items-center gap-4 flex-1 min-w-0">
@@ -161,6 +214,12 @@ export default function AdminHistoryPage() {
                           {new Date(upload.uploadedAt).toLocaleDateString()}
                         </span>
                         <span>{(upload.fileSizeBytes / 1024).toFixed(1)} KB</span>
+                        {upload.recordSource === 'prisma' && upload.importStatus && (
+                          <span className="text-muted">· {upload.importStatus}</span>
+                        )}
+                        {upload.recordSource === 'legacy_manifest_only' && (
+                          <span className="text-amber-600/90">· legacy manifest</span>
+                        )}
                         {upload.warnings.length > 0 && (
                           <span className="text-warning">{upload.warnings.length} warnings</span>
                         )}
