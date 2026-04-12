@@ -5,6 +5,9 @@
 
 import type { Metadata } from 'next';
 
+import { AdminOperatorBanner } from '@/app/admin/AdminOperatorBanner';
+import { AdminSubNav } from '@/app/admin/AdminSubNav';
+
 export const metadata: Metadata = {
   title: 'Admin | Dr. Sadeghi-Niaraki',
   description: 'Admin dashboard for managing CV and profile data',
@@ -21,6 +24,8 @@ export default function AdminLayout({
   return (
     <div className="pt-20 md:pt-24 min-h-screen">
       <div className="container-custom py-8 md:py-12">
+        <AdminOperatorBanner />
+        <AdminSubNav />
         {children}
       </div>
     </div>

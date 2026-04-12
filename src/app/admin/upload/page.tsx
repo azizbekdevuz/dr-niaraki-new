@@ -14,14 +14,43 @@ import {
   Check,
   LogOut,
   History,
+  Layers,
+  Package,
   Settings,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
 import type { Details } from '@/types/details';
 
 type TabType = 'profile' | 'about' | 'publications' | 'patents' | 'contact';
+
+function LegacyEditorialModelNotice({ uploadMetaNote }: { uploadMetaNote: string | null }) {
+  return (
+    <div className="card p-4 mb-6 border-warning/40 bg-warning/5">
+      <div className="flex items-start gap-2">
+        <AlertTriangle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
+        <div className="text-xs text-muted space-y-2">
+          <p>
+            <span className="font-medium text-foreground">Legacy:</span> “Commit” on this page targets the old{' '}
+            <strong>GitHub / JSON</strong> path (details dataset), not Prisma drafts. The public site reads{' '}
+            <strong>published DB</strong> first, then canonical fallback — wire content through{' '}
+            <Link href="/admin/imports" className="text-accent-primary hover:underline">
+              Imports
+            </Link>{' '}
+            and{' '}
+            <Link href="/admin/content" className="text-accent-primary hover:underline">
+              Site content
+            </Link>
+            .
+          </p>
+          {uploadMetaNote ? <p>{uploadMetaNote}</p> : null}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminUploadPage() {
   const router = useRouter();
@@ -43,6 +72,8 @@ export default function AdminUploadPage() {
   // Commit result
   const [commitSha, setCommitSha] = useState<string | null>(null);
   const [commitUrl, setCommitUrl] = useState<string | null>(null);
+  const [commitDomainNote, setCommitDomainNote] = useState<string | null>(null);
+  const [uploadMetaNote, setUploadMetaNote] = useState<string | null>(null);
 
   // Check auth status
   useEffect(() => {
@@ -112,6 +143,7 @@ export default function AdminUploadPage() {
         setParsedData(data.data);
         setWarnings(data.warnings || []);
         setValidationErrors(data.validation?.errors || []);
+        setUploadMetaNote(typeof data.legacyUploadMetaNote === 'string' ? data.legacyUploadMetaNote : null);
       } else {
         setError(data.message || 'Upload failed');
       }
@@ -144,10 +176,15 @@ export default function AdminUploadPage() {
       const data = await res.json();
       
       if (data.success) {
+        setCommitDomainNote(typeof data.importDomainNote === 'string' ? data.importDomainNote : null);
         if (data.commitSha) {
           setCommitSha(data.commitSha);
           setCommitUrl(data.commitUrl);
-          setSuccess('Data committed successfully! Vercel will auto-deploy.');
+          setSuccess(
+            data.legacyDetailsJsonCommit
+              ? 'Legacy JSON commit completed (GitHub). This does not update the live DB-backed site by itself — use Imports → merge → publish for the modern path.'
+              : 'Data committed successfully! Vercel will auto-deploy.',
+          );
         } else {
           setSuccess(data.message);
         }
@@ -189,7 +226,10 @@ export default function AdminUploadPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-foreground">Upload CV</h1>
-              <p className="text-muted text-sm">Upload and parse DOCX file to update site data</p>
+              <p className="text-muted text-sm">
+                Parse DOCX into an import candidate — prefer <strong>Imports</strong> → merge to draft →{' '}
+                <strong>Site content</strong> → publish for the live site.
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -200,6 +240,20 @@ export default function AdminUploadPage() {
               <History className="w-4 h-4" />
               <span>History</span>
             </a>
+            <a
+              href="/admin/content"
+              className="flex items-center gap-2 text-muted hover:text-foreground transition-colors"
+            >
+              <Layers className="w-4 h-4" />
+              <span>Site content</span>
+            </a>
+            <Link
+              href="/admin/imports"
+              className="flex items-center gap-2 text-muted hover:text-foreground transition-colors"
+            >
+              <Package className="w-4 h-4" />
+              <span>Imports</span>
+            </Link>
             <a
               href="/admin/devices"
               className="flex items-center gap-2 text-muted hover:text-foreground transition-colors"
@@ -217,6 +271,8 @@ export default function AdminUploadPage() {
           </div>
         </div>
 
+        <LegacyEditorialModelNotice uploadMetaNote={uploadMetaNote} />
+
         {/* Success Banner */}
         {success && (
           <div className="card p-4 mb-6 border-success bg-success/5">
@@ -224,6 +280,7 @@ export default function AdminUploadPage() {
               <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-medium text-foreground">{success}</p>
+                {commitDomainNote ? <p className="text-xs text-muted mt-2">{commitDomainNote}</p> : null}
                 {commitSha && (
                   <div className="mt-2 text-sm text-muted">
                     <p>Commit SHA: <code className="bg-surface-secondary px-2 py-1 rounded">{commitSha}</code></p>

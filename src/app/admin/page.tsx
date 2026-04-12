@@ -15,6 +15,7 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [checkingStatus, setCheckingStatus] = useState(true);
+  const [loginDisabledReason, setLoginDisabledReason] = useState<string | null>(null);
 
   // Check if already logged in
   useEffect(() => {
@@ -22,8 +23,10 @@ export default function AdminLoginPage() {
       try {
         const res = await fetch('/api/admin/status');
         const data = await res.json();
-        
-        if (data.isLoggedIn) {
+
+        if (typeof data.loginDisabledReason === 'string' && data.loginDisabledReason) {
+          setLoginDisabledReason(data.loginDisabledReason);
+        } else if (data.isLoggedIn) {
           if (data.hasValidDevice) {
             router.push('/admin/upload');
           } else {
@@ -57,12 +60,14 @@ export default function AdminLoginPage() {
       if (data.success) {
         // Wait a moment for cookie to be set, then redirect
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         if (data.isDeviceRegistered) {
           router.push('/admin/upload');
         } else {
           router.push('/admin/devices');
         }
+      } else if (data.code === 'ADMIN_SECRET_REQUIRED' && typeof data.message === 'string') {
+        setLoginDisabledReason(data.message);
       } else {
         setError(data.message || 'Login failed');
       }
@@ -77,6 +82,27 @@ export default function AdminLoginPage() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-accent-primary" />
+      </div>
+    );
+  }
+
+  if (loginDisabledReason) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center px-4">
+        <div className="w-full max-w-md card p-8">
+          <div className="flex items-start gap-3 text-error text-sm">
+            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-foreground mb-2">Admin sign-in unavailable</p>
+              <p>{loginDisabledReason}</p>
+            </div>
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/" className="text-muted text-sm hover:text-foreground transition-colors">
+              ← Back to website
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
