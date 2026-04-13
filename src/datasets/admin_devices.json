@@ -17,7 +17,16 @@
       "registeredAt": "2026-04-13T03:24:52.672Z",
       "lastUsedAt": "2026-04-13T03:59:49.539Z",
       "expiresAt": "2027-04-13T03:24:52.671Z"
+    },
+    {
+      "id": "5f86e666-3705-47ed-8c16-d352cdecbe96",
+      "label": "another",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+      "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3",
+      "registeredAt": "2026-04-13T06:14:51.375Z",
+      "lastUsedAt": "2026-04-13T06:14:51.375Z",
+      "expiresAt": "2027-04-13T06:14:51.375Z"
     }
   ],
-  "lastModified": "2026-04-13T06:14:47.633Z"
+  "lastModified": "2026-04-13T06:14:51.751Z"
 }
