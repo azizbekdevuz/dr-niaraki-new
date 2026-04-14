@@ -8,12 +8,12 @@ import {
 import React, { memo, useCallback, useMemo } from "react";
 
 import { useDevice } from "@/components/shared/DeviceProvider";
-import type { Award, Experience, TimelineItem } from "@/data/about/aboutInfo";
+import type { AboutAwardItem, AboutExperienceItem, AboutJourneyItem } from "@/content/types";
 import { useAboutAnimations } from "@/hooks/useAboutAnimations";
 import { getTextVariant } from "@/styles/textSystem";
 
 interface ExpandableCardProps {
-  readonly item: TimelineItem | Experience | Award;
+  readonly item: AboutJourneyItem | AboutExperienceItem | AboutAwardItem;
   readonly index: number;
   readonly isExpanded: boolean;
   readonly onToggle: (index: number) => void;
@@ -34,12 +34,12 @@ interface CardContent {
 }
 
 const getCardContent = (
-  item: TimelineItem | Experience | Award,
+  item: AboutJourneyItem | AboutExperienceItem | AboutAwardItem,
   type: 'journey' | 'experience' | 'award'
 ): CardContent | null => {
   switch (type) {
     case 'journey': {
-      const journeyItem = item as TimelineItem;
+      const journeyItem = item as AboutJourneyItem;
       return {
         title: journeyItem.title,
         subtitle: journeyItem.institution,
@@ -49,7 +49,7 @@ const getCardContent = (
       };
     }
     case 'experience': {
-      const expItem = item as Experience;
+      const expItem = item as AboutExperienceItem;
       return {
         title: expItem.position,
         subtitle: expItem.institution,
@@ -63,7 +63,7 @@ const getCardContent = (
       };
     }
     case 'award': {
-      const awardItem = item as Award;
+      const awardItem = item as AboutAwardItem;
       return {
         title: awardItem.title,
         subtitle: awardItem.organization,

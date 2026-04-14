@@ -18,6 +18,8 @@ import {
 import Link from 'next/link';
 import React, { useState } from 'react';
 
+import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,86 +34,19 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-// Research interests data
-const researchInterests = [
-  {
-    id: 'geo-ai',
-    name: 'Geo-AI & Spatial Computing',
-    description: 'Integration of artificial intelligence with geographic information systems for smart city applications, spatial analysis, and decision support systems.',
-    keywords: ['Machine Learning', 'Deep Learning', 'Spatial Analysis', 'GIS', 'Smart Cities'],
-    icon: Lightbulb,
-  },
-  {
-    id: 'xr',
-    name: 'Extended Reality (XR)',
-    description: 'Research in Virtual Reality (VR), Augmented Reality (AR), and Mixed Reality (MR) applications for education, navigation, and human-computer interaction.',
-    keywords: ['VR', 'AR', 'MR', 'Metaverse', 'HCI'],
-    icon: Microscope,
-  },
-  {
-    id: 'iot',
-    name: 'IoT & Ubiquitous Computing',
-    description: 'Development of sensor networks, ubiquitous systems, and context-aware computing solutions for environmental monitoring and smart environments.',
-    keywords: ['Sensors', 'Ubiquitous GIS', 'Context-Aware', 'Smart Environment'],
-    icon: FolderGit2,
-  },
-  {
-    id: 'nlp',
-    name: 'NLP & Language Models',
-    description: 'Natural Language Processing applications including semantic analysis, information retrieval, and integration with geospatial systems.',
-    keywords: ['NLP', 'LLM', 'Semantic Web', 'Information Retrieval'],
-    icon: Lightbulb,
-  },
-];
-
-// Research projects data
-const researchProjects = [
-  {
-    id: 'xr-metaverse',
-    title: 'Super-Realistic XR Technology Research Center',
-    description: 'Research in Real-Virtual Interconnected Metaverse, developing cutting-edge XR technologies for immersive experiences.',
-    period: '2022 - 2030',
-    funding: 'IITP, Ministry of Science and ICT',
-    amount: '~$750,000/year',
-    status: 'ongoing',
-    role: 'Key Research Member',
-  },
-  {
-    id: 'mvr-rc',
-    title: 'Mobile Virtual Reality Research Center (MVR-RC)',
-    description: 'International mega research project collaborating with 14 universities across 8 countries and 11 industrial companies.',
-    period: '2017 - 2021',
-    funding: 'Korean Ministry of Science and ICT',
-    amount: '~$660,000/year',
-    status: 'completed',
-    role: 'Key Research Member',
-  },
-  {
-    id: 'ksp',
-    title: 'Knowledge Sharing Project (KSP)',
-    description: 'Industry/Trade Policy Consulting with ETRI and Iranian Vice Presidency for Science and Technology.',
-    period: '2016 - 2017',
-    funding: 'Ministry of Strategy and Finance',
-    amount: '$300,000',
-    status: 'completed',
-    role: 'Strategic Consultant',
-  },
-  {
-    id: 'malaria',
-    title: 'Malaria Susceptibility Mapping',
-    description: 'Development of GIS-based decision-making application for healthcare mapping and disease susceptibility analysis.',
-    period: '2013 - 2015',
-    funding: 'Korean National Research Foundation',
-    amount: '$30,000',
-    status: 'completed',
-    role: 'Principal Investigator',
-  },
-];
+const RESEARCH_INTEREST_ICONS = {
+  Lightbulb,
+  Microscope,
+  FolderGit2,
+} as const;
 
 // Filter options
 type StatusFilter = 'all' | 'ongoing' | 'completed';
 
 export default function ResearchPage() {
+  const siteContent = usePublicSiteContent();
+  const { heroIntro, collaborationHeading, collaborationBody, interests: researchInterests, projects: researchProjects } =
+    siteContent.research;
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
   const filteredProjects = researchProjects.filter(
@@ -135,8 +70,7 @@ export default function ResearchPage() {
               Research
             </motion.h1>
             <motion.p variants={itemVariants} className="text-secondary max-w-2xl mx-auto">
-              Advancing the frontiers of Geo-AI, Extended Reality, and Human-Computer Interaction 
-              through innovative research and international collaboration.
+              {heroIntro}
             </motion.p>
           </motion.div>
         </div>
@@ -157,7 +91,9 @@ export default function ResearchPage() {
             </motion.h2>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {researchInterests.map((interest) => (
+              {researchInterests.map((interest) => {
+                const InterestIcon = RESEARCH_INTEREST_ICONS[interest.iconName];
+                return (
                 <motion.div
                   key={interest.id}
                   variants={itemVariants}
@@ -165,7 +101,7 @@ export default function ResearchPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-lg bg-accent-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent-primary/20 transition-colors">
-                      <interest.icon className="w-6 h-6 text-accent-primary" />
+                      <InterestIcon className="w-6 h-6 text-accent-primary" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-foreground mb-2">{interest.name}</h3>
@@ -183,7 +119,8 @@ export default function ResearchPage() {
                     </div>
                   </div>
                 </motion.div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
         </div>
@@ -288,11 +225,10 @@ export default function ResearchPage() {
             className="card p-8 md:p-12 text-center bg-gradient-to-br from-accent-primary/5 to-accent-secondary/5"
           >
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Interested in Research Collaboration?
+              {collaborationHeading}
             </h2>
             <p className="text-muted mb-8 max-w-2xl mx-auto">
-              I&apos;m always looking for talented researchers and students to collaborate on 
-              cutting-edge projects in Geo-AI, XR, and spatial computing.
+              {collaborationBody}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact" className="btn-primary px-8 py-3 flex items-center gap-2">

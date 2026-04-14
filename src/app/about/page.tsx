@@ -19,12 +19,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import {
-  ACADEMIC_JOURNEY,
-  PROFESSIONAL_EXPERIENCES,
-  NOTABLE_AWARDS,
-  CAREER_STATS,
-} from '@/data/about/aboutInfo';
+import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
 
 // Animation variants
 const containerVariants = {
@@ -40,14 +35,18 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-const stats = [
-  { icon: BookOpen, value: `${CAREER_STATS.publications}+`, label: 'Publications' },
-  { icon: Users, value: `${CAREER_STATS.students_supervised}+`, label: 'Students Mentored' },
-  { icon: Globe, value: `${CAREER_STATS.countries_collaborated}+`, label: 'Countries' },
-  { icon: Award, value: `${CAREER_STATS.citations}+`, label: 'Citations' },
-];
-
 export default function AboutPage() {
+  const siteContent = usePublicSiteContent();
+  const { journey, experiences, awards, stats, page } = siteContent.about;
+  const { displayName, roleLine, photoSrc, photoAlt, aboutIntroTagline, aboutSkillTags } =
+    siteContent.profile;
+
+  const statsRow = [
+    { icon: BookOpen, value: `${stats.publications}+`, label: 'Publications' },
+    { icon: Users, value: `${stats.studentsSupervised}+`, label: 'Graduate students supervised' },
+    { icon: Globe, value: `${stats.countriesCollaborated}+`, label: 'Countries' },
+    { icon: Award, value: `${stats.thesesExamined}+`, label: 'Theses examined (external)' },
+  ];
 
   return (
     <main className="min-h-screen pt-20">
@@ -65,8 +64,8 @@ export default function AboutPage() {
               <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 blur-2xl" />
                 <Image
-                  src="/images/profpic.jpg"
-                  alt="Dr. Abolghasem Sadeghi-Niaraki"
+                  src={photoSrc}
+                  alt={photoAlt}
                   fill
                   className="rounded-full object-cover border-4 border-accent-primary/30"
                   priority
@@ -77,27 +76,25 @@ export default function AboutPage() {
             {/* Content */}
             <motion.div variants={itemVariants} className="order-1 lg:order-2">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-                Dr. Abolghasem Sadeghi-Niaraki
+                {displayName}
               </h1>
               <p className="text-accent-primary text-lg md:text-xl mb-4">
-                Associate Professor, Computer Science & Engineering
+                {roleLine}
               </p>
               <p className="text-secondary leading-relaxed mb-6">
-                A distinguished researcher and educator at Sejong University, pioneering the integration 
-                of Extended Reality (XR) and Artificial Intelligence with Geographic Information Systems. 
-                Recognized among the Top 2% Scientists worldwide in the Stanford-Elsevier 2024 dataset.
+                {aboutIntroTagline}
               </p>
               
               <div className="flex flex-wrap gap-3">
-                <span className="px-4 py-2 rounded-full bg-accent-primary/10 text-accent-primary text-sm">
-                  Geo-AI
-                </span>
-                <span className="px-4 py-2 rounded-full bg-accent-secondary/10 text-accent-secondary text-sm">
-                  Extended Reality
-                </span>
-                <span className="px-4 py-2 rounded-full bg-accent-tertiary/10 text-accent-tertiary text-sm">
-                  Machine Learning
-                </span>
+                {aboutSkillTags.map((tag, i) => {
+                  const palette = ['bg-accent-primary/10 text-accent-primary', 'bg-accent-secondary/10 text-accent-secondary', 'bg-accent-tertiary/10 text-accent-tertiary'] as const;
+                  const cls = palette[i % palette.length];
+                  return (
+                    <span key={tag} className={`px-4 py-2 rounded-full text-sm ${cls}`}>
+                      {tag}
+                    </span>
+                  );
+                })}
               </div>
             </motion.div>
           </motion.div>
@@ -114,7 +111,7 @@ export default function AboutPage() {
             variants={containerVariants}
             className="grid grid-cols-2 md:grid-cols-4 gap-6"
           >
-            {stats.map((stat) => (
+            {statsRow.map((stat) => (
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
@@ -142,23 +139,11 @@ export default function AboutPage() {
               Professional Summary
             </motion.h2>
             <motion.div variants={itemVariants} className="card p-6 md:p-8">
-              <p className="text-secondary leading-relaxed mb-4">
-                Dr. Abolghasem Sadeghi-Niaraki is an Associate Professor in the Department of Computer Science 
-                and Engineering at the XR (eXtended Reality) Metaverse Research Center, Sejong University, 
-                Republic of Korea, where he has been a faculty member since 2017. From 2009 to 2017, he served 
-                as an Assistant Professor in the Department of Geo-Informatics Engineering at INHA University.
-              </p>
-              <p className="text-secondary leading-relaxed mb-4">
-                He was honored as one of the top 100 international distinguished researchers by the Australian 
-                Government, receiving the prestigious Endeavour Fellowship Award in 2012. He was recently 
-                appointed as a Fellow at the Spatial Data Lab (SDL) within the Center for Geographic Analysis 
-                at Harvard University.
-              </p>
-              <p className="text-secondary leading-relaxed">
-                With expertise in Geo-AI, Virtual Reality (VR), Mixed Reality (MR), and Extended Reality (XR) 
-                applications within GIS, he has led groundbreaking research supported by the Korean Ministry 
-                of Science and ICT, pushing the boundaries of immersive technologies in spatial data systems.
-              </p>
+              {page.professionalSummaryParagraphs.map((paragraph, idx) => (
+                <p key={idx} className="text-secondary leading-relaxed mb-4 last:mb-0">
+                  {paragraph}
+                </p>
+              ))}
             </motion.div>
           </motion.div>
         </div>
@@ -179,7 +164,7 @@ export default function AboutPage() {
             </motion.h2>
             
             <div className="space-y-6">
-              {ACADEMIC_JOURNEY.map((item) => (
+              {journey.map((item) => (
                 <motion.div
                   key={item.id}
                   variants={itemVariants}
@@ -219,7 +204,7 @@ export default function AboutPage() {
             </motion.h2>
             
             <div className="space-y-6">
-              {PROFESSIONAL_EXPERIENCES.map((exp) => (
+              {experiences.map((exp) => (
                 <motion.div
                   key={exp.id}
                   variants={itemVariants}
@@ -271,7 +256,7 @@ export default function AboutPage() {
             </motion.h2>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {NOTABLE_AWARDS.map((award) => (
+              {awards.map((award) => (
                 <motion.div
                   key={award.id}
                   variants={itemVariants}
@@ -300,11 +285,10 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Interested in Collaboration?
+              {page.collaborationHeading}
             </h2>
             <p className="text-muted mb-8 max-w-2xl mx-auto">
-              I&apos;m always open to discussing research opportunities, academic partnerships, 
-              and innovative projects in Geo-AI and Extended Reality.
+              {page.collaborationBody}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact" className="btn-primary px-8 py-3 flex items-center gap-2">

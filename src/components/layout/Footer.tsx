@@ -5,36 +5,13 @@ import Link from 'next/link';
 import React from 'react';
 
 import { useDevice } from '@/components/shared/DeviceProvider';
-
-
-const quickLinks = [
-  { href: '/research', label: 'Research Areas' },
-  { href: '/publications', label: 'Recent Publications' },
-  { href: '/patents', label: 'Patents' },
-  { href: '/contact', label: 'Contact' },
-];
-
-const socialLinks = [
-  { 
-    href: 'https://scholar.google.com/citations?user=-V8_A5YAAAAJ&hl=en', 
-    label: 'Google Scholar',
-    icon: '🎓'
-  },
-  { 
-    href: 'https://www.linkedin.com/in/abolghasemsadeghi-n/', 
-    label: 'LinkedIn',
-    icon: '💼'
-  },
-  { 
-    href: 'mailto:a.sadeghi@sejong.ac.kr', 
-    label: 'Email',
-    icon: '📧'
-  },
-];
+import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
 
 export default function Footer() {
   const { isMobile } = useDevice();
+  const siteContent = usePublicSiteContent();
   const currentYear = new Date().getFullYear();
+  const { aboutHeading, aboutBlurb, quickLinks, socialLinks, copyrightName } = siteContent.layout.footer;
 
   return (
     <footer className="relative z-10 mt-auto">
@@ -47,11 +24,10 @@ export default function Footer() {
             {/* About Section */}
             <div>
               <h3 className="text-base md:text-lg font-semibold gradient-text mb-3 md:mb-4">
-                Dr. Sadeghi-Niaraki
+                {aboutHeading}
               </h3>
               <p className="text-xs md:text-sm text-foreground/70 leading-relaxed">
-                Associate Professor at Sejong University, specializing in Extended Reality, 
-                Artificial Intelligence, and Geospatial Information Systems.
+                {aboutBlurb}
               </p>
             </div>
 
@@ -103,7 +79,7 @@ export default function Footer() {
           {/* Copyright */}
           <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-primary">
             <p className="text-xs text-foreground/50 text-center">
-              © {currentYear} Dr. Abolghasem Sadeghi-Niaraki. All rights reserved.
+              © {currentYear} {copyrightName}. All rights reserved.
             </p>
           </div>
         </div>

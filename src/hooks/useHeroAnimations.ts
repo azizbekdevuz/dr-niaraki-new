@@ -24,7 +24,7 @@ export const useHeroAnimations = () => {
     content: {
       ...MOTION_PRESETS.slideUp,
       transition: { 
-        delay: ANIMATION_DELAYS.LONG, 
+        delay: ANIMATION_DELAYS.MEDIUM + ANIMATION_DELAYS.SHORT, 
         duration: ANIMATION_DURATION.SLOW, 
         ease: ANIMATION_EASE.EASE_OUT 
       },
@@ -32,7 +32,7 @@ export const useHeroAnimations = () => {
     social: {
       ...MOTION_PRESETS.stagger,
       transition: { 
-        delay: ANIMATION_DELAYS.VERY_LONG, 
+        delay: ANIMATION_DELAYS.LONG + ANIMATION_DELAYS.SHORT, 
         duration: ANIMATION_DURATION.NORMAL, 
         ease: ANIMATION_EASE.EASE_OUT 
       },

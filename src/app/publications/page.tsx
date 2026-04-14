@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 
+import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,98 +34,6 @@ const itemVariants = {
 
 // Publication types
 type PublicationType = 'all' | 'journal' | 'conference' | 'book';
-
-// Sample publications data (would come from details.json in production)
-const publications = [
-  {
-    id: '1',
-    title: 'Cutting-Edge Strategies for Absence Data Identification in Natural Hazards: Leveraging Voronoi-Entropy in Flood Susceptibility Mapping with Advanced AI Techniques',
-    authors: 'Razavi-Termeh, S. V., Sadeghi-Niaraki, A., et al.',
-    journal: 'Journal of Hydrology',
-    year: 2024,
-    type: 'journal',
-    impactFactor: '5.9',
-    quartile: 'Q1',
-    doi: '10.1016/j.jhydrol.2024.xxx',
-  },
-  {
-    id: '2',
-    title: 'Spatio-Temporal Modeling of Asthma-Prone Areas: Exploring the Influence of Urban Climate Factors with Explainable Artificial Intelligence (XAI)',
-    authors: 'Razavi-Termeh, S. V., Sadeghi-Niaraki, A., et al.',
-    journal: 'Sustainable Cities and Society',
-    year: 2024,
-    type: 'journal',
-    impactFactor: '10.5',
-    quartile: 'Q1',
-    doi: '10.1016/j.scs.2024.xxx',
-  },
-  {
-    id: '3',
-    title: 'Assessment of Noise Pollution-Prone Areas using an Explainable Geospatial Artificial Intelligence Approach',
-    authors: 'Razavi-Termeh, S. V., Sadeghi-Niaraki, A., et al.',
-    journal: 'Journal of Environmental Management',
-    year: 2024,
-    type: 'journal',
-    impactFactor: '8.0',
-    quartile: 'Q1',
-    doi: '10.1016/j.jenvman.2024.xxx',
-  },
-  {
-    id: '4',
-    title: 'Internet of Thing (IoT) review of review: Bibliometric overview since its foundation',
-    authors: 'Sadeghi-Niaraki, A.',
-    journal: 'Future Generation Computer Systems',
-    year: 2023,
-    type: 'journal',
-    impactFactor: '7.3',
-    quartile: 'Q1',
-    doi: '10.1016/j.future.2023.xxx',
-  },
-  {
-    id: '5',
-    title: 'AR Search Engine: Semantic Information Retrieval for Augmented Reality Domain',
-    authors: 'Shakeri, M., Sadeghi-Niaraki, A., et al.',
-    journal: 'Sustainability',
-    year: 2022,
-    type: 'journal',
-    impactFactor: '3.9',
-    quartile: 'Q2',
-    doi: '10.3390/su142315681',
-  },
-  {
-    id: '6',
-    title: 'Ontology-based and User-centric Spatial Modeling in GIS: Basics, Concepts, Methods, Applications',
-    authors: 'Sadeghi-Niaraki, A.',
-    journal: 'VDM Publishing',
-    year: 2009,
-    type: 'book',
-  },
-  {
-    id: '7',
-    title: 'Python Programming for Engineering especially for GIS Engineering',
-    authors: 'Sadeghi-Niaraki, A., Shakeri, M.',
-    journal: 'K.N.Toosi University Publication',
-    year: 2015,
-    type: 'book',
-  },
-  {
-    id: '8',
-    title: 'Spatial Analysis Programming using Python',
-    authors: 'Sadeghi-Niaraki, A., Shakeri, M.',
-    journal: 'K.N.Toosi University Publication',
-    year: 2016,
-    type: 'book',
-  },
-];
-
-// Stats
-const publicationStats = {
-  total: 200,
-  journals: 120,
-  conferences: 60,
-  books: 5,
-  citations: 2500,
-};
 
 function getTypeStyle(type: string): string {
   if (type === 'journal') {
@@ -146,13 +56,16 @@ function getTypeLabel(type: string): string {
 }
 
 export default function PublicationsPage() {
+  const siteContent = usePublicSiteContent();
+  const { heroIntro, scholarUrl, stats: publicationStats, items: publicationItems } =
+    siteContent.publications;
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<PublicationType>('all');
   const [yearSort, setYearSort] = useState<'desc' | 'asc'>('desc');
 
   // Filter and sort publications
   const filteredPublications = useMemo(() => {
-    return publications
+    return publicationItems
       .filter((pub) => {
         const matchesSearch =
           searchQuery === '' ||
@@ -165,7 +78,7 @@ export default function PublicationsPage() {
       .sort((a, b) => {
         return yearSort === 'desc' ? b.year - a.year : a.year - b.year;
       });
-  }, [searchQuery, typeFilter, yearSort]);
+  }, [searchQuery, typeFilter, yearSort, publicationItems]);
 
   return (
     <main className="min-h-screen pt-20">
@@ -184,14 +97,13 @@ export default function PublicationsPage() {
               Publications
             </motion.h1>
             <motion.p variants={itemVariants} className="text-secondary max-w-2xl mx-auto mb-8">
-              Over 200 peer-reviewed publications in top-tier international journals and conferences,
-              contributing to the advancement of Geo-AI, XR, and spatial computing.
+              {heroIntro}
             </motion.p>
             
             {/* Google Scholar Link */}
             <motion.a
               variants={itemVariants}
-              href="https://scholar.google.com/citations?user=-V8_A5YAAAAJ&hl=en"
+              href={scholarUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-accent-primary hover:underline"
@@ -213,7 +125,7 @@ export default function PublicationsPage() {
               { label: 'Journal Papers', value: `${publicationStats.journals}+`, icon: BookOpen },
               { label: 'Conferences', value: `${publicationStats.conferences}+`, icon: FileText },
               { label: 'Books', value: `${publicationStats.books}`, icon: Book },
-              { label: 'Citations', value: `${publicationStats.citations}+`, icon: Award },
+              { label: 'Ph.D. advised', value: `${publicationStats.phdAdvised}+`, icon: Award },
             ].map((stat) => (
               <div key={stat.label} className="text-center p-4">
                 <stat.icon className="w-6 h-6 mx-auto mb-2 text-accent-primary" />
@@ -334,7 +246,7 @@ export default function PublicationsPage() {
           {/* Load More / See All */}
           <div className="mt-8 text-center">
             <a
-              href="https://scholar.google.com/citations?user=-V8_A5YAAAAJ&hl=en"
+              href={scholarUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-secondary px-8 py-3 inline-flex items-center gap-2"

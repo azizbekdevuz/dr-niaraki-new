@@ -7,11 +7,7 @@ import React from "react";
 
 import { useDevice } from "@/components/shared/DeviceProvider";
 import VideoPlayer from "@/components/shared/VideoS";
-import { 
-  ACADEMIC_JOURNEY, 
-  PROFESSIONAL_EXPERIENCES, 
-  NOTABLE_AWARDS,
-} from "@/data/about/aboutInfo";
+import { usePublicSiteContent } from "@/contexts/PublicSiteContentContext";
 import { useAboutAnalytics } from "@/hooks/useAboutAnalytics";
 import { useAboutAnimations } from "@/hooks/useAboutAnimations";
 import { useAboutExpansion } from "@/hooks/useAboutExpansion";
@@ -31,6 +27,9 @@ const ctaButtonAnimation = {
 } as const;
 
 const About: React.FC<AboutProps> = ({ className = "" }) => {
+  const siteContent = usePublicSiteContent();
+  const { journey, experiences, awards } = siteContent.about;
+  const { aboutSectionHeading, aboutSectionIntro, researchInActionCaption } = siteContent.home;
   const { isMobile } = useDevice();
   const { aboutAnimations, sectionReveal, statAnimations } = useAboutAnimations();
   const {
@@ -56,11 +55,10 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
           className="text-center mb-12 md:mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6">
-            About Dr. Niaraki-Sadeghi
+            {aboutSectionHeading}
           </h2>
           <p className={`${textVariants.body.dark} max-w-3xl mx-auto mt-4 md:mt-6`}>
-            A distinguished researcher and educator dedicated to advancing the frontiers of 
-            Extended Reality and Artificial Intelligence in academic and industrial settings.
+            {aboutSectionIntro}
           </p>
         </motion.div>
 
@@ -77,7 +75,7 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
             <motion.div {...sectionReveal}>
               <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 md:mb-8">Academic Journey</h3>
               <div className="space-y-3 md:space-y-4">
-                {ACADEMIC_JOURNEY.map((item, index) => (
+                {journey.map((item, index) => (
                   <ExpandableCard
                     key={item.id}
                     item={item}
@@ -94,7 +92,7 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
             <motion.div {...sectionReveal}>
               <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 md:mb-8">Professional Experience</h3>
               <div className="space-y-3 md:space-y-4">
-                {PROFESSIONAL_EXPERIENCES.map((item, index) => (
+                {experiences.map((item, index) => (
                   <ExpandableCard
                     key={item.id}
                     item={item}
@@ -115,7 +113,7 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
             <motion.div {...sectionReveal}>
               <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 md:mb-8">Notable Awards</h3>
               <div className="space-y-3 md:space-y-4">
-                {NOTABLE_AWARDS.map((item, index) => (
+                {awards.map((item, index) => (
                   <ExpandableCard
                     key={item.id}
                     item={item}
@@ -138,7 +136,7 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
                 <VideoPlayer className="" />
               </div>
               <p className={`${textVariants.body.dark} mt-4 text-sm`}>
-                Demonstration of cutting-edge XR applications in educational environments.
+                {researchInActionCaption}
               </p>
             </motion.div>
           </div>

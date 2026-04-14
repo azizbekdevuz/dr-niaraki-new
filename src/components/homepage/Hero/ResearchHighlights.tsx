@@ -7,7 +7,7 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 
-import { RESEARCH_CARDS } from "@/config/constants";
+import { usePublicSiteContent } from "@/contexts/PublicSiteContentContext";
 import type { MotionVariant, CardAnimationProps, TransitionFunction } from "@/types/animations";
 
 import InteractiveCard from "./InteractiveCard";
@@ -33,6 +33,7 @@ const ResearchHighlights: React.FC<ResearchHighlightsProps> = ({
   className 
 }) => {
   const router = useRouter();
+  const siteContent = usePublicSiteContent();
 
   return (
     <section className={`py-12 md:py-16 lg:py-20 ${className || ''}`}>
@@ -44,7 +45,7 @@ const ResearchHighlights: React.FC<ResearchHighlightsProps> = ({
       </motion.h2>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-        {RESEARCH_CARDS.map((card, index) => {
+        {siteContent.home.researchCards.map((card, index) => {
           const Icon = ICON_MAP[card.iconName as keyof typeof ICON_MAP];
           
           return (

@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
 
 // Animation variants
 const containerVariants = {
@@ -36,41 +37,16 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-// Contact info
-const contactInfo = {
-  email: 'a.sadeghi@sejong.ac.kr',
-  personalEmail: 'a.sadeqi313@gmail.com',
-  phone: '+82 2-3408-2981',
-  fax: '+82 2-3408-4321',
-  cellPhone: '+82 10 4253-5-313',
-  address: '209- Gwangjin-gu, Gunja-dong, Neungdong-ro, Seoul, Republic of Korea',
-  department: 'Dept. of Computer Science & Engineering',
-  university: 'Sejong University',
-  website: 'www.abolghasemsadeghi-n.com',
-};
-
-const socialLinks = [
-  {
-    name: 'Google Scholar',
-    url: 'https://scholar.google.com/citations?user=-V8_A5YAAAAJ&hl=en',
-    icon: GraduationCap,
-    color: 'text-blue-400',
-  },
-  {
-    name: 'LinkedIn',
-    url: 'https://kr.linkedin.com/in/abolghasem-sadeghi-niaraki-62669b14',
-    icon: Linkedin,
-    color: 'text-blue-500',
-  },
-  {
-    name: 'Sejong University',
-    url: 'https://sejong.elsevierpure.com/en/persons/sadeghi-niaraki-abolghasem',
-    icon: Building,
-    color: 'text-accent-primary',
-  },
-];
+const CONTACT_SOCIAL_ICON_MAP = {
+  GraduationCap,
+  Linkedin,
+  Building,
+} as const;
 
 export default function ContactPage() {
+  const siteContent = usePublicSiteContent();
+  const { heroHeading, heroSubtext, mapPlaceLabel, mapQueryUrl, info: contactInfo, socialLinks } =
+    siteContent.contact;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -109,11 +85,10 @@ export default function ContactPage() {
               <Mail className="w-10 h-10 text-accent-primary" />
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-              Get in Touch
+              {heroHeading}
             </motion.h1>
             <motion.p variants={itemVariants} className="text-secondary max-w-2xl mx-auto">
-              Interested in research collaboration, academic partnerships, or have questions?
-              I&apos;d love to hear from you.
+              {heroSubtext}
             </motion.p>
           </motion.div>
         </div>
@@ -197,12 +172,12 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-medium text-foreground mb-1">Website</h3>
                       <a
-                        href={`https://${contactInfo.website}`}
+                        href={`https://${contactInfo.websiteDisplay}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-accent-primary hover:underline flex items-center gap-1"
                       >
-                        {contactInfo.website}
+                        {contactInfo.websiteDisplay}
                         <ExternalLink className="w-3 h-3" />
                       </a>
                     </div>
@@ -214,7 +189,9 @@ export default function ContactPage() {
               <motion.div variants={itemVariants} className="mt-8">
                 <h3 className="font-medium text-foreground mb-4">Connect</h3>
                 <div className="flex flex-wrap gap-4">
-                  {socialLinks.map((social) => (
+                  {socialLinks.map((social) => {
+                    const SocIcon = CONTACT_SOCIAL_ICON_MAP[social.iconName];
+                    return (
                     <a
                       key={social.name}
                       href={social.url}
@@ -222,10 +199,11 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-secondary hover:bg-surface-hover transition-colors"
                     >
-                      <social.icon className={`w-5 h-5 ${social.color}`} />
+                      <SocIcon className={`w-5 h-5 ${social.colorClass}`} />
                       <span className="text-foreground text-sm">{social.name}</span>
                     </a>
-                  ))}
+                    );
+                  })}
                 </div>
               </motion.div>
             </motion.div>
@@ -363,9 +341,9 @@ export default function ContactPage() {
             <div className="aspect-video bg-surface-tertiary flex items-center justify-center">
               <div className="text-center text-muted">
                 <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Sejong University, Seoul, South Korea</p>
+                <p>{mapPlaceLabel}</p>
                 <a
-                  href="https://maps.google.com/?q=Sejong+University+Seoul"
+                  href={mapQueryUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-accent-primary hover:underline flex items-center justify-center gap-1 mt-2"

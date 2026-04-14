@@ -6,10 +6,12 @@ import { DeviceProvider } from '@/components/shared/DeviceProvider';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
 import { AppStateProvider } from '@/contexts/AppStateContext';
 import { LoadingProvider } from '@/contexts/LoadingContext';
+import { PublicSiteContentProvider } from '@/contexts/PublicSiteContentContext';
 import { getDeviceInfo } from '@/lib/device-info.server';
+import { getPublicSiteContent } from '@/server/content/publicSiteContent';
 
 import AppLayoutContent from './AppLayoutContent';
-import { generateMetadata } from './metadata';
+import { buildSiteMetadata } from './metadata';
 
 import './globals.css';
 import "../styles/atomcursor.css";
@@ -21,8 +23,10 @@ const inter = Inter({
   variable: '--font-inter'
 });
 
-// Use centralized metadata configuration
-export const metadata: Metadata = generateMetadata();
+export async function generateMetadata(): Promise<Metadata> {
+  const { data } = await getPublicSiteContent();
+  return buildSiteMetadata(data);
+}
 
 // Next.js 15 requires viewport to be in separate export
 export const viewport: Viewport = {
@@ -43,24 +47,23 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Get initial device info server-side
   const deviceInfo = await getDeviceInfo();
+  const { data: siteContent } = await getPublicSiteContent();
 
   return (
     <html lang="en" className={inter.variable}>
       <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
-        <LoadingProvider>
-          <DeviceProvider initialDeviceInfo={deviceInfo}>
-            <AppStateProvider>
-              <ErrorBoundary>
-                {/* App content with intelligent loading */}
-                <AppLayoutContent>
-                  {children}
-                </AppLayoutContent>
-              </ErrorBoundary>
-            </AppStateProvider>
-          </DeviceProvider>
-        </LoadingProvider>
+        <PublicSiteContentProvider value={siteContent}>
+          <LoadingProvider>
+            <DeviceProvider initialDeviceInfo={deviceInfo}>
+              <AppStateProvider>
+                <ErrorBoundary>
+                  <AppLayoutContent>{children}</AppLayoutContent>
+                </ErrorBoundary>
+              </AppStateProvider>
+            </DeviceProvider>
+          </LoadingProvider>
+        </PublicSiteContentProvider>
         <Analytics />
       </body>
     </html>

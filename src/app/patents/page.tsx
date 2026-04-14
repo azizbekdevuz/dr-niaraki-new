@@ -17,6 +17,8 @@ import {
 import Link from 'next/link';
 import React, { useState, useMemo } from 'react';
 
+import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,104 +36,15 @@ const itemVariants = {
 // Patent types
 type PatentFilter = 'all' | 'international' | 'korean' | 'pending';
 
-// Sample patents data (would come from details.json in production)
-const patents = [
-  {
-    id: '1',
-    title: 'Tourist Accommodation Recommendation Method and System Using Multi-Criteria Decision-Making and Augmented Reality',
-    number: 'US11,816,804B2',
-    country: 'US',
-    date: 'Nov 14, 2023',
-    inventors: 'Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Somaieh Rokhsaritalemi',
-    status: 'registered',
-    type: 'international',
-  },
-  {
-    id: '2',
-    title: 'IoT-Based Approach Method for Learning Geometric Shapes in Early Childhood and Device Thereof',
-    number: '18/821,509',
-    country: 'US',
-    date: 'Aug 30, 2024',
-    inventors: 'Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, et al.',
-    status: 'pending',
-    type: 'international',
-  },
-  {
-    id: '3',
-    title: 'Semantic Information Retrieval Method for Augmented Reality Domain and Device Thereof',
-    number: '18/818,158',
-    country: 'US',
-    date: 'Aug 28, 2024',
-    inventors: 'Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Tamer Abuhmed',
-    status: 'pending',
-    type: 'international',
-  },
-  {
-    id: '4',
-    title: 'Geospatial Information System-Based Modeling Approach for Leakage Management in Urban Water Distribution Networks',
-    number: '10-2356500',
-    country: 'Korea',
-    date: 'Jan 24, 2022',
-    inventors: 'Abolghasem Sadeghi-Niaraki, Soo-Mi Choi',
-    status: 'registered',
-    type: 'korean',
-  },
-  {
-    id: '5',
-    title: 'Groundwater Potential Mapping Using Integrated Ensemble of Three Bivariate Statistical Models',
-    number: '10-2307898',
-    country: 'Korea',
-    date: 'Sept 27, 2021',
-    inventors: 'Abolghasem Sadeghi-Niaraki, Soo-Mi Choi',
-    status: 'registered',
-    type: 'korean',
-  },
-  {
-    id: '6',
-    title: 'Method and Apparatus for Enhancing Response Coordination through Assessment of Response Network Structural Dynamics',
-    number: '10-22089060',
-    country: 'Korea',
-    date: 'Jan 22, 2021',
-    inventors: 'Abolghasem Sadeghi-Niaraki, Soo-Mi Choi',
-    status: 'registered',
-    type: 'korean',
-  },
-  {
-    id: '7',
-    title: 'Context-Aware Route Finding Algorithm for Self-Driving Tourists Using Ontology',
-    number: '10-2148349',
-    country: 'Korea',
-    date: 'Aug 20, 2020',
-    inventors: 'Abolghasem Sadeghi-Niaraki, Soo-Mi Choi',
-    status: 'registered',
-    type: 'korean',
-  },
-  {
-    id: '8',
-    title: 'Method and Device for Generating a Wildfire Vulnerability Map Using Artificial Intelligence',
-    number: '10-2706021',
-    country: 'Korea',
-    date: 'Sept 09, 2024',
-    inventors: 'Soo-Mi Choi, Abolghasem Sadeghi-Niaraki',
-    status: 'registered',
-    type: 'korean',
-  },
-];
-
-// Stats
-const patentStats = {
-  total: 42,
-  international: 3,
-  korean: 20,
-  pending: 19,
-};
-
 export default function PatentsPage() {
+  const siteContent = usePublicSiteContent();
+  const { heroIntro, licensingHeading, licensingBody, stats: patentStats, items: patentItems } =
+    siteContent.patents;
   const [filter, setFilter] = useState<PatentFilter>('all');
 
   // Filter patents
   const filteredPatents = useMemo(() => {
-    return patents.filter((patent) => {
+    return patentItems.filter((patent) => {
       if (filter === 'all') {
         return true;
       }
@@ -140,7 +53,7 @@ export default function PatentsPage() {
       }
       return patent.type === filter;
     });
-  }, [filter]);
+  }, [filter, patentItems]);
 
   const getStatusIcon = (status: string) => {
     return status === 'registered' ? CheckCircle : Clock;
@@ -167,8 +80,7 @@ export default function PatentsPage() {
               Patents
             </motion.h1>
             <motion.p variants={itemVariants} className="text-secondary max-w-2xl mx-auto">
-              42+ patents registered and completed in spatial analysis, XR technologies, 
-              and AI-driven systems across US and Korea.
+              {heroIntro}
             </motion.p>
           </motion.div>
         </div>
@@ -293,11 +205,10 @@ export default function PatentsPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Interested in Technology Licensing?
+              {licensingHeading}
             </h2>
             <p className="text-muted mb-8 max-w-2xl mx-auto">
-              Our patented technologies are available for licensing and collaboration. 
-              Contact us to explore partnership opportunities.
+              {licensingBody}
             </p>
             <Link href="/contact" className="btn-primary px-8 py-3 inline-flex items-center gap-2">
               Get in Touch

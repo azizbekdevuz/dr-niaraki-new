@@ -1,9 +1,9 @@
 // Animation Constants
 export const ANIMATION_DURATION = {
-  FAST: 0.3,
-  NORMAL: 0.5,
-  SLOW: 0.6,
-  VERY_SLOW: 1.0,
+  FAST: 0.22,
+  NORMAL: 0.38,
+  SLOW: 0.48,
+  VERY_SLOW: 0.75,
 } as const;
 
 export const ANIMATION_EASE = {
@@ -15,10 +15,10 @@ export const ANIMATION_EASE = {
 
 export const ANIMATION_DELAYS = {
   NONE: 0,
-  SHORT: 0.1,
-  MEDIUM: 0.2,
-  LONG: 0.4,
-  VERY_LONG: 0.8,
+  SHORT: 0.06,
+  MEDIUM: 0.12,
+  LONG: 0.22,
+  VERY_LONG: 0.32,
 } as const;
 
 // Layout Constants
@@ -64,50 +64,6 @@ export const PERFORMANCE = {
   LAZY_LOAD_OFFSET: "100px",
   DEBOUNCE_DELAY: 300,
 } as const;
-
-// Social Links Configuration
-export const SOCIAL_LINKS = [
-  {
-    name: "Scholar",
-    url: "https://scholar.google.com/citations?user=-V8_A5YAAAAJ&hl=en",
-    ariaLabel: "Google Scholar Profile",
-    iconName: "GraduationCap",
-  },
-  {
-    name: "LinkedIn", 
-    url: "https://kr.linkedin.com/in/abolghasem-sadeghi-niaraki-62669b14",
-    ariaLabel: "LinkedIn Profile",
-    iconName: "Linkedin",
-  },
-  {
-    name: "Sejong University",
-    url: "https://sejong.elsevierpure.com/en/persons/sadeghi-niaraki-abolghasem",
-    ariaLabel: "Current School Profile", 
-    iconName: "BriefcaseBusiness",
-  },
-] as const;
-
-// Research Cards Configuration
-export const RESEARCH_CARDS = [
-  {
-    title: "Research Projects",
-    description: "Explore ongoing and completed research initiatives.",
-    link: "/research",
-    iconName: "Github",
-  },
-  {
-    title: "Publications", 
-    description: "Access scholarly articles and academic publications.",
-    link: "/publications",
-    iconName: "Linkedin",
-  },
-  {
-    title: "Collaborations",
-    description: "Discover opportunities for academic partnerships.", 
-    link: "/contact",
-    iconName: "Handshake",
-  },
-] as const;
 
 // Theme Constants
 export const THEME = {

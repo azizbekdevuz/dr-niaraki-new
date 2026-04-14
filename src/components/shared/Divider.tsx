@@ -36,7 +36,7 @@ const Divider = memo<DividerProps>(({
         whileInView={{ scaleX: 1, opacity: 1 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ 
-          duration: 0.8, 
+          duration: 0.42, 
           ease: 'easeOut',
           opacity: { duration: 0.4 }
         }}

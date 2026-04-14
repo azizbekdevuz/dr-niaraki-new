@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 
+import { usePublicSiteContent } from "@/contexts/PublicSiteContentContext";
 import { textVariants } from "@/styles/textSystem";
 import type { MotionVariant, ButtonAnimations } from "@/types/animations";
 
@@ -17,6 +18,8 @@ const HeroContent: React.FC<HeroContentProps> = ({
   buttonAnimation,
   className 
 }) => {
+  const siteContent = usePublicSiteContent();
+  const { title, subtitle, body } = siteContent.home.hero;
   return (
     <motion.div
       {...animation}
@@ -24,20 +27,18 @@ const HeroContent: React.FC<HeroContentProps> = ({
     >
       {/* Hero Title */}
       <h1 className={textVariants.hero.dark}>
-        Pioneering the Future of XR & AI
+        {title}
       </h1>
 
       {/* Subtitle */}
       <p className={textVariants.subtitle.dark}>
-        Shaping the Next Frontier in Human-Computer Interaction
+        {subtitle}
       </p>
 
       {/* Description & CTA */}
       <div className="space-y-4 md:space-y-6">
         <p className={textVariants.body.dark}>
-          Dr. Niaraki-Sadeghi is a leading researcher in Extended Reality
-          and Artificial Intelligence, dedicated to transforming education
-          and human-computer interaction through innovative technologies.
+          {body}
         </p>
         
         {/* Performance: Optimized button with hardware acceleration */}

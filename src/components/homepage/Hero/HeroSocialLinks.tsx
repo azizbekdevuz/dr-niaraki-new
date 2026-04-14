@@ -7,7 +7,7 @@ import {
 import React from "react";
 
 import { useDevice } from "@/components/shared/DeviceProvider";
-import { SOCIAL_LINKS } from "@/config/constants";
+import { usePublicSiteContent } from "@/contexts/PublicSiteContentContext";
 import type { MotionVariant, SocialAnimations } from "@/types/animations";
 
 // Icon mapping for dynamic loading
@@ -29,13 +29,14 @@ const HeroSocialLinks: React.FC<HeroSocialLinksProps> = ({
   className 
 }) => {
   const { isMobile } = useDevice();
+  const siteContent = usePublicSiteContent();
 
   return (
     <motion.div
       {...animation}
       className={`flex justify-center lg:justify-start gap-4 md:gap-6 ${className || ''}`}
     >
-      {SOCIAL_LINKS.map(({ url, ariaLabel, name, iconName }) => {
+      {siteContent.home.socialLinks.map(({ url, ariaLabel, name, iconName }) => {
         const Icon = ICON_MAP[iconName as keyof typeof ICON_MAP];
         
         return (
