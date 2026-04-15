@@ -1,158 +1,52 @@
-# Dr. Abolghasem Sadeghi-Niaraki - Official Website
+# Dr. Abolghasem Sadeghi-Niaraki — official site
 
-A high-performance, modern website built with Next.js 15, React 19, and TypeScript, showcasing Dr. Niaraki's research and academic achievements.
+Next.js **15** (App Router), React **19**, TypeScript. Public pages read **published content from PostgreSQL via Prisma** when `DATABASE_URL` is set, with a **canonical static fallback** when the DB is unavailable. Admin/editor flows cover draft, publish, restore, and document import/review/merge.
 
-## 🚀 Performance Features
+## Prerequisites
 
-- **Next.js 15** with App Router and React 19
-- **Advanced Performance Monitoring** with Web Vitals tracking
-- **Device-Aware Rendering** with server-side device detection
-- **Optimized Images** with AVIF/WebP support
-- **Bundle Analysis** and code splitting optimization
-- **Security Headers** and compression enabled
+- Node.js **18+**
+- **npm** (primary; scripts below use `npm run`)
 
-## 📱 Mobile-First Design
-
-- Responsive design optimized for all devices
-- Touch-friendly interactions
-- Reduced motion support for accessibility
-- Progressive enhancement for advanced features
-
-## 🛠️ Development
-
-### Prerequisites
-
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
+## Setup
 
 ```bash
-# Clone the repository
-git clone [repository-url]
+git clone <repository-url>
 cd dr-niaraki-new
-
-# Install dependencies
-yarn install
-
-# Start development server
-yarn dev
+npm install
+cp .env.example .env   # then edit DATABASE_URL and optional admin vars
+npx prisma migrate dev # or prisma db push for a throwaway local DB
+npm run dev
 ```
 
-### Available Scripts
+Environment reference: **`.env.example`**. Admin and optional flags are documented there and in `src/server/admin/adminSecurityConfig.ts` / `adminBootstrap.ts`.
 
-```bash
-yarn dev          # Start development server
-yarn build        # Build for production
-yarn start        # Start production server
-yarn lint         # Run ESLint
-yarn lint:fix     # Auto-fix ESLint issues
-yarn perf:check   # Run performance checks
-yarn analyze      # Analyze bundle size
-yarn type-check   # TypeScript type checking
-```
+## Scripts
 
-## 🔧 Performance Guidelines
+| Command | Purpose |
+|--------|---------|
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build and server |
+| `npm run lint` / `npm run lint:fix` | ESLint |
+| `npm run type-check` | TypeScript (`tsc --noEmit`) |
+| `npm run test` / `npm run test:run` | Vitest |
+| `npm run prisma:migrate` / `prisma:push` / `prisma:studio` | Prisma |
+| `npm run analyze` | Bundle analyzer (`ANALYZE=true` build) |
+| `npm run perf:check` | Local perf / lint / type pass helper |
 
-### Code Quality Standards
+## Architecture (short)
 
-1. **Import Organization**: Follow ESLint import order rules
-2. **Type Safety**: Use proper TypeScript types, avoid `any`
-3. **Performance**: Memoize expensive calculations with `useMemo`/`useCallback`
-4. **Accessibility**: Follow WCAG guidelines
-5. **Error Handling**: Implement proper error boundaries
+- **`src/app/`** — App Router routes (public site, admin, API).
+- **`src/server/`** — Server-only Prisma, auth/session, admin, import pipeline.
+- **Public reads** — DB-first where configured; **fallback** preserves a working site without a live DB.
+- **Background** — Layered **CSS-only** spatial field (grids, blooms, subtle scan lines; no canvas / rAF graph). Optional custom cursor: `NEXT_PUBLIC_ENABLE_CUSTOM_CURSOR=true` in `.env.example`.
+- **Uploads on Vercel** — With `VERCEL=1` and `BLOB_READ_WRITE_TOKEN`, DOCX bytes go to **private Vercel Blob**; `UploadedFile.storedPath` records `vercel-blob-path:…` and downloads use `/api/admin/uploaded-files/[id]/file`. Locally, files stay under `public/uploads/` when Blob is not used.
+- **Admin devices** — When `DATABASE_URL` is set, registered devices live in **Postgres** (`AdminRegisteredDevice`), avoiding GitHub JSON **409** races; legacy `admin_devices.json` remains for DB-less dev. GitHub file commits still **retry on 409** for other mirrors.
 
-### Performance Best Practices
+## Security and ops notes
 
-1. **Images**: Use Next.js Image component with proper sizing
-2. **Animations**: Check device capabilities before enabling advanced animations
-3. **Bundle Size**: Monitor with `npm run analyze`
-4. **Web Vitals**: Track LCP, FID, CLS metrics
-5. **Code Splitting**: Lazy load components when appropriate
+- Security headers and rate limiting are configured for production-style deploys.
+- Treat `.env` secrets as confidential; see `.env.example` for optional legacy admin JWT restore flag.
 
-### Maintenance
+## License
 
-Run performance checks regularly:
-
-```bash
-yarn perf:check
-```
-
-This will:
-- Build the project and check for errors
-- Run linting and type checking
-- Scan for performance anti-patterns
-- Generate bundle analysis
-
-## 🏗️ Architecture
-
-### Project Structure
-
-```
-src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable components
-│   ├── homepage/       # Homepage-specific components
-│   ├── layout/         # Layout components
-│   └── shared/         # Shared components
-├── contexts/           # React contexts
-├── hooks/              # Custom hooks
-├── lib/                # Utility functions
-├── styles/             # Global styles
-└── types/              # TypeScript type definitions
-```
-
-### Key Components
-
-- **PerformanceMonitor**: Tracks Web Vitals and performance metrics
-- **DeviceProvider**: Handles device detection and responsive behavior
-- **ErrorBoundary**: Catches and handles React errors gracefully
-- **AtomCursor**: Custom animated cursor for desktop users
-
-## 🔒 Security
-
-- CSP headers configured
-- Rate limiting on API endpoints
-- Input validation and sanitization
-- XSS protection enabled
-
-## 📊 Monitoring
-
-The website includes comprehensive monitoring:
-
-- **Web Vitals**: LCP, FID, CLS, FCP, TTFB, INP
-- **Performance Marks**: Custom timing measurements
-- **Error Tracking**: Client-side error boundaries
-- **Bundle Analysis**: Automated size monitoring
-
-## 🚀 Deployment
-
-The website is optimized for deployment on Vercel, Netlify, or any Node.js hosting platform.
-
-### Build Optimization
-
-- Automatic code splitting
-- Image optimization
-- CSS optimization
-- Bundle compression
-- Static generation where possible
-
-## 📈 Performance Targets
-
-- **LCP**: < 2.5s (Good)
-- **FID**: < 100ms (Good)  
-- **CLS**: < 0.1 (Good)
-- **Bundle Size**: < 500KB initial load
-- **Lighthouse Score**: > 90 across all metrics
-
-## 🤝 Contributing
-
-1. Follow the established code style and ESLint rules
-2. Run `npm run perf:check` before committing
-3. Ensure all TypeScript types are properly defined
-4. Test on both desktop and mobile devices
-5. Maintain performance standards
-
-## 📄 License
-
-This project is proprietary and confidential.
+Proprietary and confidential.
