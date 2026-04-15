@@ -1,0 +1,147 @@
+/**
+ * Canvas-identity layers: aurora rim, triangulation “edges”, dual dot field,
+ * specular node hotspots, polar floor — static paint (no rAF).
+ */
+
+.baseAurora {
+  position: absolute;
+  inset: 0;
+  opacity: 0.38;
+  background:
+    radial-gradient(ellipse 120% 55% at 50% -10%, rgba(34, 211, 238, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 45% at 92% 18%, rgba(167, 139, 250, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 8% 28%, rgba(6, 182, 212, 0.1) 0%, transparent 45%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.wireTriangulation {
+  position: absolute;
+  inset: -10%;
+  opacity: 0.11;
+  background-image:
+    repeating-linear-gradient(
+      60deg,
+      transparent,
+      transparent 41px,
+      rgba(0, 165, 224, 0.14) 41px,
+      rgba(0, 165, 224, 0.14) 42px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent,
+      transparent 41px,
+      rgba(0, 165, 224, 0.11) 41px,
+      rgba(0, 165, 224, 0.11) 42px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 71px,
+      rgba(99, 102, 241, 0.07) 71px,
+      rgba(99, 102, 241, 0.07) 72px
+    );
+  mask-image: radial-gradient(ellipse 96% 82% at 50% 40%, black 0%, transparent 88%);
+  mix-blend-mode: screen;
+}
+
+.dotField {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  background-image:
+    radial-gradient(circle at center, rgba(0, 165, 224, 0.42) 0.85px, transparent 1.35px),
+    radial-gradient(circle at center, rgba(34, 211, 238, 0.2) 0.55px, transparent 1px);
+  background-size:
+    36px 36px,
+    22px 22px;
+  background-position:
+    0 0,
+    11px 14px;
+  mask-image: radial-gradient(ellipse 95% 80% at 50% 42%, black 0%, transparent 85%);
+}
+
+.specNodes {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(circle at 18% 32%, rgba(34, 211, 238, 0.35) 0, rgba(34, 211, 238, 0.08) 2px, transparent 3.5px),
+    radial-gradient(circle at 78% 24%, rgba(0, 165, 224, 0.32) 0, rgba(0, 165, 224, 0.06) 2px, transparent 3.5px),
+    radial-gradient(circle at 62% 58%, rgba(99, 102, 241, 0.28) 0, rgba(99, 102, 241, 0.06) 2.5px, transparent 4px),
+    radial-gradient(circle at 34% 68%, rgba(34, 211, 238, 0.22) 0, transparent 3px),
+    radial-gradient(circle at 88% 72%, rgba(0, 165, 224, 0.2) 0, transparent 3px);
+  mask-image: radial-gradient(ellipse 100% 88% at 50% 45%, black 0%, transparent 92%);
+  mix-blend-mode: screen;
+}
+
+.polarFloor {
+  position: absolute;
+  inset: 0;
+  opacity: 0.09;
+  background: repeating-conic-gradient(
+    from 0.25turn at 50% 108%,
+    transparent 0deg 2.4deg,
+    rgba(0, 165, 224, 0.22) 2.4deg 2.55deg
+  );
+  mask-image: radial-gradient(ellipse 140% 70% at 50% 100%, black 0%, transparent 62%);
+  mix-blend-mode: screen;
+}
+
+:global([data-theme='light']) .baseAurora {
+  opacity: 0.22;
+}
+
+:global([data-theme='light']) .wireTriangulation {
+  opacity: 0.07;
+  background-image:
+    repeating-linear-gradient(
+      60deg,
+      transparent,
+      transparent 41px,
+      rgba(0, 100, 180, 0.12) 41px,
+      rgba(0, 100, 180, 0.12) 42px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent,
+      transparent 41px,
+      rgba(0, 100, 180, 0.09) 41px,
+      rgba(0, 100, 180, 0.09) 42px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 71px,
+      rgba(79, 70, 229, 0.06) 71px,
+      rgba(79, 70, 229, 0.06) 72px
+    );
+}
+
+:global([data-theme='light']) .dotField {
+  opacity: 0.28;
+  background-image:
+    radial-gradient(circle at center, rgba(0, 120, 200, 0.28) 0.85px, transparent 1.35px),
+    radial-gradient(circle at center, rgba(56, 189, 248, 0.16) 0.55px, transparent 1px);
+}
+
+:global([data-theme='light']) .specNodes {
+  opacity: 0.35;
+  background-image:
+    radial-gradient(circle at 18% 32%, rgba(56, 189, 248, 0.28) 0, rgba(56, 189, 248, 0.06) 2px, transparent 3.5px),
+    radial-gradient(circle at 78% 24%, rgba(0, 100, 180, 0.24) 0, transparent 3.5px),
+    radial-gradient(circle at 62% 58%, rgba(79, 70, 229, 0.2) 0, transparent 4px),
+    radial-gradient(circle at 34% 68%, rgba(56, 189, 248, 0.16) 0, transparent 3px),
+    radial-gradient(circle at 88% 72%, rgba(0, 100, 180, 0.14) 0, transparent 3px);
+}
+
+:global([data-theme='light']) .polarFloor {
+  opacity: 0.06;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wireTriangulation,
+  .polarFloor {
+    opacity: 0.06;
+  }
+}

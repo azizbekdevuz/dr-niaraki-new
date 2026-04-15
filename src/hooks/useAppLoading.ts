@@ -20,15 +20,13 @@ export function useAppLoading({ onComponentLoad }: UseAppLoadingOptions = {}) {
 
   const [componentsLoaded, setComponentsLoaded] = useState(false);
 
-  // Simulate progressive loading for better UX
+  // Lightweight progress hints (avoid long artificial waits or animation-focused copy)
   useEffect(() => {
     if (isInitialLoading) {
       const loadingSteps = [
-        { progress: 20, message: 'Loading interface...', delay: 200 },
-        { progress: 40, message: 'Preparing components...', delay: 400 },
-        { progress: 60, message: 'Initializing animations...', delay: 300 },
-        { progress: 80, message: 'Almost ready...', delay: 300 },
-        { progress: 95, message: 'Finalizing...', delay: 400 },
+        { progress: 35, message: 'Loading layout…', delay: 120 },
+        { progress: 70, message: 'Preparing experience…', delay: 140 },
+        { progress: 92, message: 'Almost ready…', delay: 120 },
       ];
 
       let currentStep = 0;
@@ -37,7 +35,6 @@ export function useAppLoading({ onComponentLoad }: UseAppLoadingOptions = {}) {
           const step = loadingSteps[currentStep];
           if (step) {
             setTimeout(() => {
-              // Check if loading is still active before updating
               if (progress < step.progress) {
                 setProgress(step.progress);
                 setMessage(step.message);
@@ -47,16 +44,15 @@ export function useAppLoading({ onComponentLoad }: UseAppLoadingOptions = {}) {
             }, step.delay);
           }
         } else {
-          // Auto-complete loading after all steps
           setTimeout(() => {
             if (progress < 100) {
               setProgress(100);
-              setMessage('Ready!');
+              setMessage('Ready');
               setTimeout(() => {
                 setInitialLoading(false);
-              }, 800);
+              }, 280);
             }
-          }, 300);
+          }, 160);
         }
       };
 

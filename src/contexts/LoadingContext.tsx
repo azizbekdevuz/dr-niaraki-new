@@ -52,7 +52,6 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
         try {
           const parsedResources = JSON.parse(cachedResources);
           
-          // Small delay to show loading briefly for better UX
           setTimeout(() => {
             setLoadingState(prev => ({
               ...prev,
@@ -62,7 +61,7 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
               cacheExpiryTime: parseInt(cacheExpiry),
               message: 'Loaded from cache',
             }));
-          }, 500); // Brief loading for smooth transition
+          }, 180);
         } catch (error) {
           console.warn('Failed to parse cached resources:', error);
         }
@@ -144,7 +143,15 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const getResourceCacheStatus = useCallback(() => {
-    const totalKnownResources = ['header-component', 'hero-component', 'about-component', 'footer-component', 'chatbot-component', 'background-selector', 'atom-cursor'];
+    const totalKnownResources = [
+      'header-component',
+      'hero-component',
+      'about-component',
+      'footer-component',
+      'chatbot-component',
+      'background-selector',
+      'atom-cursor',
+    ];
     
     return {
       cached: loadingState.loadedResources.size,

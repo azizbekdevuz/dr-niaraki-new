@@ -1,0 +1,241 @@
+/**
+ * Spatial shell: Cartesian grids, depth, blooms, scan, sheen, horizon, vignette.
+ * Motion: opacity/transform/background-position only. Network “canvas” layers live in
+ * `CssSpatialBackground.network.module.css`.
+ */
+
+.host {
+  isolation: isolate;
+}
+
+.base {
+  position: absolute;
+  inset: 0;
+}
+
+.gridPrimary {
+  position: absolute;
+  inset: -15%;
+  opacity: 0.26;
+  background-image:
+    linear-gradient(rgba(0, 165, 224, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 165, 224, 0.11) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 88% 72% at 50% 36%, black 0%, transparent 78%);
+}
+
+.gridSecondary {
+  position: absolute;
+  inset: -22%;
+  opacity: 0.16;
+  transform: rotate(24deg) scale(1.12);
+  background-image:
+    linear-gradient(108deg, rgba(99, 102, 241, 0.09) 1px, transparent 1px),
+    linear-gradient(18deg, rgba(99, 102, 241, 0.09) 1px, transparent 1px);
+  background-size: 76px 76px;
+  mask-image: radial-gradient(ellipse 72% 85% at 48% 48%, transparent 28%, black 52%, transparent 82%);
+}
+
+.depthArc {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background: radial-gradient(ellipse 130% 55% at 50% 108%, rgba(0, 165, 224, 0.12) 0%, transparent 52%);
+}
+
+.topBloom {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 140vw;
+  height: 88vh;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 56% 46% at 50% 16%,
+    rgba(34, 211, 238, 0.32) 0%,
+    rgba(0, 165, 224, 0.12) 38%,
+    transparent 72%
+  );
+  animation: spatialBloomA 20s ease-in-out infinite alternate;
+}
+
+.bottomBloom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 88vw;
+  height: 72vh;
+  background: radial-gradient(
+    ellipse 62% 52% at 86% 100%,
+    rgba(99, 102, 241, 0.38) 0%,
+    rgba(34, 211, 238, 0.08) 42%,
+    transparent 58%
+  );
+  animation: spatialBloomB 24s ease-in-out infinite alternate;
+}
+
+.scanLines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.045;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4px,
+    rgba(0, 165, 224, 0.06) 4px,
+    rgba(0, 165, 224, 0.06) 5px
+  );
+  mask-image: radial-gradient(ellipse 92% 78% at 50% 42%, black 0%, transparent 90%);
+}
+
+.sheen {
+  position: absolute;
+  inset: 0;
+  opacity: 0.055;
+  background: linear-gradient(
+    112deg,
+    transparent 38%,
+    rgba(165, 243, 252, 0.55) 50%,
+    transparent 62%
+  );
+  background-size: 220% 220%;
+  animation: sheenDrift 32s linear infinite;
+  mix-blend-mode: screen;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 100px rgba(0, 0, 0, 0.38),
+    inset 0 -100px 180px rgba(2, 6, 18, 0.5);
+}
+
+.horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  background: linear-gradient(to top, rgba(3, 7, 18, 0.72) 0%, transparent 100%);
+  opacity: 0.85;
+}
+
+@keyframes spatialBloomA {
+  from {
+    opacity: 0.82;
+    transform: translateX(-50%) scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.035);
+  }
+}
+
+@keyframes spatialBloomB {
+  from {
+    opacity: 0.88;
+    transform: scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.04) translate(1%, -0.5%);
+  }
+}
+
+@keyframes sheenDrift {
+  0% {
+    background-position: 0% 40%;
+  }
+  100% {
+    background-position: 100% 60%;
+  }
+}
+
+.host[data-theme='light'] .gridPrimary {
+  opacity: 0.16;
+  background-image:
+    linear-gradient(rgba(0, 100, 180, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 100, 180, 0.08) 1px, transparent 1px);
+}
+
+.host[data-theme='light'] .gridSecondary {
+  opacity: 0.1;
+  background-image:
+    linear-gradient(108deg, rgba(79, 70, 229, 0.07) 1px, transparent 1px),
+    linear-gradient(18deg, rgba(79, 70, 229, 0.07) 1px, transparent 1px);
+}
+
+.host[data-theme='light'] .depthArc {
+  opacity: 0.4;
+  background: radial-gradient(ellipse 130% 55% at 50% 108%, rgba(0, 140, 200, 0.08) 0%, transparent 52%);
+}
+
+.host[data-theme='light'] .topBloom {
+  background: radial-gradient(
+    ellipse 56% 46% at 50% 16%,
+    rgba(56, 189, 248, 0.22) 0%,
+    rgba(0, 100, 180, 0.08) 38%,
+    transparent 72%
+  );
+}
+
+.host[data-theme='light'] .bottomBloom {
+  background: radial-gradient(
+    ellipse 62% 52% at 86% 100%,
+    rgba(99, 102, 241, 0.26) 0%,
+    rgba(56, 189, 248, 0.06) 42%,
+    transparent 58%
+  );
+}
+
+.host[data-theme='light'] .sheen {
+  opacity: 0.04;
+}
+
+.host[data-theme='light'] .scanLines {
+  opacity: 0.03;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4px,
+    rgba(0, 100, 180, 0.05) 4px,
+    rgba(0, 100, 180, 0.05) 5px
+  );
+}
+
+.host[data-theme='light'] .vignette {
+  box-shadow:
+    inset 0 0 80px rgba(15, 23, 42, 0.12),
+    inset 0 -80px 140px rgba(15, 23, 42, 0.08);
+}
+
+.host[data-theme='light'] .horizon {
+  background: linear-gradient(to top, rgba(241, 245, 249, 0.55) 0%, transparent 100%);
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topBloom,
+  .bottomBloom,
+  .sheen {
+    animation: none;
+  }
+
+  .topBloom {
+    opacity: 0.92;
+    transform: translateX(-50%);
+  }
+
+  .bottomBloom {
+    opacity: 0.94;
+    transform: none;
+  }
+
+  .sheen {
+    opacity: 0.035;
+    background-position: 50% 50%;
+  }
+}
