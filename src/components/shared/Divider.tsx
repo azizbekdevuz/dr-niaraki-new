@@ -23,9 +23,11 @@ const Divider = memo<DividerProps>(({
   const baseClasses = 'w-full my-12 md:my-16 lg:my-24 flex justify-center';
   
   const variantClasses = {
-    default: 'h-px bg-gradient-to-r from-transparent via-accent-primary to-transparent ring-1 ring-accent-primary/40 shadow-[0_2px_8px_var(--shadow-secondary)]',
-    glow: 'h-px bg-gradient-to-r from-transparent via-accent-primary to-transparent ring-1 ring-accent-primary/50 shadow-[0_0_15px_var(--shadow-glow),0_2px_8px_var(--shadow-primary)]',
-    gradient: 'h-0.5 bg-gradient-to-r from-accent-primary/20 via-accent-primary to-accent-secondary/20 ring-1 ring-accent-primary/40 shadow-[0_3px_10px_var(--shadow-primary)]'
+    default:
+      'h-px bg-gradient-to-r from-transparent via-accent-primary to-transparent ring-1 ring-accent-primary/40 shadow-divider-default',
+    glow: 'h-px bg-gradient-to-r from-transparent via-accent-primary to-transparent ring-1 ring-accent-primary/50 shadow-divider-glow',
+    gradient:
+      'h-0.5 bg-gradient-to-r from-accent-primary/20 via-accent-primary to-accent-secondary/20 ring-1 ring-accent-primary/40 shadow-divider-gradient',
   };
 
   return (

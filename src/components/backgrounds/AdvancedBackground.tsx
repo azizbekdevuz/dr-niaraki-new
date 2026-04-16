@@ -1,15 +1,13 @@
 'use client';
 
-import CssSpatialBackground from '@/components/backgrounds/CssSpatialBackground';
+import SpatialFieldStack from '@/components/backgrounds/SpatialFieldStack';
 import type { Theme } from '@/components/backgrounds/utils/constants';
 
 /**
- * Desktop site background: the original canvas build was a **cyan particle network**
- * on a deep blue-green field (spatial / XR-lab). That implementation is intentionally
- * not restored here (no canvas, no rAF, no O(n²) edges). Visual parity is pursued
- * with **static + cheap CSS layers** in `CssSpatialBackground`—grids, triangulation
- * hints, polar floor, dual-scale “nodes”, blooms, and vignette—same performance class.
+ * Desktop spatial field: **CSS base** (grids, blooms, triangulation) plus a **bounded XR canvas**
+ * (parallax grid, particles, scanlines) — restores the cyan XR-lab identity without the legacy
+ * O(n²) canvas edge graph. Pointer/touch drive the field via window-level listeners (no click capture).
  */
 export default function AdvancedBackground({ theme = 'dark' }: { theme?: Theme }) {
-  return <CssSpatialBackground theme={theme} />;
+  return <SpatialFieldStack theme={theme} profile="desktop" />;
 }

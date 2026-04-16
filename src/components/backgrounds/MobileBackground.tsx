@@ -1,9 +1,9 @@
 'use client';
 
-import CssSpatialBackground from '@/components/backgrounds/CssSpatialBackground';
+import SpatialFieldStack from '@/components/backgrounds/SpatialFieldStack';
 import type { Theme } from '@/components/backgrounds/utils/constants';
 
-/** Mobile: same layered CSS spatial field as desktop (no canvas). */
+/** Mobile: same stack as desktop with lower particle budget and stronger parallax gain. */
 export default function MobileBackground({ theme = 'dark' }: { theme?: Theme }) {
-  return <CssSpatialBackground theme={theme} />;
+  return <SpatialFieldStack theme={theme} profile="mobile" />;
 }

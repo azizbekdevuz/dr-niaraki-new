@@ -8,6 +8,8 @@ import { Loader2, Package } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
+
 import { ImportDetailBody, type ImportDetailModel, type ReviewPayloadModel } from '../importDetailBody';
 
 export default function AdminImportDetailPage() {
@@ -106,7 +108,7 @@ export default function AdminImportDetailPage() {
     <div>
       <div className="px-4 pt-8 max-w-5xl mx-auto">
         <div className="flex items-start gap-3 mb-6">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 flex items-center justify-center flex-shrink-0">
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${TW_ACCENT_SOFT_GRADIENT}`}>
             <Package className="w-6 h-6 text-accent-primary" />
           </div>
           <div>

@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import { 
-  Calendar, 
-  Briefcase, 
-  Award as AwardIcon, 
-  ChevronRight, 
+import {
+  Calendar,
+  Briefcase,
+  Award as AwardIcon,
+  ChevronRight,
+  Dot,
 } from "lucide-react";
 import React, { memo, useCallback, useMemo } from "react";
 
@@ -104,8 +105,10 @@ export const ExpandableCard: React.FC<ExpandableCardProps> = memo(({
     <motion.div
       {...cardAnimationProps}
       transition={getCardTransition(index)}
-      className={`card gpu-accelerated ${isMobile ? 'p-4' : 'p-6'} cursor-pointer ${
-        isExpanded ? 'ring-2 ring-accent-primary/50 shadow-glow' : ''
+      className={`card card-rich gpu-accelerated ${isMobile ? 'p-4' : 'p-6'} cursor-pointer ${
+        isExpanded
+          ? 'ring-2 ring-accent-primary/50 shadow-glow'
+          : 'ring-1 ring-inset ring-white/[0.04]'
       }`}
       onClick={handleClick}
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
@@ -118,11 +121,13 @@ export const ExpandableCard: React.FC<ExpandableCardProps> = memo(({
     >
       <div className="flex items-center justify-between">
         <div className={`flex items-center ${isMobile ? 'space-x-3' : 'space-x-4'} flex-1 min-w-0`}>
-          <Icon 
-            className={`${getTextVariant('accent')} flex-shrink-0`} 
-            size={isMobile ? 16 : 20} 
-            aria-hidden={true}
-          />
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-accent-primary/20 bg-accent-primary/10">
+            <Icon
+              className={getTextVariant('accent')}
+              size={isMobile ? 16 : 20}
+              aria-hidden={true}
+            />
+          </span>
           <div className="min-w-0 flex-1">
             <h3 className={`font-semibold ${getTextVariant('primary')} ${isMobile ? 'text-sm leading-tight' : 'text-lg'} line-clamp-2`}>
               {cardContent.title}
@@ -153,7 +158,7 @@ export const ExpandableCard: React.FC<ExpandableCardProps> = memo(({
       {isExpanded && (
         <motion.div
           {...expansionAnimations}
-          className="mt-4 pt-4 border-t border-secondary/50"
+          className="mt-4 border-t border-primary/20 pt-4"
         >
           <p className={`${getTextVariant('primary')} ${isMobile ? 'text-sm' : 'text-base'} leading-relaxed`}>
             {cardContent.details}
@@ -168,8 +173,8 @@ export const ExpandableCard: React.FC<ExpandableCardProps> = memo(({
                   </h4>
                   <ul className="space-y-1">
                     {cardContent.extra.achievements.map((achievement, i) => (
-                      <li key={i} className={`${getTextVariant('primary')} ${isMobile ? 'text-xs' : 'text-sm'} flex items-start`}>
-                        <span className="text-accent-primary mr-2 flex-shrink-0">•</span>
+                      <li key={i} className={`${getTextVariant('primary')} ${isMobile ? 'text-xs' : 'text-sm'} flex items-start gap-2`}>
+                        <Dot className="mt-1.5 h-4 w-4 flex-shrink-0 text-accent-primary" aria-hidden />
                         <span>{achievement}</span>
                       </li>
                     ))}
@@ -184,8 +189,8 @@ export const ExpandableCard: React.FC<ExpandableCardProps> = memo(({
                   </h4>
                   <ul className="space-y-1">
                     {cardContent.extra.projects.map((project, i) => (
-                      <li key={i} className={`${getTextVariant('primary')} ${isMobile ? 'text-xs' : 'text-sm'} flex items-start`}>
-                        <span className="text-accent-primary mr-2 flex-shrink-0">•</span>
+                      <li key={i} className={`${getTextVariant('primary')} ${isMobile ? 'text-xs' : 'text-sm'} flex items-start gap-2`}>
+                        <Dot className="mt-1.5 h-4 w-4 flex-shrink-0 text-accent-primary" aria-hidden />
                         <span>{project}</span>
                       </li>
                     ))}

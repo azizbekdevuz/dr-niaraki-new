@@ -40,17 +40,8 @@ import type { AdminDevicesData, DeviceRecord, DeviceTokenPayload } from '@/types
 
 const DEVICE_TOKEN_EXPIRY_DAYS = 365;
 
-export function hashString(input: string): string {
+function hashString(input: string): string {
   return crypto.createHash('sha256').update(input).digest('hex');
-}
-
-/**
- * @deprecated Prefer `authenticateAdminPassword` which returns the admin user id.
- * Verifies password against the primary `AdminUser` (DB scrypt hash, bootstrapped from env once).
- */
-export async function verifyAdminPassword(password: string): Promise<boolean> {
-  const r = await authenticateAdminPasswordDb(password);
-  return r.ok;
 }
 
 export { authenticateAdminPasswordDb as authenticateAdminPassword };
@@ -67,7 +58,7 @@ export async function getDevices(): Promise<AdminDevicesData> {
   return loadAdminDevicesData();
 }
 
-export function generateDeviceToken(deviceId: string, ipHash: string): string {
+function generateDeviceToken(deviceId: string, ipHash: string): string {
   const payload: DeviceTokenPayload = {
     deviceId,
     ipHash,
@@ -78,7 +69,7 @@ export function generateDeviceToken(deviceId: string, ipHash: string): string {
   return jwt.sign(payload, getAdminSecretForCrypto(), { algorithm: 'HS256' });
 }
 
-export function verifyDeviceToken(token: string): DeviceTokenPayload | null {
+function verifyDeviceToken(token: string): DeviceTokenPayload | null {
   if (isProductionAdminAuthHaltedDueToSecret()) {
     return null;
   }
@@ -157,11 +148,6 @@ export async function setDeviceTokenCookie(token: string): Promise<void> {
     maxAge: DEVICE_TOKEN_EXPIRY_DAYS * 24 * 60 * 60,
     path: '/',
   });
-}
-
-export async function clearDeviceTokenCookie(): Promise<void> {
-  const cookieStore = await cookies();
-  cookieStore.delete('device_token');
 }
 
 export async function getAdminSessionFromCookie(): Promise<boolean> {

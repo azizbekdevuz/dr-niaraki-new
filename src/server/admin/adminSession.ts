@@ -41,7 +41,7 @@ export function isOpaqueSessionCookieValue(value: string): boolean {
   return value.length === OPAQUE_HEX_LEN && /^[a-f0-9]+$/i.test(value);
 }
 
-export function newOpaqueSessionToken(): string {
+function newOpaqueSessionToken(): string {
   return crypto.randomBytes(32).toString('hex');
 }
 

@@ -1,4 +1,4 @@
-export interface TextSystem {
+interface TextSystem {
   dark: {
     primary: string;
     secondary: string;
@@ -98,5 +98,3 @@ export const textVariants = {
     light: "text-blue-600 hover:text-blue-700 transition-colors duration-200",
   },
 } as const;
-
-export default textSystem;

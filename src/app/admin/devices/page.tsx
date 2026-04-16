@@ -18,6 +18,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
+
 interface Device {
   id: string;
   label: string;
@@ -153,7 +155,7 @@ export default function AdminDevicesPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 flex items-center justify-center">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${TW_ACCENT_SOFT_GRADIENT}`}>
               <Shield className="w-6 h-6 text-accent-primary" />
             </div>
             <div>

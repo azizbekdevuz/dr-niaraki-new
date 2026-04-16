@@ -22,6 +22,7 @@ import {
 import React, { useState } from 'react';
 
 import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
 
 // Animation variants
 const containerVariants = {
@@ -81,7 +82,10 @@ export default function ContactPage() {
             animate="visible"
             variants={containerVariants}
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 mb-6">
+            <motion.div
+              variants={itemVariants}
+              className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${TW_ACCENT_SOFT_GRADIENT}`}
+            >
               <Mail className="w-10 h-10 text-accent-primary" />
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">

@@ -100,12 +100,11 @@ export default function Chatbot({ darkMode = true }: ChatbotProps) {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={toggleChat}
-        className={`fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[50] p-3 md:p-4 rounded-full shadow-lg transition-colors duration-fast focus:outline-none focus:ring-2 focus:ring-accent-primary gpu-accelerated ${
+        className={`fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[50] p-3 md:p-4 rounded-full shadow-chatbot-float transition-colors duration-fast focus:outline-none focus:ring-2 focus:ring-accent-primary gpu-accelerated ${
           darkMode
             ? "bg-accent-tertiary text-white hover:bg-accent-tertiary/90"
             : "bg-accent-tertiary/90 text-white hover:bg-accent-tertiary"
         }`}
-        style={{ boxShadow: '0 4px 24px 0 rgba(139, 92, 246, 0.15)' }}
         aria-label="Open chat assistant"
       >
         <MessageSquare className="w-5 h-5 md:w-6 md:h-6" />
@@ -121,12 +120,11 @@ export default function Chatbot({ darkMode = true }: ChatbotProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className={`fixed bottom-20 right-4 md:bottom-24 md:right-6 w-[calc(100vw-2rem)] md:w-[90vw] max-w-sm sm:max-w-md md:max-w-lg h-[70vh] max-h-[600px] rounded-2xl shadow-2xl flex flex-col z-[51] gpu-accelerated ${
+            className={`fixed bottom-20 right-4 md:bottom-24 md:right-6 w-[calc(100vw-2rem)] md:w-[90vw] max-w-sm sm:max-w-md md:max-w-lg h-[70vh] max-h-[600px] rounded-2xl shadow-chatbot-modal flex flex-col z-[51] gpu-accelerated ${
               darkMode
                 ? "glass border border-primary"
                 : "bg-surface-primary border border-primary"
             }`}
-            style={{ boxShadow: '0 8px 40px 0 rgba(139, 92, 246, 0.18)' }}
           >
             {/* Chat Header */}
             <ChatHeader

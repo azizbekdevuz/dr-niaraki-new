@@ -6,21 +6,33 @@ import { themeColors } from '@/components/backgrounds/utils/constants';
 import styles from './CssSpatialBackground.module.css';
 import net from './CssSpatialBackground.network.module.css';
 
+type CssSpatialVariant = 'viewport' | 'layer';
+
 /**
  * CSS-only spatial field (no canvas, no rAF): recreates the **original canvas look**
  * as closely as practical—particle-like dual dot fields, implied **network edges**
  * via triangulation lines, polar “floor” rays, specular node hotspots, grids, blooms—
  * without the old runtime cost.
+ *
+ * `layer`: absolute inset inside a parent `fixed` stack (paired with XR canvas).
+ * `viewport`: legacy single fixed layer behind the app.
  */
-export default function CssSpatialBackground({ theme = 'dark' }: { theme?: Theme }) {
+export default function CssSpatialBackground({
+  theme = 'dark',
+  variant = 'viewport',
+}: {
+  theme?: Theme;
+  variant?: CssSpatialVariant;
+}) {
   const t = themeColors[theme];
 
+  const rootClass =
+    variant === 'layer'
+      ? `absolute inset-0 pointer-events-none overflow-hidden ${styles.host}`
+      : `fixed inset-0 pointer-events-none z-[-10] overflow-hidden ${styles.host}`;
+
   return (
-    <div
-      className={`fixed inset-0 pointer-events-none z-[-10] overflow-hidden ${styles.host}`}
-      data-theme={theme}
-      aria-hidden
-    >
+    <div className={rootClass} data-theme={theme} aria-hidden>
       <div
         className={styles.base}
         style={{

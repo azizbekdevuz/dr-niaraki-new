@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
+
 export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState('');
@@ -114,7 +116,7 @@ export default function AdminLoginPage() {
         <div className="card p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 flex items-center justify-center">
+            <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${TW_ACCENT_SOFT_GRADIENT}`}>
               <Lock className="w-8 h-8 text-accent-primary" />
             </div>
             <h1 className="text-2xl font-bold text-foreground mb-2">Admin Access</h1>

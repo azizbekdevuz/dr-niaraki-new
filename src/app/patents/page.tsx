@@ -5,19 +5,19 @@
  */
 
 import { motion } from 'framer-motion';
-import {
-  Shield,
-  Globe,
-  Flag,
-  Calendar,
-  CheckCircle,
-  Clock,
-  ChevronRight,
-} from 'lucide-react';
+import { Globe, Flag, Clock, Shield, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState, useMemo } from 'react';
 
+import { PatentEntryCard } from '@/components/patents/PatentEntryCard';
+import { ContentStatTile } from '@/components/shared/ContentStatTile';
+import { EmptyStateHint } from '@/components/shared/EmptyStateHint';
+import { FilterChipButton } from '@/components/shared/FilterChipButton';
+import { ListPagination } from '@/components/shared/ListPagination';
+import { SectionHeading } from '@/components/shared/SectionHeading';
 import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+import { usePaginatedSlice } from '@/hooks/usePaginatedSlice';
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
 
 // Animation variants
 const containerVariants = {
@@ -35,6 +35,8 @@ const itemVariants = {
 
 // Patent types
 type PatentFilter = 'all' | 'international' | 'korean' | 'pending';
+
+const PATENTS_PAGE_SIZE = 4;
 
 export default function PatentsPage() {
   const siteContent = usePublicSiteContent();
@@ -55,13 +57,16 @@ export default function PatentsPage() {
     });
   }, [filter, patentItems]);
 
-  const getStatusIcon = (status: string) => {
-    return status === 'registered' ? CheckCircle : Clock;
-  };
+  const patentIds = useMemo(() => patentItems.map((p) => p.id).join('|'), [patentItems]);
+  const listResetKey = useMemo(() => `${filter}::${patentIds}`, [filter, patentIds]);
 
-  const getStatusColor = (status: string) => {
-    return status === 'registered' ? 'text-success' : 'text-warning';
-  };
+  const {
+    slice: pagedPatents,
+    page: listPage,
+    setPage: setListPage,
+    itemCount: filteredCount,
+    pageSize: listPageSize,
+  } = usePaginatedSlice(filteredPatents, PATENTS_PAGE_SIZE, listResetKey);
 
   return (
     <main className="min-h-screen pt-20">
@@ -73,7 +78,10 @@ export default function PatentsPage() {
             animate="visible"
             variants={containerVariants}
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 mb-6">
+            <motion.div
+              variants={itemVariants}
+              className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${TW_ACCENT_SOFT_GRADIENT}`}
+            >
               <Shield className="w-10 h-10 text-accent-primary" />
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
@@ -87,20 +95,16 @@ export default function PatentsPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-8 bg-surface-secondary/30">
+      <section className="border-y border-primary/20 bg-surface-secondary/40 py-10 backdrop-blur-sm">
         <div className="container-custom">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
             {[
               { label: 'Total Patents', value: `${patentStats.total}+`, icon: Shield },
               { label: 'International (US)', value: `${patentStats.international}`, icon: Globe },
               { label: 'Korean', value: `${patentStats.korean}+`, icon: Flag },
               { label: 'Pending', value: `${patentStats.pending}+`, icon: Clock },
             ].map((stat) => (
-              <div key={stat.label} className="text-center p-4">
-                <stat.icon className="w-6 h-6 mx-auto mb-2 text-accent-primary" />
-                <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                <p className="text-muted text-sm">{stat.label}</p>
-              </div>
+              <ContentStatTile key={stat.label} icon={stat.icon} value={stat.value} label={stat.label} />
             ))}
           </div>
         </div>
@@ -108,90 +112,55 @@ export default function PatentsPage() {
 
       {/* Patents List */}
       <section className="section">
-        <div className="container-custom">
-          {/* Filter */}
-          <div className="flex flex-wrap gap-2 mb-8">
+        <div className="container-custom mx-auto max-w-5xl">
+          <SectionHeading eyebrow="Portfolio" title="Filter & explore" icon={Shield} className="!mb-6" />
+
+          <div className="list-page-panel mb-10 flex flex-wrap gap-2">
             {[
               { value: 'all', label: 'All Patents' },
               { value: 'international', label: 'International' },
               { value: 'korean', label: 'Korean' },
               { value: 'pending', label: 'Pending' },
             ].map((option) => (
-              <button
+              <FilterChipButton
                 key={option.value}
+                selected={filter === option.value}
                 onClick={() => setFilter(option.value as PatentFilter)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  filter === option.value
-                    ? 'bg-accent-primary text-white'
-                    : 'bg-surface-secondary text-muted hover:text-foreground'
-                }`}
               >
                 {option.label}
-              </button>
+              </FilterChipButton>
             ))}
           </div>
 
           {/* Patents Grid */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="grid md:grid-cols-2 gap-6"
-          >
-            {filteredPatents.map((patent) => {
-              const StatusIcon = getStatusIcon(patent.status);
-              const statusColor = getStatusColor(patent.status);
-              
-              return (
-                <motion.article
-                  key={patent.id}
-                  variants={itemVariants}
-                  layout
-                  className="card p-6 hover:border-accent transition-all"
-                >
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div className="flex items-center gap-2">
-                      {patent.country === 'US' ? (
-                        <Globe className="w-5 h-5 text-accent-primary" />
-                      ) : (
-                        <Flag className="w-5 h-5 text-accent-secondary" />
-                      )}
-                      <span className="text-muted text-sm">{patent.country}</span>
-                    </div>
-                    <div className={`flex items-center gap-1 ${statusColor}`}>
-                      <StatusIcon className="w-4 h-4" />
-                      <span className="text-xs capitalize">{patent.status}</span>
-                    </div>
-                  </div>
+          {filteredPatents.length === 0 ? (
+            <EmptyStateHint
+              icon={Shield}
+              title='No patents match this filter.'
+              hint='Try "All Patents" or another category.'
+            />
+          ) : (
+            <>
+              <motion.div
+                key={listPage}
+                initial={{ opacity: 0.88, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                className="grid gap-6 md:grid-cols-2"
+              >
+                {pagedPatents.map((patent) => (
+                  <PatentEntryCard key={patent.id} patent={patent} />
+                ))}
+              </motion.div>
 
-                  <h3 className="font-semibold text-foreground mb-3 line-clamp-2">
-                    {patent.title}
-                  </h3>
-
-                  <div className="space-y-2 text-sm text-muted">
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 flex-shrink-0" />
-                      <span className="font-mono">{patent.number}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 flex-shrink-0" />
-                      <span>{patent.date}</span>
-                    </div>
-                  </div>
-
-                  <p className="mt-4 text-muted text-sm line-clamp-2">
-                    Inventors: {patent.inventors}
-                  </p>
-                </motion.article>
-              );
-            })}
-          </motion.div>
-
-          {filteredPatents.length === 0 && (
-            <div className="text-center py-12 text-muted">
-              <Shield className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No patents found matching your criteria.</p>
-            </div>
+              <ListPagination
+                page={listPage}
+                itemCount={filteredCount}
+                pageSize={listPageSize}
+                onPageChange={setListPage}
+                ariaLabel="Patents list pages"
+              />
+            </>
           )}
         </div>
       </section>

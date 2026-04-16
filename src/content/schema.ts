@@ -245,6 +245,27 @@ export const SimpleListItemSchema = z.object({
   body: z.string().optional(),
 });
 
+export const FooterResearchFocusItemSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+});
+
+export const FooterDeveloperLinkIconSchema = z.enum(['github', 'linkedin', 'portfolio', 'mail']);
+
+export const FooterDeveloperLinkSchema = z.object({
+  icon: FooterDeveloperLinkIconSchema,
+  href: z.string().min(1),
+  label: z.string().min(1),
+});
+
+export const FooterDeveloperSectionSchema = z.object({
+  sectionTitle: z.string().min(1),
+  introLine: z.string().min(1),
+  name: z.string().min(1),
+  role: z.string().min(1),
+  links: z.array(FooterDeveloperLinkSchema).min(1),
+});
+
 export const LayoutFooterSchema = z.object({
   aboutHeading: z.string().min(1),
   aboutBlurb: z.string().min(1),
@@ -257,6 +278,9 @@ export const LayoutFooterSchema = z.object({
     }),
   ),
   copyrightName: z.string().min(1),
+  researchFocusTitle: z.string().min(1),
+  researchFocusItems: z.array(FooterResearchFocusItemSchema).length(3),
+  developerSection: FooterDeveloperSectionSchema,
 });
 
 export const LayoutSchema = z.object({

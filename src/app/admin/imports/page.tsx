@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
+
 type ImportRow = {
   id: string;
   status: string;
@@ -74,7 +76,7 @@ export default function AdminImportsListPage() {
     <div className="min-h-[60vh] px-4 py-8">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 flex items-center justify-center">
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${TW_ACCENT_SOFT_GRADIENT}`}>
             <Package className="w-6 h-6 text-accent-primary" />
           </div>
           <div>

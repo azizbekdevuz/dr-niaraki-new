@@ -9,18 +9,21 @@ import {
   Microscope,
   Lightbulb,
   FolderGit2,
-  DollarSign,
-  Calendar,
-  Users,
-  ExternalLink,
   ChevronRight,
+  ExternalLink,
 } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
+import { ResearchInterestCard } from '@/components/research/ResearchInterestCard';
+import { ResearchProjectCard } from '@/components/research/ResearchProjectCard';
+import { FilterChipButton } from '@/components/shared/FilterChipButton';
+import { ListPagination } from '@/components/shared/ListPagination';
+import { SectionHeading } from '@/components/shared/SectionHeading';
 import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+import { usePaginatedSlice } from '@/hooks/usePaginatedSlice';
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
 
-// Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -40,85 +43,78 @@ const RESEARCH_INTEREST_ICONS = {
   FolderGit2,
 } as const;
 
-// Filter options
 type StatusFilter = 'all' | 'ongoing' | 'completed';
+
+const RESEARCH_PROJECT_PAGE_SIZE = 3;
 
 export default function ResearchPage() {
   const siteContent = usePublicSiteContent();
-  const { heroIntro, collaborationHeading, collaborationBody, interests: researchInterests, projects: researchProjects } =
-    siteContent.research;
+  const {
+    heroIntro,
+    collaborationHeading,
+    collaborationBody,
+    interests: researchInterests,
+    projects: researchProjects,
+  } = siteContent.research;
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
   const filteredProjects = researchProjects.filter(
-    project => statusFilter === 'all' || project.status === statusFilter
+    (project) => statusFilter === 'all' || project.status === statusFilter,
   );
+
+  const projectsResetKey = useMemo(
+    () => `${statusFilter}::${filteredProjects.map((p) => p.id).join('|')}`,
+    [statusFilter, filteredProjects],
+  );
+
+  const {
+    slice: pagedProjects,
+    page: projectsPage,
+    setPage: setProjectsPage,
+    itemCount: projectsFilteredCount,
+    pageSize: projectsPageSize,
+  } = usePaginatedSlice(filteredProjects, RESEARCH_PROJECT_PAGE_SIZE, projectsResetKey);
 
   return (
     <main className="min-h-screen pt-20">
-      {/* Hero Section */}
       <section className="section bg-gradient-to-b from-surface-tertiary to-transparent">
         <div className="container-custom text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants} className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 mb-6">
-              <Microscope className="w-10 h-10 text-accent-primary" />
+          <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+            <motion.div
+              variants={itemVariants}
+              className={`mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full ${TW_ACCENT_SOFT_GRADIENT}`}
+            >
+              <Microscope className="h-10 w-10 text-accent-primary" />
             </motion.div>
-            <motion.h1 variants={itemVariants} className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+            <motion.h1 variants={itemVariants} className="mb-4 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
               Research
             </motion.h1>
-            <motion.p variants={itemVariants} className="text-secondary max-w-2xl mx-auto">
+            <motion.p variants={itemVariants} className="mx-auto max-w-2xl text-secondary">
               {heroIntro}
             </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* Research Interests */}
       <section className="section">
-        <div className="container-custom">
+        <div className="container-custom mx-auto max-w-5xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={containerVariants}
           >
-            <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-              <Lightbulb className="w-8 h-8 text-accent-primary" />
-              Research Interests
-            </motion.h2>
+            <motion.div variants={itemVariants}>
+              <SectionHeading eyebrow="Focus areas" title="Research Interests" icon={Lightbulb} />
+            </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               {researchInterests.map((interest) => {
                 const InterestIcon = RESEARCH_INTEREST_ICONS[interest.iconName];
                 return (
-                <motion.div
-                  key={interest.id}
-                  variants={itemVariants}
-                  className="card p-6 hover:border-accent transition-all group"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-accent-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent-primary/20 transition-colors">
-                      <InterestIcon className="w-6 h-6 text-accent-primary" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-foreground mb-2">{interest.name}</h3>
-                      <p className="text-muted text-sm mb-3">{interest.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {interest.keywords.map((keyword) => (
-                          <span
-                            key={keyword}
-                            className="px-2 py-1 rounded bg-surface-secondary text-muted text-xs"
-                          >
-                            {keyword}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+                  <motion.div key={interest.id} variants={itemVariants}>
+                    <ResearchInterestCard interest={interest} icon={InterestIcon} />
+                  </motion.div>
                 );
               })}
             </div>
@@ -126,118 +122,79 @@ export default function ResearchPage() {
         </div>
       </section>
 
-      {/* Research Projects */}
       <section className="section bg-gradient-to-b from-transparent via-surface-tertiary to-transparent">
-        <div className="container-custom">
+        <div className="container-custom mx-auto max-w-5xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={containerVariants}
           >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-              <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl font-bold text-foreground flex items-center gap-3">
-                <FolderGit2 className="w-8 h-8 text-accent-primary" />
-                Research Projects
-              </motion.h2>
-
-              {/* Filter */}
-              <motion.div variants={itemVariants} className="flex gap-2">
-                {(['all', 'ongoing', 'completed'] as StatusFilter[]).map((filter) => (
-                  <button
-                    key={filter}
-                    onClick={() => setStatusFilter(filter)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      statusFilter === filter
-                        ? 'bg-accent-primary text-white'
-                        : 'bg-surface-secondary text-muted hover:text-foreground'
-                    }`}
-                  >
-                    {filter.charAt(0).toUpperCase() + filter.slice(1)}
-                  </button>
+            <div className="mb-8 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+              <motion.div variants={itemVariants} className="min-w-0 flex-1">
+                <SectionHeading eyebrow="Programmes" title="Research Projects" icon={FolderGit2} className="!mb-0" />
+              </motion.div>
+              <motion.div variants={itemVariants} className="list-page-panel flex flex-shrink-0 flex-wrap gap-2">
+                {(['all', 'ongoing', 'completed'] as StatusFilter[]).map((f) => (
+                  <FilterChipButton key={f} selected={statusFilter === f} onClick={() => setStatusFilter(f)}>
+                    {f.charAt(0).toUpperCase() + f.slice(1)}
+                  </FilterChipButton>
                 ))}
               </motion.div>
             </div>
 
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               <motion.div
                 key={statusFilter}
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-6"
               >
-                {filteredProjects.map((project) => (
-                  <motion.div
-                    key={project.id}
-                    variants={itemVariants}
-                    className="card p-6"
-                  >
-                  <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-foreground">{project.title}</h3>
-                        <span className={`px-2 py-0.5 rounded-full text-xs ${
-                          project.status === 'ongoing'
-                            ? 'bg-success/10 text-success'
-                            : 'bg-muted/10 text-muted'
-                        }`}>
-                          {project.status}
-                        </span>
-                      </div>
-                      <p className="text-secondary text-sm mb-4">{project.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="flex items-center gap-2 text-muted text-sm">
-                      <Calendar className="w-4 h-4" />
-                      <span>{project.period}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted text-sm">
-                      <Users className="w-4 h-4" />
-                      <span>{project.role}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted text-sm">
-                      <DollarSign className="w-4 h-4" />
-                      <span>{project.amount}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted text-sm">
-                      <FolderGit2 className="w-4 h-4" />
-                      <span>{project.funding}</span>
-                    </div>
-                  </div>
+                <motion.div
+                  key={projectsPage}
+                  initial={{ opacity: 0.88, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="space-y-6"
+                >
+                  {pagedProjects.map((project) => (
+                    <ResearchProjectCard key={project.id} project={project} />
+                  ))}
                 </motion.div>
-                ))}
               </motion.div>
             </AnimatePresence>
+
+            <ListPagination
+              page={projectsPage}
+              itemCount={projectsFilteredCount}
+              pageSize={projectsPageSize}
+              onPageChange={setProjectsPage}
+              ariaLabel="Research projects pages"
+            />
           </motion.div>
         </div>
       </section>
 
-      {/* Collaboration CTA */}
       <section className="section">
-        <div className="container-custom">
+        <div className="container-custom mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="card p-8 md:p-12 text-center bg-gradient-to-br from-accent-primary/5 to-accent-secondary/5"
+            className="card card-rich bg-gradient-to-br from-accent-primary/5 to-accent-secondary/5 p-8 text-center md:p-12"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              {collaborationHeading}
-            </h2>
-            <p className="text-muted mb-8 max-w-2xl mx-auto">
-              {collaborationBody}
-            </p>
+            <h2 className="mb-4 text-2xl font-bold text-foreground md:text-3xl">{collaborationHeading}</h2>
+            <p className="mx-auto mb-8 max-w-2xl text-muted">{collaborationBody}</p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/contact" className="btn-primary px-8 py-3 flex items-center gap-2">
+              <Link href="/contact" className="btn-primary inline-flex items-center gap-2 px-8 py-3">
                 Get in Touch
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="h-4 w-4" />
               </Link>
-              <Link href="/publications" className="btn-secondary px-8 py-3 flex items-center gap-2">
+              <Link href="/publications" className="btn-secondary inline-flex items-center gap-2 px-8 py-3">
                 View Publications
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="h-4 w-4" />
               </Link>
             </div>
           </motion.div>
@@ -246,4 +203,3 @@ export default function ResearchPage() {
     </main>
   );
 }
-

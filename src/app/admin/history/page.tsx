@@ -18,6 +18,7 @@ import {
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
 import type { UploadHistoryItem } from '@/types/admin';
 
 export default function AdminHistoryPage() {
@@ -138,7 +139,7 @@ export default function AdminHistoryPage() {
             >
               <ArrowLeft className="w-5 h-5" />
             </a>
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 flex items-center justify-center">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${TW_ACCENT_SOFT_GRADIENT}`}>
               <History className="w-6 h-6 text-accent-primary" />
             </div>
             <div>

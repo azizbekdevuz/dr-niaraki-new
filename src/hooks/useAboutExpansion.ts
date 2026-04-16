@@ -30,30 +30,32 @@ export const useAboutExpansion = () => {
   const isAwardExpanded = useCallback((index: number) => 
     expandedAward === index, [expandedAward]);
 
-  // Reset all expansions
-  const resetAllExpansions = useCallback(() => {
+  /** Collapse journey cards (e.g. when homepage journey page changes). */
+  const clearJourneyExpansion = useCallback(() => {
     setExpandedJourney(null);
-    setExpandedExperience(null);
+  }, []);
+
+  /** Collapse award cards (e.g. when homepage awards page changes). */
+  const clearAwardExpansion = useCallback(() => {
     setExpandedAward(null);
   }, []);
 
+  /** Collapse experience cards (e.g. when homepage experience page changes). */
+  const clearExperienceExpansion = useCallback(() => {
+    setExpandedExperience(null);
+  }, []);
+
   return {
-    // State
-    expandedJourney,
-    expandedExperience,
-    expandedAward,
-    
-    // Handlers
     toggleJourneyExpansion,
     toggleExperienceExpansion,
     toggleAwardExpansion,
-    
-    // Checkers
+
     isJourneyExpanded,
     isExperienceExpanded,
     isAwardExpanded,
-    
-    // Utilities
-    resetAllExpansions,
+
+    clearJourneyExpansion,
+    clearAwardExpansion,
+    clearExperienceExpansion,
   };
 }; 

@@ -5,12 +5,10 @@
  */
 
 import { motion } from 'framer-motion';
-import { 
-  GraduationCap, 
-  Briefcase, 
-  Award, 
-  BookOpen, 
-  Users, 
+import {
+  Award,
+  BookOpen,
+  Users,
   Globe,
   ChevronRight,
   ExternalLink,
@@ -19,7 +17,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+import {
+  AboutAwardsSection,
+  AboutExperienceSection,
+  AboutJourneySection,
+} from '@/components/about/AboutPaginatedSections';
+import { ContentStatTile } from '@/components/shared/ContentStatTile';
+import { SectionHeading } from '@/components/shared/SectionHeading';
 import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
 
 // Animation variants
 const containerVariants = {
@@ -62,7 +68,7 @@ export default function AboutPage() {
             {/* Image */}
             <motion.div variants={itemVariants} className="order-2 lg:order-1">
               <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 blur-2xl" />
+                <div className={`absolute inset-0 rounded-full blur-2xl ${TW_ACCENT_SOFT_GRADIENT}`} />
                 <Image
                   src={photoSrc}
                   alt={photoAlt}
@@ -102,24 +108,18 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-surface-secondary/30">
+      <section className="border-y border-primary/20 bg-surface-secondary/40 py-10 backdrop-blur-sm">
         <div className="container-custom">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={containerVariants}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4"
           >
             {statsRow.map((stat) => (
-              <motion.div
-                key={stat.label}
-                variants={itemVariants}
-                className="card text-center p-6"
-              >
-                <stat.icon className="w-8 h-8 mx-auto mb-3 text-accent-primary" />
-                <p className="text-3xl font-bold text-foreground mb-1">{stat.value}</p>
-                <p className="text-muted text-sm">{stat.label}</p>
+              <motion.div key={stat.label} variants={itemVariants}>
+                <ContentStatTile variant="hero" icon={stat.icon} value={stat.value} label={stat.label} />
               </motion.div>
             ))}
           </motion.div>
@@ -135,10 +135,10 @@ export default function AboutPage() {
             viewport={{ once: true }}
             variants={containerVariants}
           >
-            <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl font-bold text-foreground mb-8">
-              Professional Summary
-            </motion.h2>
-            <motion.div variants={itemVariants} className="card p-6 md:p-8">
+            <motion.div variants={itemVariants}>
+              <SectionHeading eyebrow="Overview" title="Professional Summary" className="!mb-6" />
+            </motion.div>
+            <motion.div variants={itemVariants} className="list-page-panel p-6 md:p-8">
               {page.professionalSummaryParagraphs.map((paragraph, idx) => (
                 <p key={idx} className="text-secondary leading-relaxed mb-4 last:mb-0">
                   {paragraph}
@@ -151,128 +151,22 @@ export default function AboutPage() {
 
       {/* Academic Journey */}
       <section className="section bg-gradient-to-b from-transparent via-surface-tertiary to-transparent">
-        <div className="container-custom">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-              <GraduationCap className="w-8 h-8 text-accent-primary" />
-              Academic Journey
-            </motion.h2>
-            
-            <div className="space-y-6">
-              {journey.map((item) => (
-                <motion.div
-                  key={item.id}
-                  variants={itemVariants}
-                  className="card p-6 hover:border-accent transition-all"
-                >
-                  <div className="flex flex-col md:flex-row md:items-start gap-4">
-                    <div className="flex-shrink-0">
-                      <span className="inline-block px-3 py-1 rounded-full bg-accent-primary/10 text-accent-primary text-sm font-medium">
-                        {item.year}
-                      </span>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-foreground mb-1">{item.title}</h3>
-                      <p className="text-accent-primary mb-2">{item.institution}</p>
-                      <p className="text-muted text-sm">{item.details}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        <div className="container-custom mx-auto max-w-5xl">
+          <AboutJourneySection journey={journey} itemVariants={itemVariants} />
         </div>
       </section>
 
       {/* Professional Experience */}
       <section className="section">
         <div className="container-custom">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-              <Briefcase className="w-8 h-8 text-accent-primary" />
-              Professional Experience
-            </motion.h2>
-            
-            <div className="space-y-6">
-              {experiences.map((exp) => (
-                <motion.div
-                  key={exp.id}
-                  variants={itemVariants}
-                  className="card p-6"
-                >
-                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
-                    <div>
-                      <h3 className="text-lg font-semibold text-foreground">{exp.position}</h3>
-                      <p className="text-accent-primary">{exp.institution}</p>
-                    </div>
-                    <span className="px-3 py-1 rounded-full bg-surface-secondary text-muted text-sm whitespace-nowrap">
-                      {exp.duration}
-                    </span>
-                  </div>
-                  <p className="text-secondary mb-4">{exp.details}</p>
-                  
-                  {exp.achievements.length > 0 && (
-                    <div>
-                      <h4 className="text-sm font-medium text-foreground mb-2">Key Achievements:</h4>
-                      <ul className="grid md:grid-cols-2 gap-2">
-                        {exp.achievements.map((achievement, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-muted text-sm">
-                            <ChevronRight className="w-4 h-4 text-accent-primary flex-shrink-0 mt-0.5" />
-                            {achievement}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          <AboutExperienceSection experiences={experiences} itemVariants={itemVariants} />
         </div>
       </section>
 
       {/* Awards */}
       <section className="section bg-gradient-to-b from-transparent via-surface-tertiary to-transparent">
-        <div className="container-custom">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-              <Award className="w-8 h-8 text-accent-primary" />
-              Awards & Recognition
-            </motion.h2>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {awards.map((award) => (
-                <motion.div
-                  key={award.id}
-                  variants={itemVariants}
-                  className="card p-6 hover:border-accent transition-all"
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <Award className="w-5 h-5 text-warning" />
-                    <span className="text-warning text-sm">{award.year}</span>
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">{award.title}</h3>
-                  <p className="text-accent-primary text-sm mb-2">{award.organization}</p>
-                  <p className="text-muted text-sm">{award.details}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        <div className="container-custom mx-auto max-w-5xl">
+          <AboutAwardsSection awards={awards} itemVariants={itemVariants} />
         </div>
       </section>
 

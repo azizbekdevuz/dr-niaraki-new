@@ -3,14 +3,18 @@
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 
+import { DenseSubheading } from '@/components/shared/DenseSubheading';
 import { useDevice } from "@/components/shared/DeviceProvider";
+import { ListPagination } from '@/components/shared/ListPagination';
+import { SectionHeading } from '@/components/shared/SectionHeading';
 import VideoPlayer from "@/components/shared/VideoS";
 import { usePublicSiteContent } from "@/contexts/PublicSiteContentContext";
 import { useAboutAnalytics } from "@/hooks/useAboutAnalytics";
 import { useAboutAnimations } from "@/hooks/useAboutAnimations";
 import { useAboutExpansion } from "@/hooks/useAboutExpansion";
+import { usePaginatedSlice } from "@/hooks/usePaginatedSlice";
 import { textVariants } from "@/styles/textSystem";
 
 import AboutStats from "./AboutStats";
@@ -26,6 +30,11 @@ const ctaButtonAnimation = {
   tap: { scale: 0.98 }
 } as const;
 
+/** Match journey/awards density; expandable cards need a modest page size. */
+const HOME_JOURNEY_PAGE_SIZE = 3;
+const HOME_EXPERIENCE_PAGE_SIZE = 3;
+const HOME_AWARDS_PAGE_SIZE = 3;
+
 const About: React.FC<AboutProps> = ({ className = "" }) => {
   const siteContent = usePublicSiteContent();
   const { journey, experiences, awards } = siteContent.about;
@@ -39,8 +48,35 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
     toggleJourneyExpansion,
     toggleExperienceExpansion,
     toggleAwardExpansion,
+    clearJourneyExpansion,
+    clearAwardExpansion,
+    clearExperienceExpansion,
   } = useAboutExpansion();
   const { handleCTAClick } = useAboutAnalytics();
+
+  const journeyResetToken = useMemo(() => journey.map((j) => j.id).join('|'), [journey]);
+  const experiencesResetToken = useMemo(() => experiences.map((e) => e.id).join('|'), [experiences]);
+  const awardsResetToken = useMemo(() => awards.map((a) => a.id).join('|'), [awards]);
+
+  const journeyPageState = usePaginatedSlice(journey, HOME_JOURNEY_PAGE_SIZE, journeyResetToken);
+  const experiencesPageState = usePaginatedSlice(
+    experiences,
+    HOME_EXPERIENCE_PAGE_SIZE,
+    experiencesResetToken,
+  );
+  const awardsPageState = usePaginatedSlice(awards, HOME_AWARDS_PAGE_SIZE, awardsResetToken);
+
+  useEffect(() => {
+    clearJourneyExpansion();
+  }, [journeyPageState.page, clearJourneyExpansion]);
+
+  useEffect(() => {
+    clearExperienceExpansion();
+  }, [experiencesPageState.page, clearExperienceExpansion]);
+
+  useEffect(() => {
+    clearAwardExpansion();
+  }, [awardsPageState.page, clearAwardExpansion]);
 
   return (
     <motion.section
@@ -50,14 +86,15 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
     >
       <div className="container-custom">
         {/* Section Header */}
-        <motion.div
-          {...sectionReveal}
-          className="text-center mb-12 md:mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6">
-            {aboutSectionHeading}
-          </h2>
-          <p className={`${textVariants.body.dark} max-w-3xl mx-auto mt-4 md:mt-6`}>
+        <motion.div {...sectionReveal} className="mb-12 text-center md:mb-16">
+          <SectionHeading
+            align="center"
+            eyebrow="At a glance"
+            title={aboutSectionHeading}
+            titleClassName="max-w-4xl text-3xl md:text-4xl lg:text-5xl"
+            className="!mb-4 md:!mb-6"
+          />
+          <p className={`${textVariants.body.dark} mx-auto mt-2 max-w-3xl md:mt-4`}>
             {aboutSectionIntro}
           </p>
         </motion.div>
@@ -73,36 +110,60 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
             
             {/* Academic Journey */}
             <motion.div {...sectionReveal}>
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 md:mb-8">Academic Journey</h3>
-              <div className="space-y-3 md:space-y-4">
-                {journey.map((item, index) => (
-                  <ExpandableCard
-                    key={item.id}
-                    item={item}
-                    index={index}
-                    isExpanded={isJourneyExpanded(index)}
-                    onToggle={toggleJourneyExpansion}
-                    type="journey"
-                  />
-                ))}
+              <DenseSubheading>Academic Journey</DenseSubheading>
+              <div key={journeyPageState.page} className="space-y-3 md:space-y-4">
+                {journeyPageState.slice.map((item, idx) => {
+                  const globalIndex =
+                    (journeyPageState.page - 1) * journeyPageState.pageSize + idx;
+                  return (
+                    <ExpandableCard
+                      key={item.id}
+                      item={item}
+                      index={globalIndex}
+                      isExpanded={isJourneyExpanded(globalIndex)}
+                      onToggle={toggleJourneyExpansion}
+                      type="journey"
+                    />
+                  );
+                })}
               </div>
+              <ListPagination
+                page={journeyPageState.page}
+                itemCount={journeyPageState.itemCount}
+                pageSize={journeyPageState.pageSize}
+                onPageChange={journeyPageState.setPage}
+                ariaLabel="Homepage academic journey pages"
+                className="!mt-6 max-w-xl border-primary/25 bg-surface-primary/40 px-2 py-3 md:mx-auto"
+              />
             </motion.div>
 
             {/* Professional Experience */}
             <motion.div {...sectionReveal}>
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 md:mb-8">Professional Experience</h3>
-              <div className="space-y-3 md:space-y-4">
-                {experiences.map((item, index) => (
-                  <ExpandableCard
-                    key={item.id}
-                    item={item}
-                    index={index}
-                    isExpanded={isExperienceExpanded(index)}
-                    onToggle={toggleExperienceExpansion}
-                    type="experience"
-                  />
-                ))}
+              <DenseSubheading>Professional Experience</DenseSubheading>
+              <div key={experiencesPageState.page} className="space-y-3 md:space-y-4">
+                {experiencesPageState.slice.map((item, idx) => {
+                  const globalIndex =
+                    (experiencesPageState.page - 1) * experiencesPageState.pageSize + idx;
+                  return (
+                    <ExpandableCard
+                      key={item.id}
+                      item={item}
+                      index={globalIndex}
+                      isExpanded={isExperienceExpanded(globalIndex)}
+                      onToggle={toggleExperienceExpansion}
+                      type="experience"
+                    />
+                  );
+                })}
               </div>
+              <ListPagination
+                page={experiencesPageState.page}
+                itemCount={experiencesPageState.itemCount}
+                pageSize={experiencesPageState.pageSize}
+                onPageChange={experiencesPageState.setPage}
+                ariaLabel="Homepage professional experience pages"
+                className="!mt-6 max-w-xl border-primary/25 bg-surface-primary/40 px-2 py-3 md:mx-auto"
+              />
             </motion.div>
           </div>
 
@@ -111,28 +172,37 @@ const About: React.FC<AboutProps> = ({ className = "" }) => {
             
             {/* Notable Awards */}
             <motion.div {...sectionReveal}>
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 md:mb-8">Notable Awards</h3>
-              <div className="space-y-3 md:space-y-4">
-                {awards.map((item, index) => (
-                  <ExpandableCard
-                    key={item.id}
-                    item={item}
-                    index={index}
-                    isExpanded={isAwardExpanded(index)}
-                    onToggle={toggleAwardExpansion}
-                    type="award"
-                  />
-                ))}
+              <DenseSubheading>Notable Awards</DenseSubheading>
+              <div key={awardsPageState.page} className="space-y-3 md:space-y-4">
+                {awardsPageState.slice.map((item, idx) => {
+                  const globalIndex =
+                    (awardsPageState.page - 1) * awardsPageState.pageSize + idx;
+                  return (
+                    <ExpandableCard
+                      key={item.id}
+                      item={item}
+                      index={globalIndex}
+                      isExpanded={isAwardExpanded(globalIndex)}
+                      onToggle={toggleAwardExpansion}
+                      type="award"
+                    />
+                  );
+                })}
               </div>
+              <ListPagination
+                page={awardsPageState.page}
+                itemCount={awardsPageState.itemCount}
+                pageSize={awardsPageState.pageSize}
+                onPageChange={awardsPageState.setPage}
+                ariaLabel="Homepage notable awards pages"
+                className="!mt-6 max-w-xl border-primary/25 bg-surface-primary/40 px-2 py-3 md:mx-auto"
+              />
             </motion.div>
 
             {/* Visual Content */}
-            <motion.div
-              {...sectionReveal}
-              className="card gpu-accelerated"
-            >
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-4 md:mb-6">Research in Action</h3>
-              <div className="rounded-lg overflow-hidden bg-surface-primary">
+            <motion.div {...sectionReveal} className="card card-rich gpu-accelerated">
+              <DenseSubheading className="mb-4 md:mb-6">Research in Action</DenseSubheading>
+              <div className="overflow-hidden rounded-xl border border-primary/20 bg-surface-primary">
                 <VideoPlayer className="" />
               </div>
               <p className={`${textVariants.body.dark} mt-4 text-sm`}>

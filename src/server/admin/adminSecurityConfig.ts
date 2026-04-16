@@ -1,7 +1,7 @@
 import 'server-only';
 
 /** Documented placeholder — must not be relied on in production. */
-export const DEFAULT_ADMIN_SECRET_PLACEHOLDER = 'default-secret-change-in-production';
+const DEFAULT_ADMIN_SECRET_PLACEHOLDER = 'default-secret-change-in-production';
 
 let weakSecretDevWarningLogged = false;
 

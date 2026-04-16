@@ -2,11 +2,11 @@
 module.exports = {
   // Performance: Optimized content paths for efficient purging
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/hooks/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/contexts/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   
   // Performance: Enable JIT mode optimizations
@@ -275,6 +275,19 @@ module.exports = {
         'glow': '0 0 20px rgba(99, 179, 237, 0.5)',
         'glow-lg': '0 0 40px rgba(99, 179, 237, 0.6)',
         'inner-glow': 'inset 0 2px 10px rgba(99, 179, 237, 0.2)',
+        /** List pagination panel — matches prior arbitrary shadow (no visual change). */
+        'pagination-panel':
+          '0 0 0 1px rgba(6,182,212,0.06), 0 12px 40px -24px rgba(0,0,0,0.6)',
+        /** Section heading icon halo (uses CSS var from globals). */
+        'section-heading-icon': '0 0 24px -8px var(--shadow-glow)',
+        /** Divider variants — CSS vars from globals. */
+        'divider-default': '0 2px 8px var(--shadow-secondary)',
+        'divider-glow': '0 0 15px var(--shadow-glow), 0 2px 8px var(--shadow-primary)',
+        'divider-gradient': '0 3px 10px var(--shadow-primary)',
+        /** Chatbot floating UI (purple glow matches prior inline rgba). */
+        'chatbot-float': '0 4px 24px 0 rgba(139, 92, 246, 0.15)',
+        'chatbot-modal': '0 8px 40px 0 rgba(139, 92, 246, 0.18)',
+        'chatbot-loader': '0 4px 24px 0 var(--shadow-secondary)',
       },
 
       // Enhanced backdrop blur

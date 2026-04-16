@@ -16,7 +16,16 @@ import {
 } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 
+import { PublicationEntryCard } from '@/components/publications/PublicationEntryCard';
+import type { PublicationTypeFilter } from '@/components/publications/publicationLabels';
+import { ContentStatTile } from '@/components/shared/ContentStatTile';
+import { EmptyStateHint } from '@/components/shared/EmptyStateHint';
+import { FilterChipButton } from '@/components/shared/FilterChipButton';
+import { ListPagination } from '@/components/shared/ListPagination';
+import { SectionHeading } from '@/components/shared/SectionHeading';
 import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
+import { usePaginatedSlice } from '@/hooks/usePaginatedSlice';
+import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
 
 // Animation variants
 const containerVariants = {
@@ -32,35 +41,14 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-// Publication types
-type PublicationType = 'all' | 'journal' | 'conference' | 'book';
-
-function getTypeStyle(type: string): string {
-  if (type === 'journal') {
-    return 'bg-accent-primary/10 text-accent-primary';
-  }
-  if (type === 'book') {
-    return 'bg-accent-secondary/10 text-accent-secondary';
-  }
-  return 'bg-accent-tertiary/10 text-accent-tertiary';
-}
-
-function getTypeLabel(type: string): string {
-  if (type === 'journal') {
-    return 'Journal';
-  }
-  if (type === 'book') {
-    return 'Book';
-  }
-  return 'Conference';
-}
+const PUBLICATIONS_PAGE_SIZE = 5;
 
 export default function PublicationsPage() {
   const siteContent = usePublicSiteContent();
   const { heroIntro, scholarUrl, stats: publicationStats, items: publicationItems } =
     siteContent.publications;
   const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState<PublicationType>('all');
+  const [typeFilter, setTypeFilter] = useState<PublicationTypeFilter>('all');
   const [yearSort, setYearSort] = useState<'desc' | 'asc'>('desc');
 
   // Filter and sort publications
@@ -80,6 +68,23 @@ export default function PublicationsPage() {
       });
   }, [searchQuery, typeFilter, yearSort, publicationItems]);
 
+  const publicationIds = useMemo(
+    () => publicationItems.map((p) => p.id).join('|'),
+    [publicationItems],
+  );
+  const listResetKey = useMemo(
+    () => `${searchQuery}::${typeFilter}::${yearSort}::${publicationIds}`,
+    [searchQuery, typeFilter, yearSort, publicationIds],
+  );
+
+  const {
+    slice: pagedPublications,
+    page: listPage,
+    setPage: setListPage,
+    itemCount: filteredCount,
+    pageSize: listPageSize,
+  } = usePaginatedSlice(filteredPublications, PUBLICATIONS_PAGE_SIZE, listResetKey);
+
   return (
     <main className="min-h-screen pt-20">
       {/* Hero Section */}
@@ -90,7 +95,10 @@ export default function PublicationsPage() {
             animate="visible"
             variants={containerVariants}
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 mb-6">
+            <motion.div
+              variants={itemVariants}
+              className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${TW_ACCENT_SOFT_GRADIENT}`}
+            >
               <FileText className="w-10 h-10 text-accent-primary" />
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
@@ -117,9 +125,9 @@ export default function PublicationsPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-8 bg-surface-secondary/30">
+      <section className="border-y border-primary/20 bg-surface-secondary/40 py-10 backdrop-blur-sm">
         <div className="container-custom">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-4">
             {[
               { label: 'Total Publications', value: `${publicationStats.total}+`, icon: FileText },
               { label: 'Journal Papers', value: `${publicationStats.journals}+`, icon: BookOpen },
@@ -127,11 +135,7 @@ export default function PublicationsPage() {
               { label: 'Books', value: `${publicationStats.books}`, icon: Book },
               { label: 'Ph.D. advised', value: `${publicationStats.phdAdvised}+`, icon: Award },
             ].map((stat) => (
-              <div key={stat.label} className="text-center p-4">
-                <stat.icon className="w-6 h-6 mx-auto mb-2 text-accent-primary" />
-                <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                <p className="text-muted text-sm">{stat.label}</p>
-              </div>
+              <ContentStatTile key={stat.label} icon={stat.icon} value={stat.value} label={stat.label} />
             ))}
           </div>
         </div>
@@ -139,109 +143,76 @@ export default function PublicationsPage() {
 
       {/* Filters */}
       <section className="section">
-        <div className="container-custom">
-          <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <div className="container-custom mx-auto max-w-5xl">
+          <SectionHeading eyebrow="Library" title="Browse & filter" icon={Search} className="!mb-6" />
+
+          <div className="list-page-panel mb-10 flex flex-col gap-4 md:flex-row md:items-stretch">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
               <input
                 type="text"
                 placeholder="Search publications..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-surface-secondary border border-primary focus:border-accent focus:ring-1 focus:ring-accent-primary outline-none transition-all text-foreground"
+                className="h-full min-h-11 w-full rounded-xl border border-primary/40 bg-background/40 py-3 pl-10 pr-4 text-foreground outline-none ring-accent-primary/30 transition-all placeholder:text-muted/70 focus:border-accent-primary focus:ring-2"
               />
             </div>
 
             {/* Type Filter */}
-            <div className="flex gap-2">
-              {(['all', 'journal', 'conference', 'book'] as PublicationType[]).map((type) => (
-                <button
+            <div className="flex flex-wrap gap-2 md:items-center">
+              {(['all', 'journal', 'conference', 'book'] as PublicationTypeFilter[]).map((type) => (
+                <FilterChipButton
                   key={type}
+                  selected={typeFilter === type}
                   onClick={() => setTypeFilter(type)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                    typeFilter === type
-                      ? 'bg-accent-primary text-white'
-                      : 'bg-surface-secondary text-muted hover:text-foreground'
-                  }`}
                 >
                   {type === 'all' ? 'All' : `${type.charAt(0).toUpperCase()}${type.slice(1)}s`}
-                </button>
+                </FilterChipButton>
               ))}
             </div>
 
             {/* Sort */}
             <button
+              type="button"
               onClick={() => setYearSort(yearSort === 'desc' ? 'asc' : 'desc')}
-              className="flex items-center gap-2 px-4 py-3 rounded-lg bg-surface-secondary text-muted hover:text-foreground transition-all"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-primary/30 bg-surface-secondary/60 px-4 py-2.5 font-medium text-muted transition-all hover:border-accent-primary/40 hover:text-foreground md:min-w-[11rem]"
             >
-              <Calendar className="w-4 h-4" />
-              <span>{yearSort === 'desc' ? 'Newest First' : 'Oldest First'}</span>
+              <Calendar className="h-4 w-4 shrink-0 text-accent-primary" />
+              <span>{yearSort === 'desc' ? 'Newest first' : 'Oldest first'}</span>
             </button>
           </div>
 
           {/* Publications List */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="space-y-4"
-          >
-            {filteredPublications.length === 0 ? (
-              <div className="text-center py-12 text-muted">
-                <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>No publications found matching your criteria.</p>
-              </div>
-            ) : (
-              filteredPublications.map((pub) => (
-                <motion.article
-                  key={pub.id}
-                  variants={itemVariants}
-                  layout
-                  className="card p-6 hover:border-accent transition-all group"
-                >
-                  <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`px-2 py-0.5 rounded text-xs ${getTypeStyle(pub.type)}`}>
-                          {getTypeLabel(pub.type)}
-                        </span>
-                        <span className="text-muted text-sm">{pub.year}</span>
-                        {pub.quartile && (
-                          <span className="px-2 py-0.5 rounded bg-success/10 text-success text-xs">
-                            {pub.quartile}
-                          </span>
-                        )}
-                      </div>
-                      
-                      <h3 className="font-semibold text-foreground mb-2 group-hover:text-accent-primary transition-colors">
-                        {pub.title}
-                      </h3>
-                      
-                      <p className="text-muted text-sm mb-2">{pub.authors}</p>
-                      
-                      <p className="text-secondary text-sm">
-                        {pub.journal}
-                        {pub.impactFactor && <span className="text-muted"> • IF: {pub.impactFactor}</span>}
-                      </p>
-                    </div>
+          {filteredPublications.length === 0 ? (
+            <EmptyStateHint
+              icon={FileText}
+              title="No publications match this view."
+              hint="Try clearing search or switching the type filter."
+            />
+          ) : (
+            <>
+              <motion.div
+                key={listPage}
+                initial={{ opacity: 0.88, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                className="space-y-4"
+              >
+                {pagedPublications.map((pub) => (
+                  <PublicationEntryCard key={pub.id} publication={pub} />
+                ))}
+              </motion.div>
 
-                    {pub.doi && (
-                      <a
-                        href={`https://doi.org/${pub.doi}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-accent-primary text-sm hover:underline flex-shrink-0"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        DOI
-                      </a>
-                    )}
-                  </div>
-                </motion.article>
-              ))
-            )}
-          </motion.div>
+              <ListPagination
+                page={listPage}
+                itemCount={filteredCount}
+                pageSize={listPageSize}
+                onPageChange={setListPage}
+                ariaLabel="Publications list pages"
+              />
+            </>
+          )}
 
           {/* Load More / See All */}
           <div className="mt-8 text-center">
