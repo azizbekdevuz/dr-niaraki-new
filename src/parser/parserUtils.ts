@@ -7,6 +7,8 @@ import crypto from 'crypto';
 
 import type { ParseWarning, SectionType, DetectedSection } from '@/types/parser';
 
+import { classifyCvSectionBoundary } from './cvSectionBoundaries';
+
 /**
  * Normalizes whitespace in text
  */
@@ -102,9 +104,12 @@ export function extractUrls(text: string): string[] {
 export function extractPatentNumber(text: string): string | null {
   const patterns = [
     /US\s*(?:Patent\s*(?:No\.?)?\s*)?(\d{1,3}[,.]?\d{3}[,.]?\d{3}(?:[A-Z]\d)?)/i,
-    /(?:Patent\s*(?:No\.?)?\s*)?(\d{2}-\d{7})/i,
+    /(?:Patent\s*No\.?\s*)(10-\d{6,9})\b/i,
+    /\b(10-\d{4}-\d{7})\b/,
+    /\b(10-\d{6,9})\b/,
     /(?:Application\s*No\.?\s*)?(\d{2}-\d{4}-\d{7})/i,
-    /(10-\d{7})/,
+    /(?:Patent\s*(?:No\.?)?\s*)?(\d{2}-\d{7})(?!\d)/i,
+    /\b(Application\s+No\.?\s*10-\d{4}-\d{7})\b/i,
   ];
   
   for (const pattern of patterns) {
@@ -118,71 +123,15 @@ export function extractPatentNumber(text: string): string | null {
 }
 
 /**
- * Determines if text is likely a section header
+ * True when the line starts a top-level CV section (anchored rules — see cvSectionBoundaries).
  */
 export function isSectionHeader(text: string): boolean {
-  const trimmed = text.trim();
-  
-  // Check for known section keywords
-  const sectionKeywords = [
-    'education', 'experience', 'publications', 'patents', 
-    'research', 'awards', 'skills', 'contact', 'summary',
-    'qualifications', 'appointments', 'grants', 'students',
-    'teaching', 'services', 'workshops', 'professional',
-    'academic', 'career', 'positions', 'honors', 'books',
-    'journal', 'conference', 'membership', 'leadership'
-  ];
-  
-  const lowerText = trimmed.toLowerCase();
-  
-  // Check if it matches section patterns
-  if (sectionKeywords.some(kw => lowerText.includes(kw))) {
-    // Likely a header if:
-    // - All uppercase
-    // - Ends with colon
-    // - Short (under 100 chars)
-    // - Starts with common header words
-    if (
-      trimmed === trimmed.toUpperCase() ||
-      trimmed.endsWith(':') ||
-      trimmed.length < 100
-    ) {
-      return true;
-    }
-  }
-  
-  return false;
+  return classifyCvSectionBoundary(text) !== null;
 }
 
-/**
- * Maps text to section type
- */
+/** Section type for a boundary line (unknown if not a boundary). */
 export function detectSectionType(text: string): SectionType {
-  const lower = text.toLowerCase();
-  
-  const mappings: Array<{ keywords: string[]; type: SectionType }> = [
-    { keywords: ['professional summary', 'summary', 'profile', 'overview', 'summary of qualifications'], type: 'summary' },
-    { keywords: ['academic qualifications', 'education', 'academic qualification', 'degree', 'ph.d', 'phd', 'm.sc', 'msc', 'b.sc', 'bsc'], type: 'education' },
-    { keywords: ['professional work experiences', 'academic appointments', 'experience', 'appointment', 'position', 'employment', 'work', 'associate professor', 'assistant professor', 'research professor'], type: 'experience' },
-    { keywords: ['journal papers', 'publications', 'publication', 'journal paper', 'article', 'peer-reviewed', 'books and book chapters', 'books', 'book chapters', 'conference papers', 'conferences'], type: 'publications' },
-    { keywords: ['patents', 'patent'], type: 'patents' },
-    { keywords: ['research projects experiences', 'research project', 'research interest', 'research area', 'research grants'], type: 'research' },
-    { keywords: ['awards & honors', 'awards and honors', 'award', 'honor', 'recognition', 'achievement'], type: 'awards' },
-    { keywords: ['skills', 'skill', 'expertise', 'competenc', 'research & academic skills', 'research leadership'], type: 'skills' },
-    { keywords: ['contact', 'email', 'phone', 'address', 'website', 'linkedin'], type: 'contact' },
-    { keywords: ['student', 'supervision', 'mentee', 'advisee'], type: 'students' },
-    { keywords: ['research grants and achievements', 'grant', 'funding', 'research grant'], type: 'grants' },
-    { keywords: ['workshops and exhibitions', 'workshop', 'exhibition', 'presentation', 'workshop organization'], type: 'workshops' },
-    { keywords: ['teaching experiences', 'teaching', 'editorial', 'review', 'committee', 'service', 'journal and conference reviews'], type: 'services' },
-  ];
-  
-  for (const { keywords, type } of mappings) {
-    if (keywords.some(kw => lower.includes(kw))) {
-      return type;
-    }
-  }
-  
-  return 'unknown';
+  return classifyCvSectionBoundary(text) ?? 'unknown';
 }
 
 /**
@@ -193,41 +142,52 @@ export function splitIntoSections(text: string): DetectedSection[] {
   const sections: DetectedSection[] = [];
   let currentSection: DetectedSection | null = null;
   let currentContent: string[] = [];
-  
+
   for (const line of lines) {
     const trimmed = line.trim();
-    
-    if (isSectionHeader(trimmed) && trimmed.length > 0) {
-      // Save previous section
+
+    if (trimmed.length > 0 && isSectionHeader(trimmed)) {
       if (currentSection) {
         sections.push({
           ...currentSection,
           content: currentContent.join('\n').trim(),
         });
+      } else if (currentContent.length > 0) {
+        sections.push({
+          type: 'unknown',
+          title: 'Preamble',
+          content: currentContent.join('\n').trim(),
+          confidence: 0.35,
+        });
       }
-      
-      // Start new section
+
       const sectionType = detectSectionType(trimmed);
       currentSection = {
         type: sectionType,
         title: trimmed,
         content: '',
-        confidence: sectionType === 'unknown' ? 0.5 : 0.8,
+        confidence: sectionType === 'unknown' ? 0.5 : 0.85,
       };
       currentContent = [];
     } else {
       currentContent.push(line);
     }
   }
-  
-  // Save last section
+
   if (currentSection) {
     sections.push({
       ...currentSection,
       content: currentContent.join('\n').trim(),
     });
+  } else if (currentContent.length > 0) {
+    sections.push({
+      type: 'unknown',
+      title: 'Preamble',
+      content: currentContent.join('\n').trim(),
+      confidence: 0.35,
+    });
   }
-  
+
   return sections;
 }
 
