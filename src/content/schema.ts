@@ -245,6 +245,8 @@ export const SimpleListItemSchema = z.object({
   body: z.string().optional(),
 });
 
+export type SimpleListItem = z.infer<typeof SimpleListItemSchema>;
+
 export const FooterResearchFocusItemSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),

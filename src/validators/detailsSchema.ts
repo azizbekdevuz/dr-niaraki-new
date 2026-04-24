@@ -63,6 +63,24 @@ export const LanguageSchema = z.object({
   proficiency: z.string().nullable().optional(),
 });
 
+const CvNarrativeKindSchema = z.enum([
+  'teaching',
+  'professional_services',
+  'editorial_reviews',
+  'workshops_exhibitions',
+  'skills',
+  'leadership_supervision',
+  'other',
+]);
+
+export const CvNarrativeSectionSchema = z.object({
+  id: z.string().min(1),
+  kind: CvNarrativeKindSchema,
+  sectionTitle: z.string().min(1),
+  body: z.string(),
+  sourceSectionType: z.string().min(1),
+});
+
 // About schema
 export const AboutSchema = z.object({
   brief: z.string().nullable().optional(),
@@ -71,6 +89,7 @@ export const AboutSchema = z.object({
   positions: z.array(PositionSchema).default([]),
   awards: z.array(AwardSchema).default([]),
   languages: z.array(LanguageSchema).default([]),
+  cvNarrativeSections: z.array(CvNarrativeSectionSchema).default([]),
 });
 
 // Research Interest schema

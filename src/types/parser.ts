@@ -56,6 +56,8 @@ export type SectionType =
   | 'grants'
   | 'workshops'
   | 'services'
+  /** Long-form academic leadership / supervision — not employment rows. */
+  | 'academic_narrative'
   | 'unknown';
 
 export interface DetectedSection {

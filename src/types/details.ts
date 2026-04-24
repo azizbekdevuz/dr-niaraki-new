@@ -56,6 +56,28 @@ export interface Language {
   readonly proficiency?: string | null;
 }
 
+/**
+ * Conservative bucket for CV sections that are narrative or list-heavy
+ * (teaching, service, editorial work, workshops, skills, leadership text).
+ * Bodies are stored verbatim (trimmed); `kind` reflects the section header / boundary only.
+ */
+export type CvNarrativeKind =
+  | 'teaching'
+  | 'professional_services'
+  | 'editorial_reviews'
+  | 'workshops_exhibitions'
+  | 'skills'
+  | 'leadership_supervision'
+  | 'other';
+
+export interface CvNarrativeSection {
+  readonly id: string;
+  readonly kind: CvNarrativeKind;
+  readonly sectionTitle: string;
+  readonly body: string;
+  readonly sourceSectionType: string;
+}
+
 export interface About {
   readonly brief?: string | null;
   readonly full?: string | null;
@@ -63,6 +85,8 @@ export interface About {
   readonly positions: readonly Position[];
   readonly awards: readonly Award[];
   readonly languages: readonly Language[];
+  /** Semi-structured CV-only blocks (not mapped to public SiteContent by default). */
+  readonly cvNarrativeSections?: readonly CvNarrativeSection[];
 }
 
 export interface ResearchInterest {
