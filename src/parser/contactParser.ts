@@ -41,7 +41,11 @@ interface MutableSocialLinks {
  */
 export function parseContact(text: string): ParseResult<Contact> {
   const warnings: ParseWarning[] = [];
-  
+
+  const normalized = text
+    .replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})(?=\s*Personal\s+Email)/gi, '$1\n')
+    .replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})(?=\s*Official\s+Email)/gi, '$1\n');
+
   const contact: MutableContact = {
     email: null,
     personalEmail: null,
@@ -57,7 +61,7 @@ export function parseContact(text: string): ParseResult<Contact> {
   };
   
   // Extract emails
-  const emails = extractEmails(text);
+  const emails = extractEmails(normalized);
   if (emails.length > 0) {
     // Try to identify official vs personal email
     const officialEmail = emails.find(e => 
@@ -79,9 +83,9 @@ export function parseContact(text: string): ParseResult<Contact> {
   const phones = extractPhoneNumbers(text);
   if (phones.length > 0) {
     // Try to categorize phone numbers
-    const telMatch = text.match(/Tel[:\s|]+([^\n]+)/i);
-    const faxMatch = text.match(/Fax[:\s|]+([^\n]+)/i);
-    const cellMatch = text.match(/Cell(?:\s*Phone)?[:\s|]+([^\n]+)/i);
+    const telMatch = normalized.match(/Tel[:\s|]+([^\n]+)/i);
+    const faxMatch = normalized.match(/Fax[:\s|]+([^\n]+)/i);
+    const cellMatch = normalized.match(/Cell(?:\s*Phone)?[:\s|]+([^\n]+)/i);
     
     if (telMatch) {
       const telPhone = extractPhoneNumbers(telMatch[1] ?? '')[0];
@@ -111,7 +115,7 @@ export function parseContact(text: string): ParseResult<Contact> {
   }
   
   // Extract URLs
-  const urls = extractUrls(text);
+  const urls = extractUrls(normalized);
   
   // Categorize URLs
   for (const url of urls) {
@@ -141,7 +145,7 @@ export function parseContact(text: string): ParseResult<Contact> {
   
   // Extract website from text patterns
   if (!contact.website) {
-    const websiteMatch = text.match(/Website[:\s|]+([^\s\n]+)/i);
+    const websiteMatch = normalized.match(/Website[:\s|]+([^\s\n]+)/i);
     if (websiteMatch && websiteMatch[1]) {
       let website = websiteMatch[1];
       if (!website.startsWith('http')) {
@@ -153,13 +157,16 @@ export function parseContact(text: string): ParseResult<Contact> {
   
   // Extract LinkedIn from text pattern
   if (!contact.social.linkedin) {
-    const linkedinMatch = text.match(/LinkedIn[:\s|]+([^\s\n]+)/i);
+    const linkedinMatch = normalized.match(/LinkedIn[:\s|]+([^\s\n]+)/i);
     if (linkedinMatch && linkedinMatch[1]) {
-      let linkedin = linkedinMatch[1];
-      if (!linkedin.startsWith('http')) {
-        linkedin = `https://linkedin.com/in/${linkedin}`;
+      const rawLi = linkedinMatch[1].trim();
+      if (/^https?:\/\//i.test(rawLi)) {
+        contact.social.linkedin = rawLi;
+      } else if (/linkedin\.com/i.test(rawLi)) {
+        contact.social.linkedin = `https://${rawLi.replace(/^\/+/, '')}`;
+      } else {
+        contact.social.linkedin = `https://www.linkedin.com/in/${rawLi.replace(/^\/+/, '')}`;
       }
-      contact.social.linkedin = linkedin;
     }
   }
   
@@ -170,7 +177,7 @@ export function parseContact(text: string): ParseResult<Contact> {
   ];
   
   for (const pattern of addressPatterns) {
-    const match = text.match(pattern);
+    const match = normalized.match(pattern);
     if (match && match[1]) {
       contact.address = match[1].trim();
       break;
@@ -178,13 +185,13 @@ export function parseContact(text: string): ParseResult<Contact> {
   }
   
   // Extract department
-  const deptMatch = text.match(/Dept\.?\s*(?:of)?\s*([^\n,]+)/i);
+  const deptMatch = normalized.match(/Dept\.?\s*(?:of)?\s*([^\n,]+)/i);
   if (deptMatch && deptMatch[1]) {
     contact.department = deptMatch[1].trim();
   }
   
   // Extract university
-  const uniMatch = text.match(/(?:Sejong|INHA|University|KNTU)[^\n,]*/i);
+  const uniMatch = normalized.match(/(?:Sejong|INHA|University|KNTU)[^\n,]*/i);
   if (uniMatch) {
     contact.university = uniMatch[0].trim();
   }

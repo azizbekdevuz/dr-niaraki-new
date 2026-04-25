@@ -17,6 +17,49 @@ import {
 } from './parserUtils';
 
 /**
+ * Splits a patents section where each entry begins with US/KR/application markers
+ * (Sejong-style CV), instead of relying on generic splitEntries heuristics alone.
+ */
+function splitPatentSectionIntoEntries(text: string): string[] {
+  const raw = text.replace(/\r/g, '').trim();
+  if (!raw) {
+    return [];
+  }
+
+  const blocks = raw.split(
+    /\n(?=[^\n]*?(?:\bUS\s+International\s+Patent\b|\bPatent\s+No\.|\bApplication\s+No\.?\b))/i,
+  );
+  const trimmed = blocks
+    .map((b) => b.trim())
+    .filter((b) => b.length > 22)
+    .filter((chunk) => {
+      if (extractPatentNumber(chunk)) {
+        return true;
+      }
+      return /\b(?:Patent\s+No\.|Application\s+No|US\s+International\s+Patent)/i.test(chunk);
+    });
+  if (trimmed.length >= 4) {
+    return trimmed;
+  }
+
+  const byAppOnly = raw.split(/\n(?=Application\s+No\.?\s*\d)/i);
+  const t2 = byAppOnly
+    .map((b) => b.trim())
+    .filter((b) => b.length > 22)
+    .filter((chunk) => {
+      if (extractPatentNumber(chunk)) {
+        return true;
+      }
+      return /\b(?:Patent\s+No\.|Application\s+No|US\s+International\s+Patent)/i.test(chunk);
+    });
+  if (t2.length >= 4) {
+    return t2;
+  }
+
+  return splitEntries(raw);
+}
+
+/**
  * Parses patents section text into structured data
  */
 export function parsePatents(text: string): ParseResult<Patent[]> {
@@ -30,7 +73,7 @@ export function parsePatents(text: string): ParseResult<Patent[]> {
     .trim();
   
   // Split into individual entries
-  const entries = splitEntries(cleanedText);
+  const entries = splitPatentSectionIntoEntries(cleanedText);
   
   // If no entries found, try more aggressive splitting
   let finalEntries = entries;

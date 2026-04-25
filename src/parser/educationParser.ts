@@ -60,12 +60,22 @@ function parseEducationEntry(
   };
   
   // Extract degree type
+  const firstLine = trimmed.split('\n')[0]?.trim() ?? '';
+  const looksLikeHonorBanner =
+    /^(?:top\s+\d|fellow\s*\||recognized for|contributing to|developing |collaborating |research focus)/i.test(
+      firstLine,
+    );
+  const hasStructuredDegree =
+    /(Ph\.?\s*D|Doctorate|M\.?\s*Sc|B\.?\s*Sc|Post-?Doctoral|Post-?Doc|Master|Bachelor)/i.test(trimmed);
+  if (looksLikeHonorBanner && !hasStructuredDegree) {
+    return null;
+  }
+
   const degreePatterns = [
     { pattern: /Ph\.?D\.?|Doctor(?:ate)?/i, type: 'Ph.D.' },
     { pattern: /Post-?Doc(?:toral)?|Post-?Doctoral Fellowship/i, type: 'Post-Doctoral' },
     { pattern: /M\.?Sc\.?|Master(?:'?s)?/i, type: 'M.Sc.' },
     { pattern: /B\.?Sc\.?|Bachelor(?:'?s)?/i, type: 'B.Sc.' },
-    { pattern: /Fellow(?:ship)?/i, type: 'Fellowship' },
   ];
   
   for (const { pattern, type } of degreePatterns) {
@@ -77,11 +87,11 @@ function parseEducationEntry(
   
   if (!edu.degree) {
     // Use first line as degree description
-    const firstLine = trimmed.split('\n')[0];
-    if (firstLine && firstLine.length > 100) {
-      edu.degree = firstLine.slice(0, 100);
+    const head = trimmed.split('\n')[0];
+    if (head && head.length > 100) {
+      edu.degree = head.slice(0, 100);
     } else {
-      edu.degree = firstLine ?? '';
+      edu.degree = head ?? '';
     }
     warnings.push(createWarning('education', `Education ${index + 1}: degree type unclear`, 'info', index));
   }
