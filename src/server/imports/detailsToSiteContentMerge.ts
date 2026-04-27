@@ -1,4 +1,5 @@
 import type { SiteContent } from '@/content/schema';
+import { applyCvNarrativeSectionsToSiteContent } from '@/server/imports/cvNarrativeToSimpleLists';
 import {
   awardImpactFrom,
   nonEmptyLines,
@@ -7,6 +8,7 @@ import {
   patentType,
   publicationType,
 } from '@/server/imports/detailsMergeNormalize';
+import { mergeResearchInterestsFromDetails } from '@/server/imports/detailsMergeResearchInterests';
 import type { DetailsSchemaType } from '@/validators/detailsSchema';
 
 /**
@@ -129,20 +131,8 @@ export function mergeCvDetailsIntoSiteContent(details: DetailsSchemaType, base: 
     pending: pend,
   };
 
-  const candInterests = details.research.interests;
-  const baseInterests = [...next.research.interests];
-  const nInt = Math.min(candInterests.length, baseInterests.length);
-  for (let i = 0; i < nInt; i += 1) {
-    const d = candInterests[i]!;
-    const row = baseInterests[i]!;
-    baseInterests[i] = {
-      ...row,
-      name: d.name.trim(),
-      description: (d.description?.trim() || row.description).trim(),
-      keywords: d.keywords && d.keywords.length > 0 ? [...d.keywords] : [...row.keywords],
-    };
-  }
-  next.research.interests = baseInterests;
+  mergeResearchInterestsFromDetails(details, next);
+  applyCvNarrativeSectionsToSiteContent(details.about, next);
 
   return next;
 }
