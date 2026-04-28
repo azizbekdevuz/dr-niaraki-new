@@ -3,7 +3,13 @@
  * Merges into a full SiteContent clone; server validation remains authoritative.
  */
 
-import type { AboutAwardItem, AboutJourneyItem, AboutExperienceItem, SiteContent } from '@/content/schema';
+import type {
+  AboutAwardItem,
+  AboutJourneyItem,
+  AboutExperienceItem,
+  SimpleListItem,
+  SiteContent,
+} from '@/content/schema';
 
 /**
  * Experience row in the editor.
@@ -37,6 +43,10 @@ export type DraftEditorSlice = {
   journey: AboutJourneyItem[];
   experiences: ExperienceEditorRow[];
   awards: AboutAwardItem[];
+  /** Teaching / supervision / service simple lists (also receive CV narrative merge rows with `cv-nar-` ids). */
+  teaching: SimpleListItem[];
+  supervision: SimpleListItem[];
+  service: SimpleListItem[];
 };
 
 export function professionalSummaryParagraphsToText(paragraphs: string[]): string {
@@ -118,6 +128,18 @@ export function trimAwardItem(item: AboutAwardItem): AboutAwardItem {
   };
 }
 
+export function trimSimpleListItem(item: SimpleListItem): SimpleListItem {
+  const body = item.body?.trim();
+  const next: SimpleListItem = {
+    id: item.id.trim(),
+    title: item.title.trim(),
+  };
+  if (body) {
+    return { ...next, body };
+  }
+  return next;
+}
+
 export function extractEditorSliceFromSiteContent(data: SiteContent): DraftEditorSlice {
   return {
     profile: {
@@ -137,6 +159,9 @@ export function extractEditorSliceFromSiteContent(data: SiteContent): DraftEdito
     journey: data.about.journey.map((j) => ({ ...j })),
     experiences: data.about.experiences.map(experienceToEditorRow),
     awards: data.about.awards.map((a) => ({ ...a })),
+    teaching: data.teaching.map((t) => ({ ...t })),
+    supervision: data.supervision.map((t) => ({ ...t })),
+    service: data.service.map((t) => ({ ...t })),
   };
 }
 
@@ -155,6 +180,9 @@ export function mergeEditorSliceIntoSiteContent(base: SiteContent, slice: DraftE
   next.about.journey = slice.journey.map(trimJourneyItem);
   next.about.experiences = slice.experiences.map(editorRowToExperience);
   next.about.awards = slice.awards.map(trimAwardItem);
+  next.teaching = slice.teaching.map(trimSimpleListItem);
+  next.supervision = slice.supervision.map(trimSimpleListItem);
+  next.service = slice.service.map(trimSimpleListItem);
   return next;
 }
 
@@ -185,6 +213,22 @@ function validateExperienceRows(rows: ExperienceEditorRow[]): { ok: true } | { o
         ok: false,
         message: `Experience #${i + 1}: position, institution, duration, and details are required.`,
       };
+    }
+  }
+  return { ok: true };
+}
+
+function validateSimpleListItems(
+  items: SimpleListItem[],
+  label: string,
+): { ok: true } | { ok: false; message: string } {
+  for (let i = 0; i < items.length; i += 1) {
+    const it = items[i]!;
+    if (!it.id.trim()) {
+      return { ok: false, message: `${label} #${i + 1}: id is required.` };
+    }
+    if (!it.title.trim()) {
+      return { ok: false, message: `${label} #${i + 1}: title is required.` };
     }
   }
   return { ok: true };
@@ -263,6 +307,18 @@ export function validateEditorSliceClient(slice: DraftEditorSlice): { ok: true }
   const av = validateAwardItems(slice.awards);
   if (!av.ok) {
     return av;
+  }
+  const tv = validateSimpleListItems(slice.teaching, 'Teaching list item');
+  if (!tv.ok) {
+    return tv;
+  }
+  const sv = validateSimpleListItems(slice.supervision, 'Supervision list item');
+  if (!sv.ok) {
+    return sv;
+  }
+  const rv = validateSimpleListItems(slice.service, 'Service list item');
+  if (!rv.ok) {
+    return rv;
   }
   return { ok: true };
 }
