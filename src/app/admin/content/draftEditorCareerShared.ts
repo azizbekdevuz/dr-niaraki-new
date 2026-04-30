@@ -1,4 +1,4 @@
-import type { AboutAwardItem, AboutJourneyItem } from '@/content/schema';
+import type { AboutAwardItem, AboutJourneyItem, SimpleListItem } from '@/content/schema';
 import type { ExperienceEditorRow } from '@/lib/draftEditorSlice';
 
 export const careerFieldClass =
@@ -47,5 +47,13 @@ export function defaultAward(): AboutAwardItem {
     details: 'Description shown on the public About page',
     impact: 'Additional context (not always shown)',
     category: 'research',
+  };
+}
+
+export function defaultSimpleListItem(): SimpleListItem {
+  return {
+    id: newStableId(),
+    title: 'Section or list heading',
+    body: 'Optional body text (shown when the public page renders this list).',
   };
 }

@@ -7,6 +7,7 @@ import type { DraftEditorSlice } from '@/lib/draftEditorSlice';
 import { DraftEditorAwardsList } from './draftEditorAwardsList';
 import { DraftEditorExperiencesList } from './draftEditorExperiencesList';
 import { DraftEditorJourneyList } from './draftEditorJourneyList';
+import { DraftEditorSimpleListsForm } from './draftEditorSimpleListsForm';
 
 type DraftEditorCareerAwardsFormProps = {
   slice: DraftEditorSlice;
@@ -32,6 +33,7 @@ export function DraftEditorCareerAwardsForm({ slice, disabled, onSliceChange }: 
         disabled={disabled}
         onChange={(awards) => onSliceChange({ ...slice, awards })}
       />
+      <DraftEditorSimpleListsForm slice={slice} disabled={disabled} onSliceChange={onSliceChange} />
     </div>
   );
 }

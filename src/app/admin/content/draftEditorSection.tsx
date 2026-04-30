@@ -12,6 +12,7 @@ import {
 import { DraftEditorCareerAwardsForm } from './draftEditorCareerAwardsForm';
 import { DraftEditorFormBody } from './draftEditorFormBody';
 import { DraftEditorSaveBar } from './draftEditorSaveBar';
+import { DraftEditorSitePreview } from './DraftEditorSitePreview';
 
 export type DraftEditorSectionProps = {
   /** When null, editor is hidden (no draft or invalid payload). */
@@ -120,30 +121,37 @@ export function DraftEditorSection({
     <section className="card p-6 mb-6">
       <h2 className="text-lg font-semibold text-foreground mb-2">Draft editor</h2>
       <p className="text-muted text-sm mb-6">
-        Profile, summary, contact, academic journey, professional appointments, and awards. Publications and patents
-        stay unchanged here.
+        Profile, summary, contact, academic journey, professional appointments, awards, and teaching / supervision /
+        service lists. Publications and patents stay unchanged here.
       </p>
 
-      <DraftEditorFormBody
-        slice={slice}
-        disabled={disabled}
-        saving={saving}
-        patchProfile={patchProfile}
-        patchContact={patchContact}
-        setSummaryText={setSummaryText}
-      />
+      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(260px,360px)]">
+        <div className="min-w-0 space-y-6">
+          <DraftEditorFormBody
+            slice={slice}
+            disabled={disabled}
+            saving={saving}
+            patchProfile={patchProfile}
+            patchContact={patchContact}
+            setSummaryText={setSummaryText}
+          />
 
-      <DraftEditorCareerAwardsForm slice={slice} disabled={disabled} onSliceChange={replaceStructuredSlice} />
+          <DraftEditorCareerAwardsForm slice={slice} disabled={disabled} onSliceChange={replaceStructuredSlice} />
 
-      <DraftEditorSaveBar
-        disabled={disabled}
-        saving={saving}
-        saveChangeSummary={saveChangeSummary}
-        onSaveChangeSummaryChange={onSaveChangeSummaryChange}
-        clientErr={clientErr}
-        canSave={canSave}
-        onSaveClick={handleSaveClick}
-      />
+          <DraftEditorSaveBar
+            disabled={disabled}
+            saving={saving}
+            saveChangeSummary={saveChangeSummary}
+            onSaveChangeSummaryChange={onSaveChangeSummaryChange}
+            clientErr={clientErr}
+            canSave={canSave}
+            onSaveClick={handleSaveClick}
+          />
+        </div>
+        <aside className="min-w-0 lg:sticky lg:top-6 lg:self-start">
+          <DraftEditorSitePreview slice={slice} siteContext={workingCopy} />
+        </aside>
+      </div>
     </section>
   );
 }
