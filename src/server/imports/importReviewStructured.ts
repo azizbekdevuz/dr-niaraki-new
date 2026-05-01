@@ -4,6 +4,7 @@ import type {
   AboutJourneyItem,
   PatentItem,
   PublicationItem,
+  SimpleListItem,
   SiteContent,
 } from '@/content/schema';
 import { extractEditorSliceFromSiteContent } from '@/lib/draftEditorSlice';
@@ -188,6 +189,25 @@ export function buildStructuredReviewBlocks(
     ['name', 'description', 'keywords'],
   );
 
+  const teachingDiff = diffIdLists<SimpleListItem>(
+    baseline.teaching,
+    merged.teaching,
+    (t) => t.title,
+    ['title', 'body'],
+  );
+  const supervisionDiff = diffIdLists<SimpleListItem>(
+    baseline.supervision,
+    merged.supervision,
+    (t) => t.title,
+    ['title', 'body'],
+  );
+  const serviceDiff = diffIdLists<SimpleListItem>(
+    baseline.service,
+    merged.service,
+    (t) => t.title,
+    ['title', 'body'],
+  );
+
   const provenanceBlock: ImportReviewBlock = {
     id: 'provenance',
     title: 'Import provenance',
@@ -215,6 +235,9 @@ export function buildStructuredReviewBlocks(
     formatListDiff('Academic journey', 'journey', journeyDiff),
     formatListDiff('Professional experience', 'experiences', expDiff),
     formatListDiff('Awards', 'awards', awardDiff),
+    formatListDiff('Teaching (site list)', 'teaching', teachingDiff),
+    formatListDiff('Supervision (site list)', 'supervision', supervisionDiff),
+    formatListDiff('Service (site list)', 'service', serviceDiff),
     formatListDiff('Publications (site list)', 'publications', pubDiff),
     formatListDiff('Patents (site list)', 'patents', patDiff),
     formatListDiff('Research interests', 'research_interests', researchDiff),
