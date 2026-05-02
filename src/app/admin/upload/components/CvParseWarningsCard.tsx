@@ -3,6 +3,8 @@
 import { AlertTriangle } from 'lucide-react';
 import React from 'react';
 
+import { ReviewableStringList } from '@/components/shared/ReviewableStringList';
+
 type Props = {
   warnings: string[];
 };
@@ -13,22 +15,15 @@ export function CvParseWarningsCard({ warnings }: Props) {
   }
 
   return (
-    <div className="card p-4 border-warning bg-warning/5">
-      <div className="flex items-start gap-3 mb-3">
-        <AlertTriangle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
+    <div className="card border-warning bg-warning/5 p-4">
+      <div className="mb-3 flex items-start gap-3">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-warning" />
         <div>
-          <p className="font-medium text-foreground">Parser Warnings ({warnings.length})</p>
-          <p className="text-muted text-sm">Review these warnings before committing</p>
+          <p className="font-medium text-foreground">Parser warnings</p>
+          <p className="text-sm text-muted">Expand to review every message before committing.</p>
         </div>
       </div>
-      <ul className="list-disc list-inside text-sm text-muted space-y-1 ml-8">
-        {warnings.slice(0, 10).map((w, i) => (
-          <li key={i}>{w}</li>
-        ))}
-        {warnings.length > 10 ? (
-          <li className="text-accent-primary">...and {warnings.length - 10} more</li>
-        ) : null}
-      </ul>
+      <ReviewableStringList title="All parser warnings" items={warnings} itemLabel="warnings" />
     </div>
   );
 }
