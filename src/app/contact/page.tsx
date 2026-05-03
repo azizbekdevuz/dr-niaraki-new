@@ -14,13 +14,10 @@ import {
   GraduationCap,
   Building,
   ExternalLink,
-  Send,
-  Loader2,
-  CheckCircle,
-  AlertCircle,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 
+import { ContactMessageForm } from '@/components/contact/ContactMessageForm';
 import { usePublicSiteContent } from '@/contexts/PublicSiteContentContext';
 import { TW_ACCENT_SOFT_GRADIENT } from '@/lib/ui/chromeClassStrings';
 
@@ -48,29 +45,6 @@ export default function ContactPage() {
   const siteContent = usePublicSiteContent();
   const { heroHeading, heroSubtext, mapPlaceLabel, mapQueryUrl, info: contactInfo, socialLinks } =
     siteContent.contact;
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSending(true);
-    setError(null);
-
-    // Simulate form submission (in production, this would send an email)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // For demo purposes, just show success
-    setSent(true);
-    setSending(false);
-    setFormData({ name: '', email: '', subject: '', message: '' });
-  };
 
   return (
     <main className="min-h-screen pt-20">
@@ -212,122 +186,15 @@ export default function ContactPage() {
               </motion.div>
             </motion.div>
 
-            {/* Contact Form */}
             <motion.div
               initial="hidden"
               animate="visible"
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold text-foreground mb-6">
-                Send a Message
-              </motion.h2>
-
-              <motion.div variants={itemVariants} className="card p-6">
-                {sent ? (
-                  <div className="text-center py-12">
-                    <CheckCircle className="w-16 h-16 mx-auto mb-4 text-success" />
-                    <h3 className="text-xl font-semibold text-foreground mb-2">Message Sent!</h3>
-                    <p className="text-muted mb-6">
-                      Thank you for reaching out. I&apos;ll get back to you as soon as possible.
-                    </p>
-                    <button
-                      onClick={() => setSent(false)}
-                      className="btn-secondary px-6 py-2"
-                    >
-                      Send Another Message
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-secondary mb-2">
-                          Name *
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-4 py-3 rounded-lg bg-surface-secondary border border-primary focus:border-accent focus:ring-1 focus:ring-accent-primary outline-none transition-all text-foreground"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-secondary mb-2">
-                          Email *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full px-4 py-3 rounded-lg bg-surface-secondary border border-primary focus:border-accent focus:ring-1 focus:ring-accent-primary outline-none transition-all text-foreground"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-secondary mb-2">
-                        Subject *
-                      </label>
-                      <input
-                        type="text"
-                        id="subject"
-                        value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg bg-surface-secondary border border-primary focus:border-accent focus:ring-1 focus:ring-accent-primary outline-none transition-all text-foreground"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-secondary mb-2">
-                        Message *
-                      </label>
-                      <textarea
-                        id="message"
-                        rows={6}
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg bg-surface-secondary border border-primary focus:border-accent focus:ring-1 focus:ring-accent-primary outline-none transition-all text-foreground resize-none"
-                        required
-                      />
-                    </div>
-
-                    {error && (
-                      <div className="flex items-center gap-2 text-error text-sm">
-                        <AlertCircle className="w-4 h-4" />
-                        <span>{error}</span>
-                      </div>
-                    )}
-
-                    <button
-                      type="submit"
-                      disabled={sending}
-                      className="w-full btn-primary py-3 flex items-center justify-center gap-2 disabled:opacity-50"
-                    >
-                      {sending ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Sending...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4" />
-                          <span>Send Message</span>
-                        </>
-                      )}
-                    </button>
-                  </form>
-                )}
-              </motion.div>
-
-              {/* Note */}
-              <motion.p variants={itemVariants} className="mt-4 text-muted text-sm text-center">
-                For urgent matters, please contact via email directly.
-              </motion.p>
+              <ContactMessageForm
+                directEmail={contactInfo.email}
+                siteBrand={siteContent.meta.openGraphSiteName}
+              />
             </motion.div>
           </div>
         </div>
