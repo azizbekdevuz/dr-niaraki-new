@@ -57,6 +57,7 @@ function sampleDetails(): DetailsSchemaType {
         },
       ],
       languages: [],
+      cvNarrativeSections: [],
     },
     research: {
       interests: [],

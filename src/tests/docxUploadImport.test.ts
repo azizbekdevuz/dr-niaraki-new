@@ -40,6 +40,7 @@ const sampleDetails: Details = {
     positions: [],
     awards: [],
     languages: [],
+    cvNarrativeSections: [],
   },
   research: { interests: [], projects: [], grants: [] },
   publications: [{ id: 'p1', title: 'Paper', authors: null, journal: null, year: 2024, type: 'journal', raw: null }],

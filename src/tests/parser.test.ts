@@ -84,6 +84,10 @@ describe('Parser Utils', () => {
     it('should extract Korean patent numbers', () => {
       expect(extractPatentNumber('Patent No. 10-2356500')).toBe('10-2356500');
     });
+
+    it('should extract variable-width Korean patent numbers', () => {
+      expect(extractPatentNumber('Patent No. 10-22089060 (Jan 22, 2021)')).toBe('10-22089060');
+    });
   });
 
   describe('generateStableId', () => {
@@ -112,14 +116,22 @@ describe('Parser Utils', () => {
   });
 
   describe('isSectionHeader', () => {
-    it('should detect section headers', () => {
+    it('should detect anchored section headers', () => {
       expect(isSectionHeader('EDUCATION')).toBe(true);
       expect(isSectionHeader('Publications:')).toBe(true);
       expect(isSectionHeader('Research Experience')).toBe(true);
+      expect(isSectionHeader('Professional Summary')).toBe(true);
+      expect(isSectionHeader('Patents (42 Registered & Completed)')).toBe(true);
     });
 
-    it('should not detect regular text as headers', () => {
-      expect(isSectionHeader('This is a long sentence that is not a header because it is too long and does not contain any keywords')).toBe(false);
+    it('should not treat org lines or subsection noise as headers', () => {
+      expect(isSectionHeader('eXtended Reality (XR) Research Center')).toBe(false);
+      expect(isSectionHeader('Registered Korean Patents')).toBe(false);
+      expect(
+        isSectionHeader(
+          'This is a long sentence that is not a header because it is too long and does not contain any keywords',
+        ),
+      ).toBe(false);
     });
   });
 
@@ -130,6 +142,10 @@ describe('Parser Utils', () => {
 
     it('should detect experience sections', () => {
       expect(detectSectionType('Work Experience')).toBe('experience');
+    });
+
+    it('should treat academic leadership as narrative, not employment experience', () => {
+      expect(detectSectionType('Academic Leadership and Supervision')).toBe('academic_narrative');
     });
 
     it('should detect publications sections', () => {

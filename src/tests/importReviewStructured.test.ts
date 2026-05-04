@@ -22,6 +22,7 @@ function minimalDetails(overrides: Partial<DetailsSchemaType> = {}): DetailsSche
       positions: [],
       awards: [],
       languages: [],
+      cvNarrativeSections: [],
     },
     research: { interests: [], projects: [], grants: [] },
     publications: [],

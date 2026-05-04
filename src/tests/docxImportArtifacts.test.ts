@@ -22,6 +22,7 @@ function minimalDetails(overrides: Partial<Details> = {}): Details {
       positions: [],
       awards: [],
       languages: [],
+      cvNarrativeSections: [],
     },
     research: { interests: [], projects: [], grants: [] },
     publications: [],
