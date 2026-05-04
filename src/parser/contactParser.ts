@@ -36,6 +36,16 @@ interface MutableSocialLinks {
   github?: string | null;
 }
 
+/** True when `url` resolves to a hostname ending with the given domain (or equal to it). */
+function urlHostMatches(url: string, domain: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === domain || host.endsWith(`.${domain}`);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Parses contact section text into structured data
  */
@@ -129,7 +139,7 @@ export function parseContact(text: string): ParseResult<Contact> {
       contact.social.researchGate = url;
     } else if (lowerUrl.includes('orcid')) {
       contact.social.orcid = url;
-    } else if (lowerUrl.includes('twitter') || lowerUrl.includes('x.com')) {
+    } else if (urlHostMatches(url, 'twitter.com') || urlHostMatches(url, 'x.com')) {
       contact.social.twitter = url;
     } else if (lowerUrl.includes('github')) {
       contact.social.github = url;

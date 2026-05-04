@@ -316,6 +316,18 @@ describe('Contact Parser', () => {
     expect(result.data.email).toContain('sejong');
     expect(result.data.personalEmail).toContain('gmail');
   });
+
+  it('should classify x.com and twitter.com URLs as twitter', () => {
+    const text = 'Twitter: https://x.com/professor | Also: https://twitter.com/professor';
+    const result = parseContact(text);
+    expect(result.data.social.twitter).toMatch(/x\.com|twitter\.com/);
+  });
+
+  it('should not classify unrelated domains containing "x.com" substring as twitter', () => {
+    const text = 'Website: https://fax.company.com/page | CV: https://example.com/x.com/path';
+    const result = parseContact(text);
+    expect(result.data.social.twitter).toBeUndefined();
+  });
 });
 
 describe('Edge Cases', () => {

@@ -28,12 +28,13 @@ export function validateChatInput(input: unknown): ValidationResult {
     errors.push('Question is too long (max 1000 characters)');
   }
 
-  // Check for potential injection patterns
+  // Rejection gate: detect presence of dangerous tags (not a sanitizer — input is never rendered as HTML).
   const dangerousPatterns = [
-    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-    /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi,
+    /<script\b/gi,
+    /<iframe\b/gi,
     /javascript:/gi,
-    /on\w+\s*=/gi, // Event handlers
+    // \w and \s are disjoint classes so no backtracking ambiguity; input is capped to 1000 chars above.
+    /on\w+\s*=/gi,
     /<object\b/gi,
     /<embed\b/gi,
     /<link\b/gi,
