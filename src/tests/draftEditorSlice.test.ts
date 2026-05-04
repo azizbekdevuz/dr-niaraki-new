@@ -79,6 +79,17 @@ describe('draftEditorSlice', () => {
     expect(validateEditorSliceClient(slice3).ok).toBe(false);
   });
 
+  it('round-trips teaching / supervision / service simple lists', () => {
+    const slice = extractEditorSliceFromSiteContent(base);
+    slice.teaching = [{ id: 't-custom', title: 'Seminars', body: 'Geo-AI seminars.' }];
+    slice.supervision = [{ id: 's-custom', title: 'PhD supervision', body: 'Topics.' }];
+    slice.service = [{ id: 'v-custom', title: 'Editorial', body: 'Journals.' }];
+    const merged = mergeEditorSliceIntoSiteContent(base, slice);
+    expect(merged.teaching.find((t) => t.id === 't-custom')?.body).toBe('Geo-AI seminars.');
+    expect(merged.supervision[0]?.title).toBe('PhD supervision');
+    expect(merged.service[0]?.title).toBe('Editorial');
+  });
+
   it('mergeEditorSliceIntoSiteContent preserves experience projects when achievements change', () => {
     const slice = extractEditorSliceFromSiteContent(base);
     if (slice.experiences.length === 0) {
