@@ -1,6 +1,6 @@
 {
   "meta": {
-    "parsedAt": "2026-08-07T13:33:01.515Z",
+    "parsedAt": "2026-08-07T13:36:23.213Z",
     "uploader": "admin",
     "warnings": [
       "unknown_section: Unrecognized section: \"Preamble\" - please review",
@@ -10,14 +10,14 @@
       "publications: Publication 53: recovered truncated title from raw citation",
       "publications: Publication 61: recovered truncated title from raw citation",
       "publications: Publication 62: recovered truncated title from raw citation",
-      "publications: Publication 66: recovered truncated title from raw citation",
       "publications: Publication 67: recovered truncated title from raw citation",
+      "publications: Publication 68: recovered truncated title from raw citation",
       "publications: Removed duplicate publication (kept bazargani-j-s-rahimi-f-sadeghi-6b387217, dropped bazargani-j-s-rahimi-f-sadeghi-8e9a25bb)",
-      "publications: Removed duplicate publication (kept adnan-r-m-yaseen-z-m-heddam-s--0f9ac5d2, dropped adnan-r-m-yaseen-z-m-heddam-s--16104ff7)"
+      "publications: Removed duplicate publication (kept adnan-r-m-yaseen-z-m-heddam-s--4ee9f1fb, dropped adnan-r-m-yaseen-z-m-heddam-s--e8120896)"
     ],
     "commitSha": null,
     "parserVersion": "v1.3.0",
-    "sourceFileName": "14-5-2026 Resume (Dr. Abolghasem Sadeghi-Niaraki) (1) - Copy.docx",
+    "sourceFileName": "14-5-2026 Resume (Dr. Abolghasem Sadeghi-Niaraki) (1) Copy.docx",
     "cvSummaryMergePolicy": "split_v1"
   },
   "about": {
@@ -391,7 +391,7 @@
     "patents": 53,
     "projects": 8,
     "students": 40,
-    "publications": 190
+    "publications": 191
   },
   "contact": {
     "fax": "+82 2-3408-4321",
@@ -2256,7 +2256,23 @@
       "impactFactor": "8.0"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-da351950",
+      "id": "razavi-termeh-s-v-sadeghi-niar-d08fd0a8",
+      "doi": null,
+      "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., Naqvi, R. A., & Choi, S. M. (2023). Dust detection and susceptibility mapping by aiding satellite imagery time series and integration of ensemble machine learning with evolutionary algorithms. Environmental Pollution, 335, 122241. (SCIE-Q1-IF: 8.9, TOP10%)",
+      "link": null,
+      "type": "journal",
+      "year": 2023,
+      "issue": null,
+      "pages": null,
+      "title": "Dust detection and susceptibility mapping by aiding satellite imagery time series and integration of ensemble machine learning with evolutionary algorithms",
+      "volume": null,
+      "authors": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., Naqvi, R. A., & Choi, S. M.",
+      "journal": "Environmental Pollution",
+      "quartile": "Q1",
+      "impactFactor": "8.9"
+    },
+    {
+      "id": "razavi-termeh-s-v-sadeghi-niar-e77599ec",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2023). A new approach based on biology-inspired metaheuristic algorithms in combination with random forest to enhance the flood susceptibility mapping. Journal of Environmental Management, 345, 118790. (SCIE-Q1-IF: 8.7, TOP11%)",
       "link": null,
@@ -2272,7 +2288,7 @@
       "impactFactor": "8.7"
     },
     {
-      "id": "farhangi-f-sadeghi-niaraki-a-s-81097fc4",
+      "id": "farhangi-f-sadeghi-niaraki-a-s-d8c3ad39",
       "doi": null,
       "raw": "Farhangi, F., Sadeghi-Niaraki, A., Safari Bazargani, J., Razavi-Termeh, S. V., Hussain, D., & Choi, S. M. (2023). Time-Series Hourly Sea Surface Temperature Prediction Using Deep Neural Network Models. Journal of Marine Science and Engineering, 11(6), 1136. (SCIE-Q1-IF: 2.9)",
       "link": null,
@@ -2288,7 +2304,7 @@
       "impactFactor": "2.9"
     },
     {
-      "id": "bahadori-n-razavi-termeh-s-v-s-10ae0bbc",
+      "id": "bahadori-n-razavi-termeh-s-v-s-0d3834da",
       "doi": null,
       "raw": "Bahadori, N., Razavi-Termeh, S. V., Sadeghi-Niaraki, A., Al-Kindi, K. M., Abuhmed, T., Nazeri, B., & Choi, S. M. (2023). Wildfire Susceptibility Mapping Using Deep Learning Algorithms in Two Satellite Imagery Dataset. Forests, 14(7), 1325. (SCIE-Q1-IF: 2.9)",
       "link": null,
@@ -2304,7 +2320,7 @@
       "impactFactor": "2.9"
     },
     {
-      "id": "farahani-m-razavi-termeh-s-v-s-3366658d",
+      "id": "farahani-m-razavi-termeh-s-v-s-640397a8",
       "doi": null,
       "raw": "Farahani, M., Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2023). A Hybridization of Spatial Modeling and Deep Learning for People's Visual Perception of Urban Landscapes. Sustainability, 15(13), 10403. (SSCI-Q2-IF: 3.9)",
       "link": null,
@@ -2320,7 +2336,7 @@
       "impactFactor": "3.9"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-e8f41be8",
+      "id": "razavi-termeh-s-v-sadeghi-niar-4d7397a5",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., Seo, M., & Choi, S. M. (2023). Application of genetic algorithm in optimization parallel ensemble-based machine learning algorithms to flood susceptibility mapping using radar satellite imagery. Science of The Total Environment, 873, 162285. (SCIE-Q1-IF: 9.8, TOP6%)",
       "link": null,
@@ -2336,7 +2352,7 @@
       "impactFactor": "9.8"
     },
     {
-      "id": "sadeghi-niaraki-a-2023-interne-3a3b269e",
+      "id": "sadeghi-niaraki-a-2023-interne-21db7269",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A. (2023). Internet of Thing (IoT) review of review: Bibliometric overview since its foundation. Future Generation Computer Systems, 143, 361-377. (SCIE-Q1-IF: 7.307, TOP8%)",
       "link": null,
@@ -2352,7 +2368,7 @@
       "impactFactor": "7.307"
     },
     {
-      "id": "farahani-m-razavi-termeh-s-v-s-9fd84b94",
+      "id": "farahani-m-razavi-termeh-s-v-s-85709211",
       "doi": null,
       "raw": "Farahani, M., Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2023). People's olfactory perception potential mapping using a machine learning algorithm: A Spatio-temporal approach. Sustainable Cities and Society, 104472. (SCIE-Q1-IF: 11.7, TOP0.7%)",
       "link": null,
@@ -2368,7 +2384,7 @@
       "impactFactor": "11.7"
     },
     {
-      "id": "bazargani-j-s-sadeghi-niaraki--24fa0935",
+      "id": "bazargani-j-s-sadeghi-niaraki--c429413d",
       "doi": null,
       "raw": "Bazargani, J. S., Sadeghi-Niaraki, A., Rahimi, F., Abuhmed, T., & Choi, S. M. (2022). An IoT-Based Approach for Learning Geometric Shapes in Early Childhood. IEEE Access, 10, 130632-130641. (SCIE-Q1-IF: 3.476)",
       "link": null,
@@ -2384,7 +2400,7 @@
       "impactFactor": "3.476"
     },
     {
-      "id": "shakeri-m-sadeghi-niaraki-a-ch-d027b975",
+      "id": "shakeri-m-sadeghi-niaraki-a-ch-a481674b",
       "doi": null,
       "raw": "Shakeri, M., Sadeghi-Niaraki, A., Choi, S. M., & AbuHmed, T. (2022). AR Search Engine: Semantic Information Retrieval for Augmented Reality Domain. Sustainability, 14(23), 15681. (SSCI-Q2-IF: 3.889)",
       "link": null,
@@ -2400,7 +2416,7 @@
       "impactFactor": "3.889"
     },
     {
-      "id": "shabanpour-n-razavi-termeh-s-v-5fcace44",
+      "id": "shabanpour-n-razavi-termeh-s-v-fe91e01f",
       "doi": null,
       "raw": "Shabanpour, N., Razavi-Termeh, S. V., Sadeghi-Niaraki, A., Choi, S. M., & Abuhmed, T. (2022). Integration of machine learning algorithms and GIS-based approaches to cutaneous leishmaniasis prevalence risk mapping. International Journal of Applied Earth Observation and Geoinformation, 112, 102854. (SCIE-Q1-IF: 7.672, TOP13%)",
       "link": null,
@@ -2416,7 +2432,7 @@
       "impactFactor": "7.672"
     },
     {
-      "id": "kaffash-charandabi-n-sadeghi-n-0559e212",
+      "id": "kaffash-charandabi-n-sadeghi-n-98c97d3b",
       "doi": null,
       "raw": "Kaffash Charandabi, N., Sadeghi-Niaraki, A., Choi, S. M., & Abuhmed, T. (2022). An approach for measuring spatial similarity among COVID-19 epicenters. Geo-spatial Information Science, 1-18. (SCIE-Q2-IF: 4.288)",
       "link": null,
@@ -2432,7 +2448,7 @@
       "impactFactor": "4.288"
     },
     {
-      "id": "ghafoori-h-r-sadeghi-niaraki-a-986b6094",
+      "id": "ghafoori-h-r-sadeghi-niaraki-a-52eb6340",
       "doi": null,
       "raw": "Ghafoori, H. R., Sadeghi-Niaraki, A., Alesheikh, A. A., & Choi, S. M. (2022). Ubiquitous GIS based outdoor evacuation assistance: An effective response to earthquake disasters. International Journal of Disaster Risk Reduction, 103232. (SCIE-Q1-IF: 4.842, TOP16%)",
       "link": null,
@@ -2448,7 +2464,7 @@
       "impactFactor": "4.842"
     },
     {
-      "id": "zafari-m-bazargani-j-s-sadeghi-578fea44",
+      "id": "zafari-m-bazargani-j-s-sadeghi-633fdf51",
       "doi": null,
       "raw": "Zafari, M., Bazargani, J. S., Sadeghi-Niaraki, A., & Choi, S. M. (2022). Artificial Intelligence Applications in K-12 Education: A Systematic Literature Review. IEEE Access. (SCIE-Q1-IF: 3.476)",
       "link": null,
@@ -2464,7 +2480,7 @@
       "impactFactor": "3.476"
     },
     {
-      "id": "rokhsaritalemi-s-sadeghi-niara-88e35987",
+      "id": "rokhsaritalemi-s-sadeghi-niara-c69297c7",
       "doi": null,
       "raw": "Rokhsaritalemi, S., Sadeghi-Niaraki, A., Kang, H. S., Lee, J. W., & Choi, S. M. (2022). Ubiquitous Tourist System Based on Multicriteria Decision Making and Augmented Reality. Applied Sciences, 12(10), 5241. (SCIE-Q2-IF: 2.838)",
       "link": null,
@@ -2480,7 +2496,7 @@
       "impactFactor": "2.838"
     },
     {
-      "id": "safari-bazargani-j-zafari-m-sa-7fdb5426",
+      "id": "safari-bazargani-j-zafari-m-sa-963188d3",
       "doi": null,
       "raw": "Safari Bazargani, J., Zafari, M., Sadeghi-Niaraki, A., & Choi, S. M. (2022). A Survey of GIS and AR Integration: Applications. Sustainability, 14(16), 10134. (SSCI-Q2-IF: 3.889)",
       "link": null,
@@ -2496,7 +2512,7 @@
       "impactFactor": "3.889"
     },
     {
-      "id": "farahani-m-razavi-termeh-s-v-s-fc7c49fc",
+      "id": "farahani-m-razavi-termeh-s-v-s-40adf8c5",
       "doi": null,
       "raw": "Farahani, M., Razavi-Termeh, S. V., & Sadeghi-Niaraki, A. (2022). A spatially based machine learning algorithm for potential mapping of the hearing senses in an urban environment. Sustainable Cities and Society, 103675. (SCIE-Q1-IF: 10.696, TOP0.7%)",
       "link": null,
@@ -2512,7 +2528,7 @@
       "impactFactor": "10.696"
     },
     {
-      "id": "shakeri-m-sadeghi-niaraki-a-ch-33f40524",
+      "id": "shakeri-m-sadeghi-niaraki-a-ch-ae930141",
       "doi": null,
       "raw": "Shakeri, M., Sadeghi-Niaraki, A., & Choi, S. M. (2022). Augmented reality-based border management. Virtual Reality, 1-21. (SCIE-Q1-IF: 5.095)",
       "link": null,
@@ -2528,7 +2544,7 @@
       "impactFactor": "5.095"
     },
     {
-      "id": "park-h-shakeri-m-jeon-i-kim-j--0bb45332",
+      "id": "park-h-shakeri-m-jeon-i-kim-j--f5cdba5b",
       "doi": null,
       "raw": "Park, H., Shakeri, M., Jeon, I., Kim, J., Sadeghi-Niaraki, A., & Woo, W. (2022). Spatial transition management for improving outdoor cinematic augmented reality experience of the TV show. Virtual Reality, 1-19. (SCIE-Q1-IF: 5.095)",
       "link": null,
@@ -2544,7 +2560,7 @@
       "impactFactor": "5.095"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-e2209cbe",
+      "id": "razavi-termeh-s-v-sadeghi-niar-92fcdf1f",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2022). Spatio-temporal modeling of asthma-prone areas using a machine learning optimized with metaheuristic algorithms. Geocarto International, 1-22. (SCIE-Q1-IF: 4.889)",
       "link": null,
@@ -2560,7 +2576,7 @@
       "impactFactor": "4.889"
     },
     {
-      "id": "karimi-m-zakariyaeinejad-z-sad-099b267f",
+      "id": "karimi-m-zakariyaeinejad-z-sad-3c677d2b",
       "doi": null,
       "raw": "Karimi, M., Zakariyaeinejad, Z., Sadeghi-Niaraki, A., & Ahmadabadian, A. H (2022). A new method for automatic and accurate coded target recognition in oblique images to improve augmented reality precision. Transactions in GIS. (SSCI-Q2-IF: 2.406)",
       "link": null,
@@ -2576,7 +2592,7 @@
       "impactFactor": "2.406"
     },
     {
-      "id": "adnan-r-m-yaseen-z-m-heddam-s--0f9ac5d2",
+      "id": "adnan-r-m-yaseen-z-m-heddam-s--4ee9f1fb",
       "doi": null,
       "raw": "Adnan, R. M., Yaseen, Z. M., Heddam, S., Shahid, S., Sadeghi-Niaraki, A., & Kisi, O. (2022). Predictability performance enhancement for suspended sediment in rivers: Inspection of newly developed hybrid adaptive neuro-fuzzy system model. International Journal of Sediment Research, 37(3), 383-398. (SCIE-Q2-IF: 2.902)",
       "link": null,
@@ -2592,7 +2608,7 @@
       "impactFactor": "2.902"
     },
     {
-      "id": "ranjgar-b-sadeghi-niaraki-a-sh-592c01bd",
+      "id": "ranjgar-b-sadeghi-niaraki-a-sh-fa858584",
       "doi": null,
       "raw": "Ranjgar, B., Sadeghi-Niaraki, A., Shakeri, M., & Choi, S. M. (2022). An ontological data model for points of interest (POI) in a cultural heritage site. Heritage Science, 10(1), 1-22. (SCIE-Q3-IF: 2.517)",
       "link": null,
@@ -2608,7 +2624,7 @@
       "impactFactor": "2.517"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-6591b281",
+      "id": "razavi-termeh-s-v-sadeghi-niar-827681c9",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2022). Coronavirus disease vulnerability map using a geographic information system (GIS) from 16 April to 16 May 2020. Physics and Chemistry of the Earth, Parts A/B/C, 103043. (SCIE-Q2-IF: 2.712)",
       "link": null,
@@ -2624,7 +2640,7 @@
       "impactFactor": "2.712"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-e8c576a1",
+      "id": "razavi-termeh-s-v-sadeghi-niar-7a3242b4",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2021). Effects of air pollution in Spatio-temporal modeling of asthma-prone areas using a machine learning model. Environmental Research, 200, 111344. (SCIE-Q1-IF: 6.498, TOP12%)",
       "link": null,
@@ -2640,7 +2656,7 @@
       "impactFactor": "6.498"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-b0e7087d",
+      "id": "razavi-termeh-s-v-sadeghi-niar-c0d66eff",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2021). Asthma-prone areas modeling using a machine learning model. Scientific Reports (Nature), 11(1), 1-16. (SCIE-Q1-IF: 4.380)",
       "link": null,
@@ -2656,7 +2672,7 @@
       "impactFactor": "4.380"
     },
     {
-      "id": "safari-bazargani-j-sadeghi-nia-3095e59f",
+      "id": "safari-bazargani-j-sadeghi-nia-4cd4f613",
       "doi": null,
       "raw": "Safari Bazargani, J., Sadeghi-Niaraki, A., & Choi, S. M. (2021). Design, Implementation, and Evaluation of an Immersive Virtual Reality-Based Educational Game for Learning Topology Relations at Schools: A Case Study. Sustainability, 13(23), 13066. (SSCI-Q2-IF: 3.251)",
       "link": null,
@@ -2672,7 +2688,7 @@
       "impactFactor": "3.251"
     },
     {
-      "id": "zafari-m-sadeghi-niaraki-a-cho-8413700e",
+      "id": "zafari-m-sadeghi-niaraki-a-cho-24ed4a94",
       "doi": null,
       "raw": "Zafari, M., Sadeghi-Niaraki, A., Choi, S. M., & Esmaeily, A. (2021). A Practical Model for the Evaluation of High School Student Performance Based on Machine Learning. Applied Sciences, 11(23), 11534. (SCIE-Q2-IF: 2.679)",
       "link": null,
@@ -2688,7 +2704,7 @@
       "impactFactor": "2.679"
     },
     {
-      "id": "safari-bazargani-j-sadeghi-nia-c483d587",
+      "id": "safari-bazargani-j-sadeghi-nia-9c754f5d",
       "doi": null,
       "raw": "Safari Bazargani, J., Sadeghi-Niaraki, A., & Choi, S. M. (2021). A Survey of GIS and IoT Integration: Applications and Architecture. Applied Sciences, 11(21), 10365. (SCIE-Q2-IF: 2.679)",
       "link": null,
@@ -2704,7 +2720,7 @@
       "impactFactor": "2.679"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-c7441a22",
+      "id": "razavi-termeh-s-v-sadeghi-niar-835e6879",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., Farhangi, F., & Choi, S. M. (2021). COVID-19 Risk Mapping with Considering Socio-Economic Criteria Using Machine Learning Algorithms. International Journal of Environmental Research and Public Health, 18(18), 9657. (SSCI-Q1-IF: 3.390)",
       "link": null,
@@ -2720,7 +2736,7 @@
       "impactFactor": "3.390"
     },
     {
-      "id": "farhangi-f-sadeghi-niaraki-a-r-ec11ba5f",
+      "id": "farhangi-f-sadeghi-niaraki-a-r-2b6e5c9b",
       "doi": null,
       "raw": "Farhangi, F., Sadeghi-Niaraki, A., Razavi-Termeh, S. V., & Choi, S. M. (2021). Evaluation of Tree-Based Machine Learning Algorithms for Accident Risk Mapping Caused by Driver Lack of Alertness at a National Scale. Sustainability, 13(18), 10239. (SSCI-Q2-IF: 3.251)",
       "link": null,
@@ -2736,7 +2752,7 @@
       "impactFactor": "3.251"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-8d834ce9",
+      "id": "razavi-termeh-s-v-sadeghi-niar-4aedc897",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2021). Spatial modeling of asthma-prone areas using remote sensing and ensemble machine learning algorithms. Remote Sensing, 13(16), 3222. (SCIE-Q1-IF: 4.848)",
       "link": null,
@@ -2752,7 +2768,7 @@
       "impactFactor": "4.848"
     },
     {
-      "id": "rezaee-s-sadeghi-niaraki-a-sha-bb44f68a",
+      "id": "rezaee-s-sadeghi-niaraki-a-sha-7d0b34f9",
       "doi": null,
       "raw": "Rezaee, S., Sadeghi-Niaraki, A., Shakeri, M., & Choi, S. M. (2021). Personalized Augmented Reality Based Tourism System: Big Data and User Demographic Contexts. Applied Sciences, 11(13), 6047. (SCIE-Q2-IF: 2.679)",
       "link": null,
@@ -2768,7 +2784,7 @@
       "impactFactor": "2.679"
     },
     {
-      "id": "rahimi-f-sadeghi-niaraki-a-gho-d95f7033",
+      "id": "rahimi-f-sadeghi-niaraki-a-gho-e767d5ae",
       "doi": null,
       "raw": "Rahimi, F., Sadeghi-Niaraki, A., Ghodousi, M., & Choi, S. M. (2021). Discovering Intra-Urban Population Movement Pattern Using Taxis' Origin and Destination Data and Modeling the Parameters Affecting Population Distribution. Applied Sciences, 11(13), 5987. (SCIE-Q2-IF: 2.679)",
       "link": null,
@@ -2784,7 +2800,7 @@
       "impactFactor": "2.679"
     },
     {
-      "id": "vakilipour-s-sadeghi-niaraki-a-8c0251dc",
+      "id": "vakilipour-s-sadeghi-niaraki-a-368ac2bc",
       "doi": null,
       "raw": "Vakilipour, S., Sadeghi-Niaraki, A., Ghodousi, M., & Choi, S. M. (2021). Comparison between Multi-Criteria Decision-Making Methods and Evaluating the Quality of Life at Different Spatial Levels. Sustainability, 13(7), 4067. (SSCI-Q2-IF: 3.251)",
       "link": null,
@@ -2800,7 +2816,7 @@
       "impactFactor": "3.251"
     },
     {
-      "id": "rahimi-f-sadeghi-niaraki-a-gho-82e1fd78",
+      "id": "rahimi-f-sadeghi-niaraki-a-gho-c0a2c024",
       "doi": null,
       "raw": "Rahimi, F., Sadeghi-Niaraki, A., Ghodousi, M., & Choi, S. M. (2021). Modeling Population Spatial-Temporal Distribution Using Taxis Origin and Destination Data. Sustainability, 13(7), 3727. (SSCI-Q2-IF: 3.251)",
       "link": null,
@@ -2816,7 +2832,7 @@
       "impactFactor": "3.251"
     },
     {
-      "id": "farhangi-f-sadeghi-niaraki-a-n-b437431e",
+      "id": "farhangi-f-sadeghi-niaraki-a-n-25ad1580",
       "doi": null,
       "raw": "Farhangi, F., Sadeghi-Niaraki, A., Nahvi, A., & Razavi-Termeh, S. V. (2021). Spatial modeling of accidents risk caused by driver drowsiness with data mining algorithms. Geocarto International, 1-19. (SCIE-Q1-IF: 4.889)",
       "link": null,
@@ -2832,7 +2848,7 @@
       "impactFactor": "4.889"
     },
     {
-      "id": "ranjgar-b-razavi-termeh-s-v-fo-7e061522",
+      "id": "ranjgar-b-razavi-termeh-s-v-fo-3882e99d",
       "doi": null,
       "raw": "Ranjgar, B., Razavi-Termeh, S. V., Foroughnia, F., Sadeghi-Niaraki, A., & Perissin, D. (2021). Land subsidence susceptibility mapping using persistent scatterer SAR interferometry technique and optimized hybrid machine learning algorithms. Remote Sensing, 13(7), 1326.",
       "link": null,
@@ -2848,7 +2864,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-mirshafiei-p-5268949d",
+      "id": "sadeghi-niaraki-a-mirshafiei-p-095c4e09",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., Mirshafiei, P., Shakeri, M., & Choi, S. M. (2020). Short-Term Traffic Flow Prediction Using the Modified Elman Recurrent Neural Network Optimized Through a Genetic Algorithm. IEEE Access, 8, 217526-217540. (SCIE-Q1-IF: 3.745)",
       "link": null,
@@ -2864,7 +2880,7 @@
       "impactFactor": "3.745"
     },
     {
-      "id": "razavi-termeh-s-v-khosravi-k-s-431f19fc",
+      "id": "razavi-termeh-s-v-khosravi-k-s-f25963dc",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Khosravi, K., Sadeghi-Niaraki, A., Choi, S. M., & Singh, V. P. (2020). Improving groundwater potential mapping using metaheuristic approaches. Hydrological Sciences Journal, 65(16), 2729-2749. (SCIE-Q1-IF: 2.186)",
       "link": null,
@@ -2880,7 +2896,7 @@
       "impactFactor": "2.186"
     },
     {
-      "id": "sadeghi-niaraki-a-jelokhani-ni-6366cf29",
+      "id": "sadeghi-niaraki-a-jelokhani-ni-f206ee91",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., Jelokhani-Niaraki, M., & Choi, S. M. (2020). A Volunteered Geographic Information-Based Environmental Decision Support System for Waste Management and Decision Making. Sustainability, 12(15), 6012. (SSCI-Q2-IF: 3.251)",
       "link": null,
@@ -2896,7 +2912,7 @@
       "impactFactor": "3.251"
     },
     {
-      "id": "sadeghi-niaraki-a-kisi-o-choi--da68b108",
+      "id": "sadeghi-niaraki-a-kisi-o-choi--bcdbbeea",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., Kisi, O., & Choi, S. M. (2020). Spatial modeling of long-term air temperatures for sustainability: evolutionary fuzzy approach and neuro-fuzzy methods. PeerJ, 8, e8882. (SCIE-Q1-IF: 2.379)",
       "link": null,
@@ -2912,7 +2928,7 @@
       "impactFactor": "2.379"
     },
     {
-      "id": "ghodousi-m-sadeghi-niaraki-a-r-c87438b8",
+      "id": "ghodousi-m-sadeghi-niaraki-a-r-9014d076",
       "doi": null,
       "raw": "Ghodousi, M., Sadeghi-Niaraki, A., Rabiee, F., & Choi, S. M. (2020). Spatial-Temporal Analysis of Point Distribution Pattern of Schools Using Spatial Autocorrelation Indices in Bojnourd City. Sustainability, 12(18), 7755. (SSCI-Q2-IF: 3.251)",
       "link": null,
@@ -2928,7 +2944,7 @@
       "impactFactor": "3.251"
     },
     {
-      "id": "shakeri-m-sadeghi-niaraki-a-ch-d434950a",
+      "id": "shakeri-m-sadeghi-niaraki-a-ch-712186f5",
       "doi": null,
       "raw": "Shakeri, M., Sadeghi-Niaraki, A., Choi, S. M., & Islam, S. M. (2020). Performance Analysis of IoT-Based Health and Environment WSN Deployment. Sensors, 20(20), 5923. (SCIE-Q1-IF: 3.275)",
       "link": null,
@@ -2944,7 +2960,7 @@
       "impactFactor": "3.275"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-6e736726",
+      "id": "razavi-termeh-s-v-sadeghi-niar-60354e71",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2020). Gully erosion susceptibility mapping using artificial intelligence and statistical models. Geomatics, Natural Hazards and Risk, 11(1), 821-844. (SCIE-Q1-IF: 3.333)",
       "link": null,
@@ -2960,7 +2976,7 @@
       "impactFactor": "3.333"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-3c3056e8",
+      "id": "razavi-termeh-s-v-sadeghi-niar-cc5ef746",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2020). Ubiquitous GIS-Based Forest Fire Susceptibility Mapping Using Artificial Intelligence Methods. Remote Sensing, 12(10), 1689. (SCIE-Q1-IF: 4.509)",
       "link": null,
@@ -2976,7 +2992,7 @@
       "impactFactor": "4.509"
     },
     {
-      "id": "sadeghi-niaraki-a-choi-s-m-202-ee92ebcd",
+      "id": "sadeghi-niaraki-a-choi-s-m-202-6bab410f",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., & Choi, S. M. (2020). A Survey of Marker-Less Tracking and Registration Techniques for Health & Environmental Applications to Augmented Reality and Ubiquitous Geospatial Information Systems. Sensors, 20(10), 2997. (SCIE-Q1-IF: 3.275)",
       "link": null,
@@ -2992,7 +3008,7 @@
       "impactFactor": "3.275"
     },
     {
-      "id": "rokhsaritalemi-s-sadeghi-niara-7d907db8",
+      "id": "rokhsaritalemi-s-sadeghi-niara-ef81a16c",
       "doi": null,
       "raw": "Rokhsaritalemi, S., Sadeghi-Niaraki, A., & Choi, S. M. (2020). A Review on Mixed Reality: Current Trends, Challenges and Prospects. Applied Sciences, 10(2), 636. (SCIE-Q2-IF: 2.679)",
       "link": null,
@@ -3008,7 +3024,7 @@
       "impactFactor": "2.679"
     },
     {
-      "id": "li-y-wang-h-dang-l-m-sadeghi-n-8f9e1b99",
+      "id": "li-y-wang-h-dang-l-m-sadeghi-n-e5fccfae",
       "doi": null,
       "raw": "Li, Y., Wang, H., Dang, L. M., Sadeghi-Niaraki, A., & Moon, H. (2020). Crop pest recognition in natural scenes using convolutional neural networks. Computers and Electronics in Agriculture, 169, 105174. (SCIE-Q1-IF: 5.565)",
       "link": null,
@@ -3024,7 +3040,7 @@
       "impactFactor": "5.565"
     },
     {
-      "id": "sadeghi-niaraki-a-2020-industr-9a57ec88",
+      "id": "sadeghi-niaraki-a-2020-industr-229c5ac8",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A. (2020). Industry 4.0 development multi-criteria assessment: An integrated fuzzy DEMATEL, ANP and VIKOR methodology. IEEE Access, 8, 23689-23704. (SCIE-Q1-IF: 4.098)",
       "link": null,
@@ -3040,7 +3056,7 @@
       "impactFactor": "4.098"
     },
     {
-      "id": "barzegar-m-sadeghi-niaraki-a-s-7b04a69a",
+      "id": "barzegar-m-sadeghi-niaraki-a-s-d4b885c1",
       "doi": null,
       "raw": "Barzegar, M., Sadeghi-Niaraki, A., Shakeri, M., & Choi, S. M. (2019). An Improved Route Finding Algorithm using Ubiquitous Ontology Based Experiences Modeling. Complexity, 2019. (SCIE-Q1-IF: 2.591)",
       "link": null,
@@ -3056,7 +3072,7 @@
       "impactFactor": "2.591"
     },
     {
-      "id": "ranjgar-b-azar-m-k-sadeghi-nia-984a17de",
+      "id": "ranjgar-b-azar-m-k-sadeghi-nia-e7bbac26",
       "doi": null,
       "raw": "Ranjgar, B., Azar, M. K., Sadeghi-Niaraki, A., & Choi, S. M. (2019). A Novel Method for Emotion Extraction from Paintings Based on Luscher's Psychological Color Test: Case Study Iranian-Islamic Paintings. IEEE Access, 7, 120857-120871. (SCIE-Q1-IF: 4.098)",
       "link": null,
@@ -3072,7 +3088,7 @@
       "impactFactor": "4.098"
     },
     {
-      "id": "omidipoor-m-jelokhani-niaraki--d513d188",
+      "id": "omidipoor-m-jelokhani-niaraki--5f7be668",
       "doi": null,
       "raw": "Omidipoor, M., Jelokhani-Niaraki, M., Moeinmehr, A., Sadeghi-Niaraki, A., & Choi, S. M. (2019). A GIS-based decision support system for facilitating participatory urban renewal process. Land Use Policy, 88, 104150. (SCIE-Q1-IF: 3.573)",
       "link": null,
@@ -3088,7 +3104,7 @@
       "impactFactor": "3.573"
     },
     {
-      "id": "mirshafiei-p-sadeghi-niaraki-a-47d67df9",
+      "id": "mirshafiei-p-sadeghi-niaraki-a-c657b964",
       "doi": null,
       "raw": "Mirshafiei, P., Sadeghi-Niaraki, A., Shakeri, M., & Choi, S. M. (2019). Geospatial Information System-Based Modeling Approach for Leakage Management in Urban Water Distribution Networks. Water, 11(8), 1736. (SCIE-Q2-IF: 2.524)",
       "link": null,
@@ -3104,7 +3120,7 @@
       "impactFactor": "2.524"
     },
     {
-      "id": "razavi-termeh-s-v-sadeghi-niar-7b433590",
+      "id": "razavi-termeh-s-v-sadeghi-niar-de9cb1d4",
       "doi": null,
       "raw": "Razavi-Termeh, S. V., Sadeghi-Niaraki, A., & Choi, S. M. (2019). Groundwater Potential Mapping Using an Integrated Ensemble of Three Bivariate Statistical Models with Random Forest and Logistic Model Tree Models. Water, 11(8), 1596. (SCIE-Q2-IF: 2.524)",
       "link": null,
@@ -3120,7 +3136,7 @@
       "impactFactor": "2.524"
     },
     {
-      "id": "barzegar-m-sadeghi-niaraki-a-s-8b6e7793",
+      "id": "barzegar-m-sadeghi-niaraki-a-s-9adbcbc2",
       "doi": null,
       "raw": "Barzegar, M., Sadeghi-Niaraki, A., Shakeri, M., & Choi, S. M. (2019). A Context-Aware Route Finding Algorithm for Self-Driving Tourists Using Ontology. Electronics, 8(7), 808. (SCIE-Q2-IF: 2.11)",
       "link": null,
@@ -3136,7 +3152,7 @@
       "impactFactor": "2.11"
     },
     {
-      "id": "lahoorpoor-b-faroqi-h-sadeghi--122b8697",
+      "id": "lahoorpoor-b-faroqi-h-sadeghi--a15b2a4a",
       "doi": null,
       "raw": "Lahoorpoor, B., Faroqi, H., Sadeghi-Niaraki, A., & Choi, S. M. (2019). Spatial Cluster-Based Model for Static Rebalancing Bike Sharing Problem. Sustainability, 11(11), 3205. (SSCI-Q2-IF: 2.576)",
       "link": null,
@@ -3152,7 +3168,7 @@
       "impactFactor": "2.576"
     },
     {
-      "id": "masoumi-z-genderen-j-v-sadeghi-4a2bbd48",
+      "id": "masoumi-z-genderen-j-v-sadeghi-e6479332",
       "doi": null,
       "raw": "Masoumi, Z., Genderen, J. V., & Sadeghi-Niaraki, A., (2019). An improved Ant Colony Optimization based algorithm for User-Centric Multi-Objective Path Planning for Ubiquitous environments. Geocarto International, 1-14. (SCIE-Q1-IF: 3.789)",
       "link": null,
@@ -3168,7 +3184,7 @@
       "impactFactor": "3.789"
     },
     {
-      "id": "hormozzadehghalati-h-abbasi-a--a8531bb0",
+      "id": "hormozzadehghalati-h-abbasi-a--f28ed398",
       "doi": null,
       "raw": "HormozzadehGhalati, H., Abbasi, A., & Sadeghi-Niaraki, A. (2019). Optimal multi-product supplier selection under stochastic demand with service level and budget constraints using learning vector quantization neural network. RAIRO-Operations Research, 53(5), 1709-1720. (SCIE-Q4-IF: 1.025)",
       "link": null,
@@ -3184,7 +3200,7 @@
       "impactFactor": "1.025"
     },
     {
-      "id": "barzegar-m-sadeghi-niaraki-a-s-6ad6c6aa",
+      "id": "barzegar-m-sadeghi-niaraki-a-s-ee4ba07b",
       "doi": null,
       "raw": "Barzegar, M., Sadeghi-Niaraki, A., Shakeri, M. (2019). Spatial experience based route finding using ontologies. ETRI Journal. (SCI, Q3-IF: 1.094)",
       "link": null,
@@ -3200,7 +3216,7 @@
       "impactFactor": "1.094"
     },
     {
-      "id": "minh-d-l-sadeghi-niaraki-a-huy-54f107b6",
+      "id": "minh-d-l-sadeghi-niaraki-a-huy-9dc4838c",
       "doi": null,
       "raw": "Minh, D. L., Sadeghi-Niaraki, A., Huy, H. D., Min, K., & Moon, H. (2018). Deep learning approach for short-term stock trends prediction based on two-stream gated recurrent unit network. IEEE Access, 6, 55392-55404. (SCIE-Q1-IF: 3.557)",
       "link": null,
@@ -3216,7 +3232,7 @@
       "impactFactor": "3.557"
     },
     {
-      "id": "jelokhani-niaraki-m-sadeghi-ni-aaa0200f",
+      "id": "jelokhani-niaraki-m-sadeghi-ni-bad03868",
       "doi": null,
       "raw": "Jelokhani-Niaraki, M., Sadeghi-Niaraki, A., & Choi, S. M. (2018). Semantic interoperability of GIS and MCDA tools for environmental assessment and decision making. Environmental Modelling & Software, 100, 104-122. (SCIE-Q1-IF: 4.552)",
       "link": null,
@@ -3232,7 +3248,7 @@
       "impactFactor": "4.552"
     },
     {
-      "id": "rad-t-g-sadeghi-niaraki-a-abba-88ee1742",
+      "id": "rad-t-g-sadeghi-niaraki-a-abba-1c44ff90",
       "doi": null,
       "raw": "Rad, T. G., Sadeghi-Niaraki, A., Abbasi, A., & Choi, S. M. (2018). A methodological framework for assessment of ubiquitous cities using ANP and DEMATEL methods. Sustainable cities and society, 37, 608-618. (SCIE-Q2-IF: 4.624)",
       "link": null,
@@ -3248,7 +3264,7 @@
       "impactFactor": "4.624"
     },
     {
-      "id": "abbasi-a-sadeghi-niaraki-a-jal-32c83891",
+      "id": "abbasi-a-sadeghi-niaraki-a-jal-5c6a4567",
       "doi": null,
       "raw": "Abbasi, A., Sadeghi-Niaraki, A., Jalili, M., & Choi, S. M. (2018). Enhancing response coordination through the assessment of response network structural dynamics. PloS one, 13(2), e0191130. (SCIE-Q1-IF: 2.766)",
       "link": null,
@@ -3264,7 +3280,7 @@
       "impactFactor": "2.766"
     },
     {
-      "id": "abbasi-a-jalili-m-sadeghi-niar-8a0591e9",
+      "id": "abbasi-a-jalili-m-sadeghi-niar-d9e88d5f",
       "doi": null,
       "raw": "Abbasi, A., Jalili, M., & Sadeghi-Niaraki, A. (2018). Influence of network-based structural and power diversity on research performance. Scientometrics, 117(1), 579-590. (SCIE-Q1-IF: 2.173)",
       "link": null,
@@ -3280,7 +3296,7 @@
       "impactFactor": "2.173"
     },
     {
-      "id": "sharif-m-sadeghi-niaraki-a-201-b5bf4033",
+      "id": "sharif-m-sadeghi-niaraki-a-201-177c964d",
       "doi": null,
       "raw": "Sharif, M., & Sadeghi-Niaraki, A. (2017). Ubiquitous sensor network simulation and emulation environments: A survey. Journal of Network and Computer Applications, 93, 150-181. (SCIE-Q1-IF: 3.991)",
       "link": null,
@@ -3296,7 +3312,7 @@
       "impactFactor": "3.991"
     },
     {
-      "id": "faroqi-h-sadeghi-niaraki-a-201-8b39ca45",
+      "id": "faroqi-h-sadeghi-niaraki-a-201-9f9528a7",
       "doi": "10.1007/s12469-016-0130-2",
       "raw": "Faroqi, H., & Sadeghi-Niaraki, A. (2016). GIS-based ride-sharing and DRT in Tehran city. Public Transport: Planning and Operations, 8(2), 243-260, DOI: 10.1007/s12469-016-0130-2 (Q1-SJR)",
       "link": "https://doi.org/10.1007/s12469-016-0130-2",
@@ -3312,7 +3328,7 @@
       "impactFactor": null
     },
     {
-      "id": "hashemi-m-sadeghi-niaraki-a-20-249b6096",
+      "id": "hashemi-m-sadeghi-niaraki-a-20-b083dece",
       "doi": null,
       "raw": "Hashemi, M., & Sadeghi-Niaraki, A. (2016). A theoretical framework for ubiquitous computing. International Journal of Advanced Pervasive and Ubiquitous Computing (IJAPUC), 8(2), 1-15.",
       "link": null,
@@ -3328,7 +3344,7 @@
       "impactFactor": null
     },
     {
-      "id": "kaffash-charandabi-n-sadeghi-n-8c345ef5",
+      "id": "kaffash-charandabi-n-sadeghi-n-dd5fb4f3",
       "doi": null,
       "raw": "Kaffash-Charandabi, N., Sadeghi-Niaraki, A., & Dong-Kyun, P. A. R. K. (2015). Using a Combined Platform of Swarm Intelligence Algorithms and GIS to Provide Land Suitability Maps for Locating Cardiac Rehabilitation Defibrillators. Iranian journal of public health, 44(8), 1072. (SSCI-Q4)",
       "link": null,
@@ -3344,7 +3360,7 @@
       "impactFactor": null
     },
     {
-      "id": "effati-m-a-sadeghi-niaraki-201-fb8f8151",
+      "id": "effati-m-a-sadeghi-niaraki-201-9628eb8b",
       "doi": "10.1002/widm.1152",
       "raw": "Effati M., A. Sadeghi-Niaraki (2015). \"A semantic-based classification and regression tree approach for modelling complex spatial rules in motor vehicle crashes domain\", WIREs Data Mining Knowl Discov 2015, 5:181-194. doi: 10.1002/widm.1152 (SCIE-Q2-IF: 2.714)",
       "link": "https://doi.org/10.1002/widm.1152",
@@ -3360,7 +3376,7 @@
       "impactFactor": "2.714"
     },
     {
-      "id": "pham-x-h-n-h-lee-j-j-jung-a-sa-5adcf9dd",
+      "id": "pham-x-h-n-h-lee-j-j-jung-a-sa-f7680b44",
       "doi": null,
       "raw": "Pham X.H., N.-H. Lee, J. J. Jung, A. Sadeghi-Niaraki (2013). \"Collaborative Spam Filtering Based on Incremental Ontology Learning\" Telecommunication Systems, Vol. 52, No. 2, pp 693-700 (SCIE Q2-IF: 1.163)",
       "link": null,
@@ -3376,7 +3392,7 @@
       "impactFactor": "1.163"
     },
     {
-      "id": "jelokhani-niaraki-m-a-sadeghi--9178cc5b",
+      "id": "jelokhani-niaraki-m-a-sadeghi--bf9b8b2d",
       "doi": null,
       "raw": "Jelokhani-Niaraki, M., A. Sadeghi-Niaraki and K.Kim (2012). \"An ontology-based approach for managing spatio-temporal linearly referenced road event data\", ROAD & TRANSPORT RESEARCH, Vol.21 No.4, pp38-49 (SSCI-Q4)",
       "link": null,
@@ -3392,7 +3408,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-varshosaz-m--981a6571",
+      "id": "sadeghi-niaraki-a-varshosaz-m--c75dbf52",
       "doi": "10.1016/j.eswa.2010.12.123",
       "raw": "Sadeghi-Niaraki, A., Varshosaz, M., Kim, K., & Jung, J. J. (2011). Real world representation of a road network for route planning in GIS. Expert Systems with Applications, 38(10), 11999-12008. dx.doi.org/10.1016/j.eswa.2010.12.123 (SCIE-Q1-IF: 2.203)",
       "link": "https://doi.org/10.1016/j.eswa.2010.12.123",
@@ -3408,7 +3424,7 @@
       "impactFactor": "2.203"
     },
     {
-      "id": "jelokhani-niaraki-m-r-a-a-ales-f8966e80",
+      "id": "jelokhani-niaraki-m-r-a-a-ales-17218981",
       "doi": null,
       "raw": "Jelokhani-Niaraki, M.R., A.A. Alesheikh, A. Alimohammadi, A. Sadeghi-Niaraki, K. Kim (2011). \"An approach for automatic updating of GIS road segments for a pavement management system (PMS)\". Journal of Spatial Science, Vol. 56, No. 2, pp. 253-256. (SCIE-Q4)",
       "link": null,
@@ -3424,7 +3440,7 @@
       "impactFactor": null
     },
     {
-      "id": "jelokhani-niaraki-m-r-a-a-ales-27afe14b",
+      "id": "jelokhani-niaraki-m-r-a-a-ales-24c11322",
       "doi": null,
       "raw": "Jelokhani-Niaraki, M.R., A.A. Alesheikh, A. Alimohammadi, A. Sadeghi-Niaraki, (2010). \"Towards a Rule Driven Approach for Updating Dynamic Road Segments\". Promet – Traffic & Transportation Journal, Volume. 22, Issue 6, 405-411 (SCIE-Q4)",
       "link": null,
@@ -3440,7 +3456,7 @@
       "impactFactor": null
     },
     {
-      "id": "jelokhani-niaraki-m-r-a-a-ales-4694adfb",
+      "id": "jelokhani-niaraki-m-r-a-a-ales-624d90df",
       "doi": "10.1007/s11769-010-0236-4",
       "raw": "Jelokhani-Niaraki, M.R., A.A. Alesheikh, A. Sadeghi-Niaraki, (2010). \"An efficient approach for historical storage and retrieval of segmented road data in Geographic Information System for Transportation\". Chinese geographical science Journal, Volume 20, Issue 3, pp. 236-242, DOI 10.1007/s11769-010-0236-4 (SCIE-Q4)",
       "link": "https://doi.org/10.1007/s11769-010-0236-4",
@@ -3456,7 +3472,7 @@
       "impactFactor": null
     },
     {
-      "id": "hwang-d-n-t-nguyen-j-j-jung-a--a0d4b538",
+      "id": "hwang-d-n-t-nguyen-j-j-jung-a--10612113",
       "doi": null,
       "raw": "Hwang D., N-T. Nguyen, J. J. Jung, A. Sadeghi-Niaraki, K-H. Baek,Y-Sh Han (2010). \"A Semantic Wiki Framework for Reconciling Conflict Collaborations Based on Selecting Consensus Choices\" Journal of Universal Computer Science, Vol. 16, No. 7, pp. 1024-1035 (SCIE-Q3)",
       "link": null,
@@ -3472,7 +3488,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-m-vars-e89dd5b7",
+      "id": "sadeghi-niaraki-a-k-kim-m-vars-9aa01864",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, M. Varshosaz (2010). \"Multi-Criteria Decision-based Model for Road Network Process\", International Journal of Environmental Research, Vol.4, No. 4, pp. 573-582 (SCIE Q2-IF: 1.626)",
       "link": null,
@@ -3488,7 +3504,7 @@
       "impactFactor": "1.626"
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-2009-o-c800f3fc",
+      "id": "sadeghi-niaraki-a-k-kim-2009-o-9d4a6dc8",
       "doi": "10.1016/j.eswa.2007.12.053",
       "raw": "Sadeghi-Niaraki, A., K. Kim (2009). \"Ontology based personalized route planning system using a multi-criteria decision making approach\", Journal of Expert Systems with Applications, USA, Volume 36, Issue 2, Part 1, pp. 2250-2259, doi:10.1016/j.eswa.2007.12.053 (SCIE Q1-IF: 2.908)\nReferred Journals",
       "link": "https://doi.org/10.1016/j.eswa.2007.12.053",
@@ -3504,7 +3520,7 @@
       "impactFactor": "2.908"
     },
     {
-      "id": "sadeghi-niaraki-a-rabipour-a-g-c923bf12",
+      "id": "sadeghi-niaraki-a-rabipour-a-g-3d63a4b5",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., Rabipour, A., & Ghodousi, M. (2023). Evaluating accessibility to key land uses based on travel mode. The Journal of Spatial Planning, 26(4), 113-138.",
       "link": null,
@@ -3520,7 +3536,7 @@
       "impactFactor": null
     },
     {
-      "id": "ghodosi-m-sadeghi-niaraki-a-si-70c989d5",
+      "id": "ghodosi-m-sadeghi-niaraki-a-si-fd72acc8",
       "doi": null,
       "raw": "Ghodosi, M., & Sadeghi-Niaraki, A. Site Selection of the Public Libraries of Bojnourd City in Iran Using FAHP (2019). Research on Information Science and Public Libraries, Vol. 25, No.2, pp. 257-290 (ISC).",
       "link": null,
@@ -3536,7 +3552,7 @@
       "impactFactor": null
     },
     {
-      "id": "karimi-mina-sadeghi-niaraki-a--7316f7f3",
+      "id": "karimi-mina-sadeghi-niaraki-a--4b86e5c3",
       "doi": null,
       "raw": "Karimi Mina, Sadeghi-Niaraki, A. & Hosseini-Naveh A. (2019). Comparison of Different Targets Used in Augmented Reality Applications in Ubiquitous GIS, Engineering Journal of Geospatial Information Technology, Vol. 7, No.2, pp. 43-62. (ISC).",
       "link": null,
@@ -3552,7 +3568,7 @@
       "impactFactor": null
     },
     {
-      "id": "aliasl-khiabani-e-sadeghi-niar-54088693",
+      "id": "aliasl-khiabani-e-sadeghi-niar-d074432d",
       "doi": null,
       "raw": "AliAsl-Khiabani E., Sadeghi-Niaraki, A., & Ghodosi, M. (2018). Relief routing after an earthquake (case study: part of the district of Tehran city. Journal of Rescue & Relief, Vol. 9, No.4, pp.1-17 (ISC).",
       "link": null,
@@ -3568,7 +3584,7 @@
       "impactFactor": null
     },
     {
-      "id": "jamali-b-sadeghi-niaraki-a-201-2c0b3e27",
+      "id": "jamali-b-sadeghi-niaraki-a-201-ae157211",
       "doi": null,
       "raw": "Jamali, B., & Sadeghi-Niaraki, A. (2016). Improving Geo-labeling in Ubiquitous Environment Based on Augmented Reality. Journal of Geomatics Science and Technology, Per.5(3), 99-110.",
       "link": null,
@@ -3584,7 +3600,7 @@
       "impactFactor": null
     },
     {
-      "id": "faroqi-h-sadeghi-niaraki-a-201-f99beae3",
+      "id": "faroqi-h-sadeghi-niaraki-a-201-5809463b",
       "doi": "10.3923/jas.2015",
       "raw": "Faroqi, H., & Sadeghi-Niaraki, A. (2015). Multi-Objective Optimization Based Collision Avoidance Algorithm for an Intelligence Marine Navigation. Journal of Applied Sciences, 15(6), 911, DOI: 10.3923/jas.2015. (ISI-Thomson).",
       "link": "https://doi.org/10.3923/jas.2015",
@@ -3600,7 +3616,7 @@
       "impactFactor": null
     },
     {
-      "id": "keshtgar-e-sadeghi-niaraki-a-2-51cc8830",
+      "id": "keshtgar-e-sadeghi-niaraki-a-2-1f6191c8",
       "doi": null,
       "raw": "Keshtgar, E., & Sadeghi-Niaraki, A. (2015). Ubi-Asthma: Design and Implementation of Asthmatic Patient Monitoring System in Ubiquitous Geospatial Information System. Journal of Geomatics Science and Technology, Per.5(2), 55-66 (Persian).",
       "link": null,
@@ -3616,7 +3632,7 @@
       "impactFactor": null
     },
     {
-      "id": "shakeri-m-sadeghi-niaraki-a-al-ba6ec8aa",
+      "id": "shakeri-m-sadeghi-niaraki-a-al-46594398",
       "doi": null,
       "raw": "Shakeri, M., Sadeghi-Niaraki, A., Alimohammadi, A., & Alesheikh, A. A. (2015). Route Selection Using Group Decision Making Techniques and Spatial Analysis in Early Stage Design. Journal of Geomatics Science and Technology, Per.4(4), 285-396 (Persian).",
       "link": null,
@@ -3632,7 +3648,7 @@
       "impactFactor": null
     },
     {
-      "id": "abolhoseini-s-sadeghi-niaraki--50b2d826",
+      "id": "abolhoseini-s-sadeghi-niaraki--b4d88b3e",
       "doi": null,
       "raw": "Abolhoseini, S., Sadeghi-Niaraki, A., & Abbasi, O. (2015). Overview of Microsoft Kinect applications in Ubiquitous GIS. In The 3rd International Conference on Sensors and Models in Photogrammetry and Remote Sensing.",
       "link": null,
@@ -3648,7 +3664,7 @@
       "impactFactor": null
     },
     {
-      "id": "sahelgozin-m-sadeghi-niaraki-a-e0c94f32",
+      "id": "sahelgozin-m-sadeghi-niaraki-a-17f8fb6e",
       "doi": null,
       "raw": "Sahelgozin, M., Sadeghi-Niaraki, A., & Dareshiri, S. (2015). Proposing a Multi-Criteria Path Optimization Method in Order to Provide a Ubiquitous Pedestrian Wayfinding Service. The International Archives of Photogrammetry, Remote Sensing and Spatial Information Sciences, 40(1), 639.",
       "link": null,
@@ -3664,7 +3680,7 @@
       "impactFactor": null
     },
     {
-      "id": "faroqi-h-sadeghi-niaraki-a-201-c9139870",
+      "id": "faroqi-h-sadeghi-niaraki-a-201-a8db60fd",
       "doi": null,
       "raw": "Faroqi, H., & Sadeghi-Niaraki, A. (2015). Developing GIS-based Demand-Responsive Transit system in Tehran city. The International Archives of Photogrammetry, Remote Sensing and Spatial Information Sciences, 40(1), 189.",
       "link": null,
@@ -3680,7 +3696,7 @@
       "impactFactor": null
     },
     {
-      "id": "moosavi-s-m-r-sadeghi-niaraki--c4078dac",
+      "id": "moosavi-s-m-r-sadeghi-niaraki--97640cab",
       "doi": null,
       "raw": "Moosavi, S. M. R., & Sadeghi-Niaraki, A. (2015). A Survey of Smart Electrical Boards in Ubiquitous Sensor Networks for Geomatics Applications. The International Archives of Photogrammetry, Remote Sensing and Spatial Information Sciences, 40(1), 503.",
       "link": null,
@@ -3696,7 +3712,7 @@
       "impactFactor": null
     },
     {
-      "id": "hasani-s-sadeghi-niaraki-a-jel-3131af20",
+      "id": "hasani-s-sadeghi-niaraki-a-jel-23a9c2ad",
       "doi": null,
       "raw": "Hasani, S., Sadeghi-Niaraki, A., & Jelokhani-Niaraki, M. (2015). Spatial Data Integration using Ontology-Based Approach. The International Archives of Photogrammetry, Remote Sensing and Spatial Information Sciences, 40(1), 293.",
       "link": null,
@@ -3712,7 +3728,7 @@
       "impactFactor": null
     },
     {
-      "id": "nikparvar-b-sadeghi-niaraki-a--a1e1d701",
+      "id": "nikparvar-b-sadeghi-niaraki-a--b8e0ca03",
       "doi": null,
       "raw": "Nikparvar, B., Sadeghi-Niaraki, A., & Azari, P. (2014). Ubiquitous Indoor Geolocation: a Case Study of Jewellery Management System. The International Archives of Photogrammetry, Remote Sensing and Spatial Information Sciences, 40(2), 215.",
       "link": null,
@@ -3728,7 +3744,7 @@
       "impactFactor": null
     },
     {
-      "id": "hamraz-h-sadeghi-niaraki-a-oma-5e20be73",
+      "id": "hamraz-h-sadeghi-niaraki-a-oma-6ec06e98",
       "doi": null,
       "raw": "Hamraz, H., Sadeghi-Niaraki, A., Omati, M., & Noori, N. (2014). GIS-Based Air Pollution Monitoring using Static Stations and Mobile Sensor in Tehran/Iran. International Journal of Scientific Research in Environmental Sciences, 2(12), 435.",
       "link": null,
@@ -3744,7 +3760,7 @@
       "impactFactor": null
     },
     {
-      "id": "raeesi-m-sadeghi-niaraki-a-201-7918f6fc",
+      "id": "raeesi-m-sadeghi-niaraki-a-201-2af8bccd",
       "doi": null,
       "raw": "Raeesi, M., & Sadeghi-Niaraki, A. (2013). GIS Based System for Post-Earthquake Crisis Management Using Cellular Network. ISPRS-International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences, 1(3), 321-325.",
       "link": null,
@@ -3760,7 +3776,7 @@
       "impactFactor": null
     },
     {
-      "id": "jafari-p-sadeghi-niaraki-a-201-71c1738f",
+      "id": "jafari-p-sadeghi-niaraki-a-201-ff31d922",
       "doi": null,
       "raw": "Jafari, P., & Sadeghi-Niaraki, A. (2013). Use of Ubiquitous Technologies in Logistic System in Iran. ISPRS-International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences, 1(3), 215-220.",
       "link": null,
@@ -3776,7 +3792,7 @@
       "impactFactor": null
     },
     {
-      "id": "masoomi-z-a-sadeghi-niaraki-m--3e8b11de",
+      "id": "masoomi-z-a-sadeghi-niaraki-m--76f0b9b6",
       "doi": null,
       "raw": "Masoomi, Z., A. Sadeghi-Niaraki, M.S. Mesgari, (2011). \"Designing and using Multi-Objective Route Planning Algorithm in Intelligent Transportation System\". Journal of Transportation Research, 8(1), 47–62.",
       "link": null,
@@ -3792,7 +3808,7 @@
       "impactFactor": null
     },
     {
-      "id": "jelokhani-niaraki-m-r-a-a-ales-7f743593",
+      "id": "jelokhani-niaraki-m-r-a-a-ales-b5b2536f",
       "doi": "10.1007/978-3-642-02454-2_31",
       "raw": "Jelokhani-Niaraki, M.R., A.A. Alesheikh, A. Alimohammadi, A. Sadeghi-Niaraki, (2009). \"Designing Road Maintenance data Model Using Dynamic Segmentation Technique\". Springer-Verlag Lecture Notes in Computer Science (LNCS) Series, Lecture Notes in Computer Science, Volume 5592/2009, 442-452, DOI: 10.1007/978-3-642-02454-2_31",
       "link": "https://doi.org/10.1007/978-3-642-02454-2_31",
@@ -3808,7 +3824,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-m-vars-c8ce3e2e",
+      "id": "sadeghi-niaraki-a-k-kim-m-vars-663f1f59",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, M. Varshosaz, (2008). \"Design and Development of Impedance Function for Optimum Path Finding using Multi Criteria Decision Making Technique, Journal of National Cartography Center, Vol. 18, No. 91, pp. 10-18(Persian).\nReferred Conferences",
       "link": null,
@@ -3824,7 +3840,7 @@
       "impactFactor": null
     },
     {
-      "id": "safari-bazargani-j-sadeghi-nia-a5c64047",
+      "id": "safari-bazargani-j-sadeghi-nia-5c90209e",
       "doi": null,
       "raw": "Safari Bazargani, J., Sadeghi-Niaraki, A., & Choi, S. M. (2025). Eliminating the Distance-Precision Trade-off in Distant Object Placement and Manipulation in Virtual Reality, IEEE International Symposium on Mixed and Augmented Reality (ISMAR), Daejeon, South Korea, 2025.10.8-12.",
       "link": null,
@@ -3840,7 +3856,7 @@
       "impactFactor": null
     },
     {
-      "id": "safari-bazargani-j-mousavi-s-r-509d5674",
+      "id": "safari-bazargani-j-mousavi-s-r-b020a095",
       "doi": null,
       "raw": "Safari Bazargani, J., Mousavi, S. R., Sadeghi-Niaraki, A., & Choi, S. M. (2025). ARGESH: A scaffolded System for Interactive Geometry Learning in AR, IEEE International Symposium on Mixed and Augmented Reality (ISMAR), Daejeon, South Korea, 2025.10.8-12.",
       "link": null,
@@ -3856,7 +3872,7 @@
       "impactFactor": null
     },
     {
-      "id": "rahimi-f-sadeghi-niaraki-a-cho-f8a9f2c3",
+      "id": "rahimi-f-sadeghi-niaraki-a-cho-10f01561",
       "doi": null,
       "raw": "Rahimi, F., Sadeghi-Niaraki, A., & Choi, S. M. (2025). Silent Signals: How Gendered Virtual Labs Influence Women’s Cognition, IEEE International Symposium on Mixed and Augmented Reality (ISMAR), Daejeon, South Korea, 2025.10.8-12.",
       "link": null,
@@ -3872,7 +3888,7 @@
       "impactFactor": null
     },
     {
-      "id": "rokhsaritalemi-s-sadeghi-niara-ecaab5b1",
+      "id": "rokhsaritalemi-s-sadeghi-niara-b1d54ca2",
       "doi": null,
       "raw": "Rokhsaritalemi, S., Sadeghi-Niaraki A., & Choi, S. M. (2024). Emot Act AR: Tailoring Content through User Emotion and Activity Analysis, IEEE VR 2024 Posters, ORLANDO, FL USA, 2024.3.16-21.",
       "link": null,
@@ -3888,7 +3904,7 @@
       "impactFactor": null
     },
     {
-      "id": "bazargani-j-s-sadeghi-niaraki--9043a276",
+      "id": "bazargani-j-s-sadeghi-niaraki--1d895aef",
       "doi": null,
       "raw": "Bazargani, J. S., Sadeghi-Niaraki, A., & Choi, S. M. (2023). Avatar Emotion Recognition using Non-verbal Communication, Pacific Graphics (2023).",
       "link": null,
@@ -3904,7 +3920,7 @@
       "impactFactor": null
     },
     {
-      "id": "bazargani-j-s-sadeghi-niaraki--c1fd0cfd",
+      "id": "bazargani-j-s-sadeghi-niaraki--548c4c12",
       "doi": null,
       "raw": "Bazargani, J.S., Sadeghi-Niaraki, A. & Choi, S. M. (2023). \"Avatar Emotion Recognition using Non-verbal Communication\", Pacific Graphics 2023 Posters, Daejon, Korea, 2023.10.10-13.",
       "link": null,
@@ -3920,7 +3936,7 @@
       "impactFactor": null
     },
     {
-      "id": "rokhsaritalemi-s-ko-b-s-sadegh-c24ece4d",
+      "id": "rokhsaritalemi-s-ko-b-s-sadegh-648d64cf",
       "doi": null,
       "raw": "Rokhsaritalemi, S., Ko, B. S., Sadeghi-Niaraki, A., & Choi, S. M. (2023, March). Geospatial Augmented Reality Tourist System. In 2023 IEEE Conference on Virtual Reality and 3D User Interfaces Abstracts and Workshops (VRW), IEEE VR 2023 (pp. 611-612).",
       "link": null,
@@ -3936,7 +3952,7 @@
       "impactFactor": null
     },
     {
-      "id": "rokhsaritalemi-s-sadeghi-niara-a77146ba",
+      "id": "rokhsaritalemi-s-sadeghi-niara-3edae52a",
       "doi": null,
       "raw": "Rokhsaritalemi, S., Sadeghi-Niaraki, A., & Choi, S. M. (2018, October). Drone trajectory planning based on geographic information system for 3d urban modeling. In 2018 International Conference on Information and Communication Technology Convergence (ICTC) (pp. 1080-1083). IEEE.",
       "link": null,
@@ -3952,7 +3968,7 @@
       "impactFactor": null
     },
     {
-      "id": "rokhsaritalemi-s-sadeghi-niara-3d125f7d",
+      "id": "rokhsaritalemi-s-sadeghi-niara-fcb1a015",
       "doi": null,
       "raw": "Rokhsaritalemi, S., Sadeghi-Niaraki, A., & Choi, S. M. (2018). A GIS based framework of a robotic path planning for smart cities applications. International Conference on Information Society and Smart Cities (ISC 2018).",
       "link": null,
@@ -3968,7 +3984,7 @@
       "impactFactor": null
     },
     {
-      "id": "bashar-m-r-sadeghi-niaraki-a-c-bb2bca33",
+      "id": "bashar-m-r-sadeghi-niaraki-a-c-402083c0",
       "doi": null,
       "raw": "Bashar, M.R., Sadeghi-Niaraki, A., Choi, S. M. & M. U. Ahmed (2017). DSTU: A Deep Learning approach for Smart Traffic Updating System in GIS. 1st International Conference on Machine Learning and Data Engineering (iCMLDE), 2nd GCSTMR CONGRESS.",
       "link": null,
@@ -3984,7 +4000,7 @@
       "impactFactor": null
     },
     {
-      "id": "shakeri-m-sadeghi-niaraki-a-20-5aac6a03",
+      "id": "shakeri-m-sadeghi-niaraki-a-20-ea44445c",
       "doi": null,
       "raw": "Shakeri, M., & Sadeghi-Niaraki, A., (2017). UGNS: A ubiquitous GIS based navigation system using augmented reality technology and map matching algorithm. The ISPRS International Joint Conference 2017.",
       "link": null,
@@ -4000,7 +4016,7 @@
       "impactFactor": null
     },
     {
-      "id": "rokhsaritalemi-s-sadeghi-niara-f6a8776d",
+      "id": "rokhsaritalemi-s-sadeghi-niara-dd111ee7",
       "doi": null,
       "raw": "Rokhsaritalemi, S., Sadeghi-Niaraki, A., & Shakeri, M. (2017). Rescue recommender ubiquitous GIS system for disaster management. The ISPRS International Joint Conference 2017.\nSadeghi-Niaraki, A., K. Kim, J. Seo (2011) \"Ubiquitous City\", United Nations Regional Workshop on the Use of Space Technology for Human Health Improvement, 23-26 Oct., Tehran, Iran.",
       "link": null,
@@ -4016,7 +4032,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-a-rajabifard-c01e9a8e",
+      "id": "sadeghi-niaraki-a-a-rajabifard-1024b52e",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., A. Rajabifard, K. Kim, J. Seo (2010). \"Ontology Based SDI to Facilitate Spatially Enabled Society\", GSDI-12 Conference Proceedings, 19-12 October, Singapore.",
       "link": null,
@@ -4032,7 +4048,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-m-shab-bb9d25d0",
+      "id": "sadeghi-niaraki-a-k-kim-m-shab-598566fa",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, M. Shabani, and H. Song (2010). \"Realizing Spatially Enabled Society using Ubiquitous-City\", RFID/USN Incheon International Conference, Songdo Convensia, Incheon, Korea.",
       "link": null,
@@ -4048,7 +4064,7 @@
       "impactFactor": null
     },
     {
-      "id": "rezaee-arjroody-a-a-sadeghi-ni-a32c7ddb",
+      "id": "rezaee-arjroody-a-a-sadeghi-ni-6a056df2",
       "doi": null,
       "raw": "Rezaee-Arjroody, A., A. Sadeghi-Niaraki, K. Kim, and Ch. Lee (2010). \"AHP - PROMETHEE Based Model for Decision Making in Road Construction Projects\" Proceedings of 17th ITS World Congress, Busan, Korea.",
       "link": null,
@@ -4064,7 +4080,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-ch-lee-9194832f",
+      "id": "sadeghi-niaraki-a-k-kim-ch-lee-1a3d0719",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, Ch. Lee (2008). \"Ontology Driven Road Network Analysis based on Analytical Network Process Technique\", IEEE CSTST2008, IEEE International Conference on Soft Computing as Transdisciplinary Science and Technology, Paris, France, pp. 613-619.",
       "link": null,
@@ -4080,7 +4096,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-ch-lee-fb8cfb12",
+      "id": "sadeghi-niaraki-a-k-kim-ch-lee-793235b4",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, Ch. Lee (2008). \"GIS-based Web-Service Architecture\", National Spatial Data Infrastructure Conference 2008, Seoul, South Korea. pp. 113-118.",
       "link": null,
@@ -4096,7 +4112,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-2008-g-630267f9",
+      "id": "sadeghi-niaraki-a-k-kim-2008-g-d36b4d80",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim (2008). \"GIS based Non-Point Source Pollution Assessment\" International symposium on Remote Sensing 2008 (ISRS 2008), Daejeon, South Korea.",
       "link": null,
@@ -4112,7 +4128,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-2008-d-69190ae3",
+      "id": "sadeghi-niaraki-a-k-kim-2008-d-f1b363b2",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim (2008). \"Development of geospatially based personalized route finding architecture\", MapAsia2008 Conference, Kuala Lumpur, Malaysia.",
       "link": null,
@@ -4128,7 +4144,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-2008-a-7fc2d936",
+      "id": "sadeghi-niaraki-a-k-kim-2008-a-e29818d9",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, (2008). \"A Ontology ANP based Multi-Criteria Decision Making Approach\" The 2008 International Conference on Information and Knowledge Engineering (IKE'08), The 2008 World Congress in Computer Science, Computer Engineering, and Applied Computing (WORLDCOMP'08), Las Vegas, USA (Acceptance rate= 28%).",
       "link": null,
@@ -4144,7 +4160,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-2008-d-a0d4eba0",
+      "id": "sadeghi-niaraki-a-k-kim-2008-d-97ca265e",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, (2008). \"Driving Toward Ontology Web Services Driven Application\" The 2008 International Conference on Semantic Web and Web Services (SWWS'08), The 2008 World Congress in Computer Science, Computer Engineering, and Applied Computing (WORLDCOMP'08), Las Vegas, USA (Acceptance rate= 27%).\nSadeghi-Niaraki, A., K. Kim (2007) \"The Developing GIS Web Services for Locating Facilities\", InterGeo East 2007 Conference, 28 February-2 March 2007, Bulgaria, Sofia.\nSadeghi-Niaraki, A. (2006) \"A Study Based on Moving from Spatial Data Infrastructure (SDI) toward Spatial Service Infrastructure (SSI)\", GSDI-9 Conference Proceedings, 6-10 November 2006, Santiago, Chile.",
       "link": null,
@@ -4160,7 +4176,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-sangbo-f3e514fb",
+      "id": "sadeghi-niaraki-a-k-kim-sangbo-72242623",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim, Sangbong Yoo, Tao Song (2006). \"Design and implementation of a prototype based on GIS web services\" International conference of SMF/ UPIMap2006, Seoul, South Korea.",
       "link": null,
@@ -4176,7 +4192,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-m-varshosaz--069c7681",
+      "id": "sadeghi-niaraki-a-m-varshosaz--9945d51c",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., M. Varshosaz, and H. Behrooz (2004). \"Implementation of the resulting Cost Model of Roads Network in the Geographic Information System (GIS)\" Proceedings of ISPRS 2004 Conference, Istanbul, Turkey.",
       "link": null,
@@ -4192,7 +4208,7 @@
       "impactFactor": null
     },
     {
-      "id": "torfehnejad-h-a-sadeghi-niarak-2c647533",
+      "id": "torfehnejad-h-a-sadeghi-niarak-e1533077",
       "doi": null,
       "raw": "Torfehnejad, H., A. Sadeghi-Niaraki, and H. Behrooz (2004). \"Offline Passenger Fleet Control in Iran interurban Road Network\" Proceedings of 8th International Conference on Application of Advanced Technologies in Transportation Engineering (AATT2004), Beijing, China.",
       "link": null,
@@ -4208,7 +4224,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-and-j-jamili-136631aa",
+      "id": "sadeghi-niaraki-a-and-j-jamili-be2ce2d4",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., and J. Jamili (2004). \"Defining the Cost Model for optimum path analysis in Iran Roads Transit Network with GIS software and EMME/2 transportation software\" Proceedings of 8th International Conference on Application of Advanced Technologies in Transportation Engineering (AATT2004), China.\nSadeghi-Niaraki, A. (2011) \"The Advantages and Challenges of Ubiquitous Healthcare in South Korea\" The 5th International Congress on Pulmonary Disease, Intensive Care and Tuberculosis, European Respiratory Society (ERS) and National Research Institute of Tuberculosis and Lung Disease (NRITLD), Tehran, Iran.\nSadeghi-Niaraki, A., Jae-Min Park, K. Kim, Ch. Lee (2007) \"Grid Based Nonpoint Source Pollution Load Modelling\", 2007 GISKorea Conference, 15 June, Seoul, Korea, pp246-251.",
       "link": null,
@@ -4224,7 +4240,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-k-kim-2006-t-e5ce4726",
+      "id": "sadeghi-niaraki-a-k-kim-2006-t-0e95f5ca",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., K. Kim (2006). \"The developing emergency route finding model in the road network\" conference of ubiquitous disaster, GIS 2006, Korean Spatial Information system Society, Seoul, South Korea.",
       "link": null,
@@ -4240,7 +4256,7 @@
       "impactFactor": null
     },
     {
-      "id": "varshosaz-m-and-a-sadeghi-niar-b815afe1",
+      "id": "varshosaz-m-and-a-sadeghi-niar-f70f46b3",
       "doi": null,
       "raw": "Varshosaz, M., and A. Sadeghi-Niaraki (2003). \"Defining the Cost Model of Iran Roads Network in GIS\" Proceedings of MapAsia 2003 Conference, Kuala Lumpur, Malaysia Oct. 13-15.",
       "link": null,
@@ -4256,7 +4272,7 @@
       "impactFactor": null
     },
     {
-      "id": "sadeghi-niaraki-a-and-m-varsho-c6d3d144",
+      "id": "sadeghi-niaraki-a-and-m-varsho-7c9913cc",
       "doi": null,
       "raw": "Sadeghi-Niaraki, A., and M. Varshosaz (2003). \"Determination of a cost model for optimum Path route in Iran Roads network\" Proceedings of Geoinformatics 2003 Conference, Toronto, Canada Jun 25-27.",
       "link": null,
@@ -4272,7 +4288,7 @@
       "impactFactor": null
     },
     {
-      "id": "varshosaz-m-and-a-sadeghi-niar-242e7375",
+      "id": "varshosaz-m-and-a-sadeghi-niar-2c436630",
       "doi": null,
       "raw": "Varshosaz, M., and A. Sadeghi-Niaraki (2003). \"Obtaining the Cost Model of Iran Roads Network in GIS\" Proceedings of Geomatics 82 Conference, Tehran, Iran May 11-15.",
       "link": null,
@@ -4289,5 +4305,5 @@
     }
   ],
   "rawHtmlTruncated": true,
-  "rawHtmlOriginalLength": 198471
+  "rawHtmlOriginalLength": 198962
 }
