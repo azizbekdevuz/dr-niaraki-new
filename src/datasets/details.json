@@ -1,6 +1,6 @@
 {
   "meta": {
-    "parsedAt": "2026-08-07T13:36:23.213Z",
+    "parsedAt": "2026-08-30T07:23:50.264Z",
     "uploader": "admin",
     "warnings": [
       "unknown_section: Unrecognized section: \"Preamble\" - please review",
@@ -12,12 +12,11 @@
       "publications: Publication 62: recovered truncated title from raw citation",
       "publications: Publication 67: recovered truncated title from raw citation",
       "publications: Publication 68: recovered truncated title from raw citation",
-      "publications: Removed duplicate publication (kept bazargani-j-s-rahimi-f-sadeghi-6b387217, dropped bazargani-j-s-rahimi-f-sadeghi-8e9a25bb)",
       "publications: Removed duplicate publication (kept adnan-r-m-yaseen-z-m-heddam-s--4ee9f1fb, dropped adnan-r-m-yaseen-z-m-heddam-s--e8120896)"
     ],
     "commitSha": null,
     "parserVersion": "v1.3.0",
-    "sourceFileName": "14-5-2026 Resume (Dr. Abolghasem Sadeghi-Niaraki) (1) Copy.docx",
+    "sourceFileName": "14-5-2026 Resume (Dr. Abolghasem Sadeghi-Niaraki).docx",
     "cvSummaryMergePolicy": "split_v1"
   },
   "about": {
@@ -25,7 +24,16 @@
     "brief": "Dr. Abolghasem Sadeghi-Niaraki is an Associate Professor in the Department of Computer Science and Engineering at the XR (eXtended Reality) Metaverse Research Center, Sejong University, Republic of Korea, where he has been a faculty member since 2017. From 2009 to 2017, he served as an Assistant Pro",
     "awards": [
       {
-        "id": "recognized-among-the-top-2-of--0f55cf58",
+        "id": "new-test-award-test-inside-bra-10c61ddf",
+        "raw": "New test award (test inside bracets)",
+        "year": null,
+        "title": "New test award (test inside bracets)",
+        "details": null,
+        "category": "other",
+        "organization": null
+      },
+      {
+        "id": "recognized-among-the-top-2-of--31191e33",
         "raw": "Recognized among the TOP 2% OF SCIENTISTS WORLDWIDE (Stanford-Elsevier 2024,2025 dataset)",
         "year": "2024",
         "title": "Recognized among the TOP 2% OF SCIENTISTS WORLDWIDE (Stanford-Elsevier 2024,2025 dataset)",
@@ -34,7 +42,7 @@
         "organization": "Stanford-Elsevier"
       },
       {
-        "id": "appointed-as-a-fellow-at-the-s-00240980",
+        "id": "appointed-as-a-fellow-at-the-s-b1432856",
         "raw": "Appointed as a FELLOW at the Spatial Data Lab (SDL), Center for Geographic Analysis, Harvard University (2024)",
         "year": "2024",
         "title": "Appointed as a FELLOW at the Spatial Data Lab (SDL), Center for Geographic Analysis, Harvard University (2024)",
@@ -43,7 +51,7 @@
         "organization": "Spatial Data Lab (SDL"
       },
       {
-        "id": "3rd-ieti-young-researcher-awar-60efee86",
+        "id": "3rd-ieti-young-researcher-awar-28359e57",
         "raw": "3rd IETI Young Researcher Award Winner 2024, International Engineering and Technology Institute (IETI). Recognized for cutting-edge research contributions in GeoAI, Extended Reality (XR), Metaverse technologies, Artificial Intelligence, GIS, immersive spatial computing, and real-time environmental hazard management. Certificate issued January 21, 2025.",
         "year": "2024",
         "title": "3rd IETI Young Researcher Award Winner 2024, International Engineering and Technology Institute (IETI). Recognized for cutting-edge research contributions in GeoAI, Extended Reality (XR), Metaverse technologies, Artificial Intelligence, GIS, immersive spatial computing, and real-time environmental hazard management. Certificate issued January 21, 2025.",
@@ -52,7 +60,7 @@
         "organization": "International Engineering and Technology Institute (IETI)"
       },
       {
-        "id": "appointed-as-an-editorial-boar-f67d8ed6",
+        "id": "appointed-as-an-editorial-boar-36c2093e",
         "raw": "Appointed as an Editorial Board Member of the Q1-ranked journal, Cartography and Geographic Information Science (Taylor & Francis), 2025–Present",
         "year": "2025",
         "title": "Appointed as an Editorial Board Member of the Q1-ranked journal, Cartography and Geographic Information Science (Taylor & Francis), 2025–Present",
@@ -61,7 +69,7 @@
         "organization": null
       },
       {
-        "id": "certificate-of-appreciation-as-315cb606",
+        "id": "certificate-of-appreciation-as-f6d4d3fa",
         "raw": "Certificate of Appreciation as Keynote Speaker, The Fourth International Conference on Intelligence of Things (ICIT 2025), Phuket, Thailand, November 17–19, 2025. Recognized for valuable contribution as a keynote speaker.",
         "year": "2025",
         "title": "Certificate of Appreciation as Keynote Speaker, The Fourth International Conference on Intelligence of Things (ICIT 2025), Phuket, Thailand, November 17–19, 2025. Recognized for valuable contribution as a keynote speaker.",
@@ -70,7 +78,7 @@
         "organization": null
       },
       {
-        "id": "2024-ieti-young-researcher-awa-be1893e0",
+        "id": "2024-ieti-young-researcher-awa-9ad98ed2",
         "raw": "2024 IETI Young Researcher Award Winner, International Engineering and Technology Institute (IETI), for research contributions in GeoAI, XR, Metaverse, AI, GIS, and immersive spatial computing.",
         "year": "2024",
         "title": "2024 IETI Young Researcher Award Winner, International Engineering and Technology Institute (IETI), for research contributions in GeoAI, XR, Metaverse, AI, GIS, and immersive spatial computing.",
@@ -79,7 +87,7 @@
         "organization": "International Engineering and Technology Institute (IETI)"
       },
       {
-        "id": "keynote-speaker-recognition-th-dbe02830",
+        "id": "keynote-speaker-recognition-th-7d9b9e32",
         "raw": "Keynote Speaker Recognition, The Fourth International Conference on Intelligence of Things (ICIT 2025), Phuket, Thailand, November 17–19, 2025.",
         "year": "2025",
         "title": "Keynote Speaker Recognition, The Fourth International Conference on Intelligence of Things (ICIT 2025), Phuket, Thailand, November 17–19, 2025.",
@@ -88,7 +96,7 @@
         "organization": null
       },
       {
-        "id": "recognized-as-a-member-of-the--138c6349",
+        "id": "recognized-as-a-member-of-the--ad0fb3bc",
         "raw": "Recognized as a member of the American Association of Geographers (AAG), one of the world’s foremost scholarly societies in geography and spatial sciences,2024",
         "year": "2024",
         "title": "Recognized as a member of the American Association of Geographers (AAG), one of the world’s foremost scholarly societies in geography and spatial sciences,2024",
@@ -97,7 +105,7 @@
         "organization": null
       },
       {
-        "id": "best-researcher-award-provisio-2f513f2c",
+        "id": "best-researcher-award-provisio-70e019b3",
         "raw": "BEST RESEARCHER AWARD (Provisional)[International Soil Scientist Awards]: Recognized for the publication \"Cutting-Edge Strategies for Absence Data Identification in Natural Hazards\" leveraging advanced AI techniques for flood susceptibility mapping. Selected 2024.\nhttps://soilscientists.org/abolghasem-sadeghi-niaraki-computer-science-best-researcher-award-2056/",
         "year": "2024",
         "title": "BEST RESEARCHER AWARD (Provisional)[International Soil Scientist Awards]: Recognized for the publication \"Cutting-Edge Strategies for Absence Data Identification in Natural Hazards\" leveraging advanced AI techniques for flood susceptibility mapping. Selected 2024.",
@@ -106,7 +114,7 @@
         "organization": null
       },
       {
-        "id": "australian-endeavour-research--8c829335",
+        "id": "australian-endeavour-research--f6f2c8ee",
         "raw": "AUSTRALIAN ENDEAVOUR RESEARCH FELLOWSHIP AWARDS 2012 from the Minister for Skills and Training (Australia), as well as receiving a Post-Doctoral Fellowship from the University of Melbourne, Australia.",
         "year": "2012",
         "title": "AUSTRALIAN ENDEAVOUR RESEARCH FELLOWSHIP AWARDS 2012 from the Minister for Skills and Training (Australia), as well as receiving a Post-Doctoral Fellowship from the University of Melbourne, Australia.",
@@ -115,7 +123,7 @@
         "organization": "the University of Melbourne"
       },
       {
-        "id": "nationally-distinguished-resea-ccab5244",
+        "id": "nationally-distinguished-resea-e8362eb7",
         "raw": "NATIONALLY DISTINGUISHED RESEARCHER AWARD from the Iranian President in 2003",
         "year": "2003",
         "title": "NATIONALLY DISTINGUISHED RESEARCHER AWARD from the Iranian President in 2003",
@@ -124,7 +132,7 @@
         "organization": null
       },
       {
-        "id": "ministerial-distinguished-rese-30efeac3",
+        "id": "ministerial-distinguished-rese-103b67dc",
         "raw": "MINISTERIAL DISTINGUISHED RESEARCHER AWARD from the Iranian Minister of Roads & Transportation in 2003",
         "year": "2003",
         "title": "MINISTERIAL DISTINGUISHED RESEARCHER AWARD from the Iranian Minister of Roads & Transportation in 2003",
@@ -133,7 +141,7 @@
         "organization": null
       },
       {
-        "id": "best-presented-paper-award-201-a6b3df30",
+        "id": "best-presented-paper-award-201-8a7639a7",
         "raw": "BEST PRESENTED PAPER AWARD 2012, 3rd International Traffic Accident Conf., ITAC 2013",
         "year": "2012",
         "title": "BEST PRESENTED PAPER AWARD 2012, 3rd International Traffic Accident Conf., ITAC 2013",
@@ -142,7 +150,7 @@
         "organization": null
       },
       {
-        "id": "honourable-speaker-for-rfid-us-48a8fcf0",
+        "id": "honourable-speaker-for-rfid-us-d9e03ab0",
         "raw": "HONOURABLE SPEAKER for RFID/USN Incheon International Conference, Songdo Convensia, Incheon, Korea, 2010\nBRAIN KOREA 21 (BK21) SCHOLARSHIP AWARD from the Ministry of Education, Science, and Technology (2008), Korean Government",
         "year": "2008",
         "title": "HONOURABLE SPEAKER for RFID/USN Incheon International Conference, Songdo Convensia, Incheon, Korea, 2010",
@@ -151,7 +159,7 @@
         "organization": null
       },
       {
-        "id": "korean-government-graduate-sch-dd2d6f0f",
+        "id": "korean-government-graduate-sch-676d2bb7",
         "raw": "KOREAN GOVERNMENT GRADUATE SCHOLARSHIP AWARD (2005-2007) for PhD course from the Korean Research Foundation (KRF) and the Ministry of Education, Science, and Technology, South Korea\nGRADUATE SCHOLARSHIP AWARD (2000) from the Ministry of Roads & Transportation (Road Maintenance and Transportation Organization), Tehran",
         "year": "2000",
         "title": "KOREAN GOVERNMENT GRADUATE SCHOLARSHIP AWARD (2005-2007) for PhD course from the Korean Research Foundation (KRF) and the Ministry of Education, Science, and Technology, South Korea",
@@ -387,11 +395,11 @@
     ]
   },
   "counts": {
-    "awards": 15,
-    "patents": 53,
+    "awards": 16,
+    "patents": 55,
     "projects": 8,
     "students": 40,
-    "publications": 191
+    "publications": 192
   },
   "contact": {
     "fax": "+82 2-3408-4321",
@@ -410,7 +418,19 @@
   },
   "patents": [
     {
-      "id": "us-international-patent-us11-8-3c7806e6",
+      "id": "international-patent-new-inter-ccfe2e76",
+      "raw": "International Patent\n\nNew international patent test (US11,816,804B2) - Nov 14, 2023 \n\nTitle: \" Method and system of recommending accommodation for tourists using multi-criteria decision making and augmented reality\"\n\nInventors: Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Somaieh Rokhsaritalemi\n\nStatus: Registration completed",
+      "date": "Nov 14, 2023",
+      "link": null,
+      "type": "international",
+      "title": "Method and system of recommending accommodation for tourists using multi-criteria decision making and augmented reality",
+      "number": "11,816,804B2",
+      "status": "registered",
+      "country": "US",
+      "inventors": "Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Somaieh Rokhsaritalemi"
+    },
+    {
+      "id": "us-international-patent-us11-8-1d24493b",
       "raw": "US International Patent (US11,816,804B2) - Nov 14, 2023 \n\nTitle: \" Method and system of recommending accommodation for tourists using multi-criteria decision making and augmented reality\"\n\nInventors: Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Somaieh Rokhsaritalemi\n\nStatus: Registration completed",
       "date": "Nov 14, 2023",
       "link": null,
@@ -422,7 +442,7 @@
       "inventors": "Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Somaieh Rokhsaritalemi"
     },
     {
-      "id": "us-international-patent-us-202-821b4cc9",
+      "id": "us-international-patent-us-202-914e684e",
       "raw": "US International Patent (US 2025/0166525 A1) – May 22,2025 \n\nTitle: \" IoT-based approach method for learning geometric shapes in early childhood and device thereof\"\n\nInventors: Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, SAFARI BAZARGANI JALAL, RAHIMI FATEMA, Tamer Abuhmed\n\nStatus: Application completed",
       "date": "2025",
       "link": null,
@@ -434,7 +454,7 @@
       "inventors": "Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, SAFARI BAZARGANI JALAL, RAHIMI FATEMA, Tamer Abuhmed"
     },
     {
-      "id": "us-international-patent-us-202-72d45366",
+      "id": "us-international-patent-us-202-92af7ed4",
       "raw": "US International Patent (US 2025/0166317 A1) - May 22,2025\n\nTitle: \" Semantic information retrieval method for augmented reality domain and device thereof\"\n\nInventors: Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Tamer Abuhmed\n\nStatus: Application completed",
       "date": "2025",
       "link": null,
@@ -446,7 +466,7 @@
       "inventors": "Abolghasem Sadeghi-Niaraki, Soo-Mi Choi, Tamer Abuhmed"
     },
     {
-      "id": "us-international-patent-19-326-dc47aa78",
+      "id": "us-international-patent-19-326-0a4d51c1",
       "raw": "US International Patent (19/326,960) – Sep 12, 2025\n\nTitle: “Method and apparatus for Alzheimer’s disease diagnosis in metaverse”\n\nInventors: Soo-Mi Choi, Abolghasem Sadeghi-Niaraki, SAFARI BAZARGANI JALAL\n\nStatus: Application completed",
       "date": "Sep 12, 2025",
       "link": null,
@@ -458,7 +478,7 @@
       "inventors": "Soo-Mi Choi, Abolghasem Sadeghi-Niaraki, SAFARI BAZARGANI JALAL"
     },
     {
-      "id": "us-international-patent-19-326-6c0fce16",
+      "id": "us-international-patent-19-326-b267906c",
       "raw": "US International Patent (19/326,984) – Sep 12, 2025\n\nTitle: “Mixed reality-based object placement method and apparatus for robotics, image synthesis, and extended reality”\n\nInventors: Soo-Mi Choi, Abolghasem Sadeghi-Niaraki, SAFARI BAZARGANI JALAL\n\nStatus: Application completed\n\nRegistered Korean Patents",
       "date": "Sep 12, 2025",
       "link": null,
@@ -470,7 +490,19 @@
       "inventors": "Soo-Mi Choi, Abolghasem Sadeghi-Niaraki, SAFARI BAZARGANI JALAL"
     },
     {
-      "id": "10-2828547-2025-06-27-spatial--c90c10b1",
+      "id": "10-2132434-202-08-06-new-korea-b7deb7f0",
+      "raw": "10-2132434 – 202-08-06\n\nNew Korean registered patents test",
+      "date": null,
+      "link": null,
+      "type": "korean",
+      "title": "202-08-06\n\nNew Korean registered patents test",
+      "number": "10-2132434",
+      "status": "registered",
+      "country": "Korea",
+      "inventors": null
+    },
+    {
+      "id": "10-2828547-2025-06-27-spatial--be0bfdd6",
       "raw": "10-2828547 – 2025-06-27 Spatial-temporal distribution analysis method and apparatus of school",
       "date": "2025-06-27",
       "link": null,
@@ -482,7 +514,7 @@
       "inventors": null
     },
     {
-      "id": "10-2798332-2025-04-16-asthma-p-81d3dbb6",
+      "id": "10-2798332-2025-04-16-asthma-p-f1ef428e",
       "raw": "10-2798332 – 2025-04-16 Asthma-prone area modeling using a machine learning model",
       "date": "2025-04-16",
       "link": null,
@@ -494,7 +526,7 @@
       "inventors": null
     },
     {
-      "id": "10-2795932-2025-04-10-geospati-0643ac0c",
+      "id": "10-2795932-2025-04-10-geospati-b2d9db24",
       "raw": "10-2795932 – 2025-04-10 Geospatial artificial intelligence and satellite imagery fusion for soil physical property predicting",
       "date": "2025-04-10",
       "link": null,
@@ -506,7 +538,7 @@
       "inventors": null
     },
     {
-      "id": "10-2769388-2025-02-13-method-a-a6ce35a6",
+      "id": "10-2769388-2025-02-13-method-a-bef9d59d",
       "raw": "10-2769388 – 2025-02-13 Method and system of recommending accommodation for tourists using multi-criteria decision making and augmented reality",
       "date": "2025-02-13",
       "link": null,
@@ -518,7 +550,7 @@
       "inventors": null
     },
     {
-      "id": "10-2768733-2025-02-12-dust-det-2a58d2e8",
+      "id": "10-2768733-2025-02-12-dust-det-c8de44cd",
       "raw": "10-2768733 – 2025-02-12 Dust detection and susceptibility mapping method and system by aiding satellite imagery time series and integration of ensemble machine learning with evolutionary algorithms",
       "date": "2025-02-12",
       "link": null,
@@ -530,7 +562,7 @@
       "inventors": null
     },
     {
-      "id": "10-2766766-2025-02-07-gis-base-09877ea6",
+      "id": "10-2766766-2025-02-07-gis-base-497a381c",
       "raw": "10-2766766 – 2025-02-07 GIS-based multi-objective evolutionary algorithm for landslide susceptibility mapping)",
       "date": "2025-02-07",
       "link": null,
@@ -542,7 +574,7 @@
       "inventors": null
     },
     {
-      "id": "10-2749146-2024-12-27-augmente-ea2dd2a3",
+      "id": "10-2749146-2024-12-27-augmente-da03652a",
       "raw": "10-2749146 – 2024-12-27 Augmented reality-based border management system",
       "date": "2024-12-27",
       "link": null,
@@ -554,7 +586,7 @@
       "inventors": null
     },
     {
-      "id": "10-2718568-2024-10-14-method-a-702c1725",
+      "id": "10-2718568-2024-10-14-method-a-f5350037",
       "raw": "10-2718568 – 2024-10-14 Method and system for spatio-temporal modelling of asthma-prone areas using a machine learning optimized with metaheuristic algorithms",
       "date": "2024-10-14",
       "link": null,
@@ -566,7 +598,7 @@
       "inventors": null
     },
     {
-      "id": "10-2718516-2024-10-14-customiz-690a5ffe",
+      "id": "10-2718516-2024-10-14-customiz-a8912882",
       "raw": "10-2718516 – 2024-10-14 Customized augmented reality-based tourism recommendation system and method",
       "date": "2024-10-14",
       "link": null,
@@ -578,7 +610,7 @@
       "inventors": null
     },
     {
-      "id": "10-2707106-2024-09-11-method-a-6f32f6c2",
+      "id": "10-2707106-2024-09-11-method-a-ec955c6e",
       "raw": "10-2707106 – 2024-09-11 Method and apparatus for generating epidemic risk map",
       "date": "2024-09-11",
       "link": null,
@@ -590,7 +622,7 @@
       "inventors": null
     },
     {
-      "id": "10-2706021-2024-09-09-forest-f-84a1553d",
+      "id": "10-2706021-2024-09-09-forest-f-b7e71047",
       "raw": "10-2706021 – 2024-09-09 Forest fire susceptibility mapping method and apparatus using artificial intelligence",
       "date": "2024-09-09",
       "link": null,
@@ -602,7 +634,7 @@
       "inventors": null
     },
     {
-      "id": "10-2679714-2024-06-25-a-system-8a674602",
+      "id": "10-2679714-2024-06-25-a-system-fac2b879",
       "raw": "10-2679714 – 2024-06-25 A system and method for evaluating the quality of life at different spatial levels",
       "date": "2024-06-25",
       "link": null,
@@ -614,7 +646,7 @@
       "inventors": null
     },
     {
-      "id": "10-2356500-2022-01-24-geospati-f809251d",
+      "id": "10-2356500-2022-01-24-geospati-3d77f8a5",
       "raw": "10-2356500 – 2022-01-24 Geospatial information system-based modeling approach for leakage management in urban water distribution networks",
       "date": "2022-01-24",
       "link": null,
@@ -626,7 +658,7 @@
       "inventors": null
     },
     {
-      "id": "10-2307898-2021-09-27-groundwa-7cf4fa13",
+      "id": "10-2307898-2021-09-27-groundwa-d91578de",
       "raw": "10-2307898 – 2021-09-27 Groundwater potential mapping using integrated ensemble of three bivariate statistical models with random forest and logistic tree models",
       "date": "2021-09-27",
       "link": null,
@@ -638,7 +670,7 @@
       "inventors": null
     },
     {
-      "id": "10-2252678-2021-05-11-spatial--e8d69f92",
+      "id": "10-2252678-2021-05-11-spatial--b0e75ccb",
       "raw": "10-2252678 – 2021-05-11 Spatial cluster-based model for static rebalancing bike sharing problem",
       "date": "2021-05-11",
       "link": null,
@@ -650,7 +682,7 @@
       "inventors": null
     },
     {
-      "id": "10-2208906-2021-01-22-method-a-304ca270",
+      "id": "10-2208906-2021-01-22-method-a-cfca15d2",
       "raw": "10-2208906 – 2021-01-22 Method and apparatus for enhancing response coordination through assessment of response network structural dynamics",
       "date": "2021-01-22",
       "link": null,
@@ -662,7 +694,7 @@
       "inventors": null
     },
     {
-      "id": "10-2148349-2020-08-20context-a-645fc6e3",
+      "id": "10-2148349-2020-08-20context-a-3c692654",
       "raw": "10-2148349 – 2020-08-20Context-Aware Route-Finding Algorithm for Self-Driving Tourists Using Ontology",
       "date": "2020-08-20",
       "link": null,
@@ -674,7 +706,7 @@
       "inventors": null
     },
     {
-      "id": "10-2011215-2019-08-08ubiquitou-f81e1ecb",
+      "id": "10-2011215-2019-08-08ubiquitou-bb9cd468",
       "raw": "10-2011215 – 2019-08-08Ubiquitous Sensor Network Simulation and Emulation Environments",
       "date": "2019-08-08",
       "link": null,
@@ -686,7 +718,7 @@
       "inventors": null
     },
     {
-      "id": "10-2010180-2019-08-06methodolo-b4203180",
+      "id": "10-2010180-2019-08-06methodolo-3f7fe7fb",
       "raw": "10-2010180 – 2019-08-06Methodological Framework for Assessment of Ubiquitous Cities Using ANP and DEMATEL Method",
       "date": "2019-08-06",
       "link": null,
@@ -698,7 +730,7 @@
       "inventors": null
     },
     {
-      "id": "10-2003643-2019-07-18-semantic-766517da",
+      "id": "10-2003643-2019-07-18-semantic-94fbeeac",
       "raw": "10-2003643 – 2019-07-18 Semantic Interoperability of GIS and MCDA Tools for Environmental Assessment and Decision Making\n\nCompleted Korean Patent Applications",
       "date": "2019-07-18",
       "link": null,
@@ -710,7 +742,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0097451-2025-07-18-met-0f3ad0ea",
+      "id": "10-2025-0097451-2025-07-18-met-42cbc6d8",
       "raw": "10-2025-0097451 – 2025-07-18 Methods and apparatus for spatiotemporal modeling of urban resilience and seismic risk",
       "date": "2025-07-18",
       "link": null,
@@ -722,7 +754,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0097450-2025-07-18-met-efe3b11a",
+      "id": "10-2025-0097450-2025-07-18-met-2a039bf3",
       "raw": "10-2025-0097450 – 2025-07-18 Metaverse-based educational method and apparatus",
       "date": "2025-07-18",
       "link": null,
@@ -734,7 +766,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0097449-2025-07-18-met-6ef5b633",
+      "id": "10-2025-0097449-2025-07-18-met-ae0caf43",
       "raw": "10-2025-0097449 – 2025-07-18 Method and apparatus for creating landslide susceptibility maps by combining physics-based metaheuristic algorithms and explainable ensemble machine learning models",
       "date": "2025-07-18",
       "link": null,
@@ -746,7 +778,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0090232-2025-07-04-mix-5052c2ff",
+      "id": "10-2025-0090232-2025-07-04-mix-a8ac7818",
       "raw": "10-2025-0090232 – 2025-07-04 Mixed reality-based object placement method and apparatus for robotics, image synthesis, and extended reality",
       "date": "2025-07-04",
       "link": null,
@@ -758,7 +790,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0090231-2025-07-04-met-4b4c697d",
+      "id": "10-2025-0090231-2025-07-04-met-61d753b3",
       "raw": "10-2025-0090231 – 2025-07-04 Method and apparatus for creating flood-vulnerable area maps using metaheuristic-based categorical boosting algorithm",
       "date": "2025-07-04",
       "link": null,
@@ -770,7 +802,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0094520-2025-07-14-cut-ef6be5dc",
+      "id": "10-2025-0094520-2025-07-14-cut-933f3eaf",
       "raw": "10-2025-0094520 – 2025-07-14 Cutting-edge strategies for absence data identification in natural hazards: leveraging voronoi-entropy in flood susceptibility mapping with advanced ai techniques",
       "date": "2025-07-14",
       "link": null,
@@ -782,7 +814,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0094519-2025-07-14-enh-2980d5ff",
+      "id": "10-2025-0094519-2025-07-14-enh-6a3a3c7a",
       "raw": "10-2025-0094519 – 2025-07-14 Enhancing spatial prediction of groundwater-prone areas through optimization of a boosting algorithm with bio-inspired metaheuristic algorithms",
       "date": "2025-07-14",
       "link": null,
@@ -794,7 +826,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0094518-2025-07-14-spa-f4e42ea8",
+      "id": "10-2025-0094518-2025-07-14-spa-178a3435",
       "raw": "10-2025-0094518 – 2025-07-14 Spatio-temporal modeling of asthma-prone areas: exploring the influence of urban climate factors with explainable artificial intelligence (XAI)",
       "date": "2025-07-14",
       "link": null,
@@ -806,7 +838,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0094517-2025-07-14-ass-f4d0aa00",
+      "id": "10-2025-0094517-2025-07-14-ass-8a2a64ed",
       "raw": "10-2025-0094517 – 2025-07-14 Assessment of noise pollution-prone areas using an explainable geospatial artificial intelligence approach",
       "date": "2025-07-14",
       "link": null,
@@ -818,7 +850,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0085046-2025-06-26-met-50f044bb",
+      "id": "10-2025-0085046-2025-06-26-met-45fe4a7f",
       "raw": "10-2025-0085046 – 2025-06-26 Method and device for alzheimer's disease diagnosis in metaverse",
       "date": "2025-06-26",
       "link": null,
@@ -830,7 +862,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0084059-2025-06-25-met-f4f6f836",
+      "id": "10-2025-0084059-2025-06-25-met-dc3b24fa",
       "raw": "10-2025-0084059 – 2025-06-25 Method and device to generate groundwater potential map using human-based meta-heuristics and machine learning algorithm",
       "date": "2025-06-25",
       "link": null,
@@ -842,7 +874,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0084058-2025-06-25-met-4184711f",
+      "id": "10-2025-0084058-2025-06-25-met-72e430a3",
       "raw": "10-2025-0084058 – 2025-06-25 Method and device to provide pollution susceptibility map for exploring multi-pollution variability in urban environment",
       "date": "2025-06-25",
       "link": null,
@@ -854,7 +886,7 @@
       "inventors": null
     },
     {
-      "id": "10-2025-0084057-2025-06-25-epi-e5a4cb9c",
+      "id": "10-2025-0084057-2025-06-25-epi-b562a0b8",
       "raw": "10-2025-0084057 – 2025-06-25 Epidemic exposure risk assessment in digital contact tracing",
       "date": "2025-06-25",
       "link": null,
@@ -866,7 +898,7 @@
       "inventors": null
     },
     {
-      "id": "10-2024-0082428-2024-06-25-met-26ebc753",
+      "id": "10-2024-0082428-2024-06-25-met-f4028f7f",
       "raw": "10-2024-0082428 – 2024-06-25 Method and system for enhancing mapping of flood-prone area by fine-tuning the k-nearest neighbors algorithm for spatial modeling",
       "date": "2024-06-25",
       "link": null,
@@ -878,7 +910,7 @@
       "inventors": null
     },
     {
-      "id": "10-2024-0082427-2024-06-25-new-163bcb2d",
+      "id": "10-2024-0082427-2024-06-25-new-71122200",
       "raw": "10-2024-0082427 – 2024-06-25 New approach based on biology-inspired metaheuristic algorithm in combination with random forest to enhance the flood susceptibility mapping",
       "date": "2024-06-25",
       "link": null,
@@ -890,7 +922,7 @@
       "inventors": null
     },
     {
-      "id": "10-2024-0082425-2024-06-25-fla-828a5dd1",
+      "id": "10-2024-0082425-2024-06-25-fla-1314bff8",
       "raw": "10-2024-0082425 – 2024-06-25 Flash flood detection and susceptibility mapping method and system in the monsoon period by integration of optical and radar satellite imagery using an improvement of a sequential ensemble algorithm",
       "date": "2024-06-25",
       "link": null,
@@ -902,7 +934,7 @@
       "inventors": null
     },
     {
-      "id": "10-2024-0067601-2024-05-24-met-019b2e2f",
+      "id": "10-2024-0067601-2024-05-24-met-5b26f664",
       "raw": "10-2024-0067601 – 2024-05-24 Method and system for assessing temporal dynamic of urban gas pipeline risks",
       "date": "2024-05-24",
       "link": null,
@@ -914,7 +946,7 @@
       "inventors": null
     },
     {
-      "id": "10-2024-0067599-2024-05-24-hyb-ed8feae9",
+      "id": "10-2024-0067599-2024-05-24-hyb-ae14a1c7",
       "raw": "10-2024-0067599 – 2024-05-24 Hybridization method and system of spatial modeling and deep learning for people's visual perception of urban landscapes",
       "date": "2024-05-24",
       "link": null,
@@ -926,7 +958,7 @@
       "inventors": null
     },
     {
-      "id": "10-2024-0067598-2024-05-24-wil-c8d0ad2e",
+      "id": "10-2024-0067598-2024-05-24-wil-b9726208",
       "raw": "10-2024-0067598 – 2024-05-24 Wildfire susceptibility mapping method and system using deep learning algorithms in two satellite imagery dataset",
       "date": "2024-05-24",
       "link": null,
@@ -938,7 +970,7 @@
       "inventors": null
     },
     {
-      "id": "10-2024-0067597-2024-05-24-tim-715e2a33",
+      "id": "10-2024-0067597-2024-05-24-tim-2ed4d41d",
       "raw": "10-2024-0067597 – 2024-05-24 Time series hourly sea surface temperature prediction method and system using deep neural network model",
       "date": "2024-05-24",
       "link": null,
@@ -950,7 +982,7 @@
       "inventors": null
     },
     {
-      "id": "10-2023-0162720-2023-11-21-opt-ea52d4b5",
+      "id": "10-2023-0162720-2023-11-21-opt-eab3fe83",
       "raw": "10-2023-0162720 – 2023-11-21 Optimization of machine learning algorithm for flood susceptibility mapping using radar satellite imagery",
       "date": "2023-11-21",
       "link": null,
@@ -962,7 +994,7 @@
       "inventors": null
     },
     {
-      "id": "10-2023-0162688-2023-11-21-sem-0abd5be9",
+      "id": "10-2023-0162688-2023-11-21-sem-9c1654b4",
       "raw": "10-2023-0162688 – 2023-11-21 Semantic information retrieval for augmented reality domain",
       "date": "2023-11-21",
       "link": null,
@@ -974,7 +1006,7 @@
       "inventors": null
     },
     {
-      "id": "10-2023-0162687-2023-11-21-iot-6d1aea46",
+      "id": "10-2023-0162687-2023-11-21-iot-b0cd8c1b",
       "raw": "10-2023-0162687 – 2023-11-21 Iot-based approach for learning geometric shapes in early childhood",
       "date": "2023-11-21",
       "link": null,
@@ -986,7 +1018,7 @@
       "inventors": null
     },
     {
-      "id": "10-2023-0070774-2023-06-01-int-52665794",
+      "id": "10-2023-0070774-2023-06-01-int-d854d48b",
       "raw": "10-2023-0070774 – 2023-06-01 Integration of machine learning algorithms and gis-based approaches to cutaneous leishmaniasis prevalence risk mapping",
       "date": "2023-06-01",
       "link": null,
@@ -998,7 +1030,7 @@
       "inventors": null
     },
     {
-      "id": "10-2023-0068491-2023-05-26-ubi-085ebc16",
+      "id": "10-2023-0068491-2023-05-26-ubi-3e0f9370",
       "raw": "10-2023-0068491 – 2023-05-26 Ubiquitous GIS based outdoor evacuation assistance for response to earthquake disasters",
       "date": "2023-05-26",
       "link": null,
@@ -1010,7 +1042,7 @@
       "inventors": null
     },
     {
-      "id": "10-2023-0020692-2023-02-16-met-87bc034e",
+      "id": "10-2023-0020692-2023-02-16-met-b0042d0c",
       "raw": "10-2023-0020692 – 2023-02-16 Method and system for ontological data modeling for points of interest in a cultural heritage site",
       "date": "2023-02-16",
       "link": null,
@@ -1022,7 +1054,7 @@
       "inventors": null
     },
     {
-      "id": "10-2021-0135546-2021-10-13-lon-2cc262ed",
+      "id": "10-2021-0135546-2021-10-13-lon-4fd646a3",
       "raw": "10-2021-0135546 – 2021-10-13 Long-term temperature prediction method and apparatus",
       "date": "2021-10-13",
       "link": null,
@@ -1034,7 +1066,7 @@
       "inventors": null
     },
     {
-      "id": "10-2023-0070773-2023-06-01-fuz-38a999f0",
+      "id": "10-2023-0070773-2023-06-01-fuz-df829b6c",
       "raw": "10-2023-0070773 – 2023-06-01 Fuzzy logic and distance metrics-based approach for measuring spatial similarity among covid-19 epicenters",
       "date": "2023-06-01",
       "link": null,
@@ -1360,20 +1392,20 @@
       "impactFactor": null
     },
     {
-      "id": "bazargani-j-s-rahimi-f-sadeghi-6b387217",
+      "id": "bazargani-j-s-rahimi-f-sadeghi-12313222",
       "doi": null,
-      "raw": "Bazargani, J. S., Rahimi, F., Sadeghi-Niaraki, A., & Choi, S. M. (2026). Which Strategy When? Designing an Adaptive Search System for Virtual Reality. IEEE Transactions on Visualization and Computer Graphics. (SCIE-Q1-IF: 6.5, TOP6%)",
+      "raw": "Bazargani, J. S., Rahimi, F., Sadeghi-Niaraki, A., & Choi, S. M. (2026). New journal paper test???. isdsdisdisdsds",
       "link": null,
       "type": "journal",
       "year": 2026,
       "issue": null,
       "pages": null,
-      "title": "Which Strategy When? Designing an Adaptive Search System for Virtual Reality",
+      "title": "New journal paper test???. isdsdisdisdsds",
       "volume": null,
       "authors": "Bazargani, J. S., Rahimi, F., Sadeghi-Niaraki, A., & Choi, S. M.",
-      "journal": "IEEE Transactions on Visualization and Computer Graphics",
-      "quartile": "Q1",
-      "impactFactor": "6.5"
+      "journal": null,
+      "quartile": null,
+      "impactFactor": null
     },
     {
       "id": "trung-d-t-sadeghi-niaraki-a-ba-9e044b43",
@@ -1406,6 +1438,22 @@
       "journal": "Geomatics, Natural Hazards and Risk",
       "quartile": null,
       "impactFactor": null
+    },
+    {
+      "id": "bazargani-j-s-rahimi-f-sadeghi-6b387217",
+      "doi": null,
+      "raw": "Bazargani, J. S., Rahimi, F., Sadeghi-Niaraki, A., & Choi, S. M. (2026). Which Strategy When? Designing an Adaptive Search System for Virtual Reality. IEEE Transactions on Visualization and Computer Graphics. (SCIE-Q1-IF: 6.5, TOP6%)",
+      "link": null,
+      "type": "journal",
+      "year": 2026,
+      "issue": null,
+      "pages": null,
+      "title": "Which Strategy When? Designing an Adaptive Search System for Virtual Reality",
+      "volume": null,
+      "authors": "Bazargani, J. S., Rahimi, F., Sadeghi-Niaraki, A., & Choi, S. M.",
+      "journal": "IEEE Transactions on Visualization and Computer Graphics",
+      "quartile": "Q1",
+      "impactFactor": "6.5"
     },
     {
       "id": "fayaz-m-hagsong-k-danish-s-dan-217fbbdf",
@@ -4305,5 +4353,5 @@
     }
   ],
   "rawHtmlTruncated": true,
-  "rawHtmlOriginalLength": 198962
+  "rawHtmlOriginalLength": 199257
 }
